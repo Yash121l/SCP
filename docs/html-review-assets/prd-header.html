@@ -1,0 +1,376 @@
+<style>
+  :root {
+    --bg: #f6f8fb;
+    --paper: #ffffff;
+    --ink: #182230;
+    --muted: #667085;
+    --line: #d9e2ec;
+    --brand: #14532d;
+    --brand-2: #0f766e;
+    --accent: #b45309;
+    --soft: #eef8f4;
+    --table-head: #edf3f8;
+    --code-bg: #111827;
+    --shadow: 0 16px 48px rgba(16, 24, 40, 0.08);
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 16px;
+    line-height: 1.68;
+  }
+
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0 0 auto 0;
+    height: 6px;
+    background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent));
+    z-index: 10;
+  }
+
+  .document-shell {
+    width: min(1180px, calc(100% - 40px));
+    margin: 38px auto 64px;
+    display: grid;
+    grid-template-columns: minmax(0, 270px) minmax(0, 1fr);
+    gap: 28px;
+    align-items: start;
+  }
+
+  .review-cover,
+  .document-main {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    box-shadow: var(--shadow);
+  }
+
+  .review-cover {
+    grid-column: 1 / -1;
+    padding: 42px 46px;
+    border-radius: 8px;
+  }
+
+  .review-kicker {
+    margin: 0 0 12px;
+    color: var(--brand-2);
+    font-size: 0.76rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .review-title {
+    max-width: 920px;
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(2rem, 5vw, 4rem);
+    line-height: 1.06;
+    letter-spacing: 0;
+  }
+
+  .review-subtitle {
+    max-width: 880px;
+    margin: 20px 0 0;
+    color: var(--muted);
+    font-size: 1.08rem;
+  }
+
+  .review-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 26px;
+  }
+
+  .review-meta span {
+    border: 1px solid #bfd7d2;
+    background: var(--soft);
+    color: #164e45;
+    border-radius: 999px;
+    padding: 7px 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+  }
+
+  .toc-sidebar {
+    position: sticky;
+    top: 22px;
+    max-height: calc(100vh - 44px);
+    overflow: auto;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    box-shadow: var(--shadow);
+    padding: 18px;
+  }
+
+  .toc-sidebar h2 {
+    margin: 0 0 12px;
+    color: var(--brand);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+
+  nav#TOC ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  nav#TOC li {
+    margin: 0;
+  }
+
+  nav#TOC a {
+    display: block;
+    padding: 6px 0;
+    color: #475467;
+    border-bottom: 1px solid #eef2f6;
+    text-decoration: none;
+    font-size: 0.88rem;
+    line-height: 1.38;
+  }
+
+  nav#TOC a:hover {
+    color: var(--brand);
+  }
+
+  nav#TOC ul ul {
+    margin-left: 12px;
+  }
+
+  nav#TOC ul ul a {
+    font-size: 0.8rem;
+    color: #667085;
+  }
+
+  .document-main {
+    min-width: 0;
+    border-radius: 8px;
+    padding: 44px 54px;
+  }
+
+  main > h1:first-child {
+    display: none;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    color: #101828;
+    line-height: 1.22;
+    letter-spacing: 0;
+  }
+
+  h1 {
+    margin: 48px 0 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid #d8eee8;
+    font-size: 2.15rem;
+  }
+
+  h2 {
+    margin: 38px 0 14px;
+    font-size: 1.48rem;
+  }
+
+  h3 {
+    margin: 26px 0 10px;
+    color: #27445c;
+    font-size: 1.08rem;
+  }
+
+  p {
+    margin: 0 0 14px;
+  }
+
+  strong {
+    color: #101828;
+  }
+
+  ul,
+  ol {
+    padding-left: 1.35rem;
+    margin: 8px 0 18px;
+  }
+
+  li + li {
+    margin-top: 5px;
+  }
+
+  hr {
+    border: 0;
+    height: 1px;
+    margin: 32px 0;
+    background: var(--line);
+  }
+
+  blockquote {
+    margin: 22px 0;
+    padding: 16px 18px;
+    border-left: 4px solid var(--brand-2);
+    background: #f2fbf8;
+    color: #344054;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 18px 0 30px;
+    font-size: 0.82rem;
+    line-height: 1.45;
+  }
+
+  th,
+  td {
+    border: 1px solid #d7e0ea;
+    padding: 9px 10px;
+    vertical-align: top;
+  }
+
+  th {
+    background: var(--table-head);
+    color: #213547;
+    font-weight: 800;
+    text-align: left;
+  }
+
+  tr:nth-child(even) td {
+    background: #fbfdff;
+  }
+
+  .table-wrap {
+    overflow-x: auto;
+    margin: 16px -10px 28px;
+    padding: 0 10px;
+  }
+
+  .table-wrap table {
+    min-width: 920px;
+    margin: 0;
+  }
+
+  code {
+    border-radius: 4px;
+    background: #eef2f6;
+    padding: 2px 5px;
+    font-size: 0.9em;
+  }
+
+  pre {
+    overflow-x: auto;
+    border-radius: 8px;
+    background: var(--code-bg);
+    color: #e5e7eb;
+    padding: 18px;
+  }
+
+  pre code {
+    background: transparent;
+    padding: 0;
+  }
+
+  .mermaid {
+    margin: 18px 0 28px;
+    padding: 18px;
+    overflow-x: auto;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: #ffffff;
+  }
+
+  .mermaid svg {
+    max-width: 100%;
+    height: auto;
+  }
+
+  .callout {
+    margin: 22px 0 28px;
+    padding: 18px 20px;
+    border: 1px solid #c7d7fe;
+    border-radius: 8px;
+    background: #f3f6ff;
+    color: #344054;
+  }
+
+  .review-footer {
+    margin-top: 42px;
+    padding-top: 18px;
+    border-top: 1px solid var(--line);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 980px) {
+    .document-shell {
+      width: min(100% - 24px, 760px);
+      grid-template-columns: 1fr;
+    }
+
+    .toc-sidebar {
+      position: static;
+      max-height: none;
+    }
+
+    .document-main,
+    .review-cover {
+      padding: 28px 22px;
+    }
+  }
+
+  @media print {
+    body {
+      background: white;
+      font-size: 11pt;
+    }
+
+    body::before,
+    .toc-sidebar {
+      display: none;
+    }
+
+    .document-shell {
+      display: block;
+      width: 100%;
+      margin: 0;
+    }
+
+    .review-cover,
+    .document-main {
+      border: 0;
+      box-shadow: none;
+      padding: 0;
+    }
+
+    .review-cover {
+      page-break-after: always;
+      margin-bottom: 24px;
+    }
+
+    h1,
+    h2,
+    h3 {
+      break-after: avoid;
+    }
+
+    table,
+    pre,
+    .mermaid {
+      break-inside: avoid;
+    }
+  }
+</style>

@@ -1,0 +1,4356 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Central Programme Management Portal PRD</title>
+    <style>
+      :root {
+        --bg: #f6f8fb;
+        --paper: #ffffff;
+        --ink: #182230;
+        --muted: #667085;
+        --line: #d9e2ec;
+        --brand: #14532d;
+        --brand-2: #0f766e;
+        --accent: #b45309;
+        --soft: #eef8f4;
+        --table-head: #edf3f8;
+        --code-bg: #111827;
+        --shadow: 0 16px 48px rgba(16, 24, 40, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        font-size: 16px;
+        line-height: 1.68;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0 0 auto 0;
+        height: 6px;
+        background: linear-gradient(90deg, var(--brand), var(--brand-2), var(--accent));
+        z-index: 10;
+      }
+
+      .document-shell {
+        width: min(1180px, calc(100% - 40px));
+        margin: 38px auto 64px;
+        display: grid;
+        grid-template-columns: minmax(0, 270px) minmax(0, 1fr);
+        gap: 28px;
+        align-items: start;
+      }
+
+      .review-cover,
+      .document-main {
+        background: var(--paper);
+        border: 1px solid var(--line);
+        box-shadow: var(--shadow);
+      }
+
+      .review-cover {
+        grid-column: 1 / -1;
+        padding: 42px 46px;
+        border-radius: 8px;
+      }
+
+      .review-kicker {
+        margin: 0 0 12px;
+        color: var(--brand-2);
+        font-size: 0.76rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .review-title {
+        max-width: 920px;
+        margin: 0;
+        color: var(--ink);
+        font-size: clamp(2rem, 5vw, 4rem);
+        line-height: 1.06;
+        letter-spacing: 0;
+      }
+
+      .review-subtitle {
+        max-width: 880px;
+        margin: 20px 0 0;
+        color: var(--muted);
+        font-size: 1.08rem;
+      }
+
+      .review-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 26px;
+      }
+
+      .review-meta span {
+        border: 1px solid #bfd7d2;
+        background: var(--soft);
+        color: #164e45;
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 0.85rem;
+        font-weight: 700;
+      }
+
+      .toc-sidebar {
+        position: sticky;
+        top: 22px;
+        max-height: calc(100vh - 44px);
+        overflow: auto;
+        background: var(--paper);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+        padding: 18px;
+      }
+
+      .toc-sidebar h2 {
+        margin: 0 0 12px;
+        color: var(--brand);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+
+      nav#TOC ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      nav#TOC li {
+        margin: 0;
+      }
+
+      nav#TOC a {
+        display: block;
+        padding: 6px 0;
+        color: #475467;
+        border-bottom: 1px solid #eef2f6;
+        text-decoration: none;
+        font-size: 0.88rem;
+        line-height: 1.38;
+      }
+
+      nav#TOC a:hover {
+        color: var(--brand);
+      }
+
+      nav#TOC ul ul {
+        margin-left: 12px;
+      }
+
+      nav#TOC ul ul a {
+        font-size: 0.8rem;
+        color: #667085;
+      }
+
+      .document-main {
+        min-width: 0;
+        border-radius: 8px;
+        padding: 44px 54px;
+      }
+
+      main > h1:first-child {
+        display: none;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        color: #101828;
+        line-height: 1.22;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin: 48px 0 20px;
+        padding-bottom: 12px;
+        border-bottom: 3px solid #d8eee8;
+        font-size: 2.15rem;
+      }
+
+      h2 {
+        margin: 38px 0 14px;
+        font-size: 1.48rem;
+      }
+
+      h3 {
+        margin: 26px 0 10px;
+        color: #27445c;
+        font-size: 1.08rem;
+      }
+
+      p {
+        margin: 0 0 14px;
+      }
+
+      strong {
+        color: #101828;
+      }
+
+      ul,
+      ol {
+        padding-left: 1.35rem;
+        margin: 8px 0 18px;
+      }
+
+      li + li {
+        margin-top: 5px;
+      }
+
+      hr {
+        border: 0;
+        height: 1px;
+        margin: 32px 0;
+        background: var(--line);
+      }
+
+      blockquote {
+        margin: 22px 0;
+        padding: 16px 18px;
+        border-left: 4px solid var(--brand-2);
+        background: #f2fbf8;
+        color: #344054;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 18px 0 30px;
+        font-size: 0.82rem;
+        line-height: 1.45;
+      }
+
+      th,
+      td {
+        border: 1px solid #d7e0ea;
+        padding: 9px 10px;
+        vertical-align: top;
+      }
+
+      th {
+        background: var(--table-head);
+        color: #213547;
+        font-weight: 800;
+        text-align: left;
+      }
+
+      tr:nth-child(even) td {
+        background: #fbfdff;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+        margin: 16px -10px 28px;
+        padding: 0 10px;
+      }
+
+      .table-wrap table {
+        min-width: 920px;
+        margin: 0;
+      }
+
+      code {
+        border-radius: 4px;
+        background: #eef2f6;
+        padding: 2px 5px;
+        font-size: 0.9em;
+      }
+
+      pre {
+        overflow-x: auto;
+        border-radius: 8px;
+        background: var(--code-bg);
+        color: #e5e7eb;
+        padding: 18px;
+      }
+
+      pre code {
+        background: transparent;
+        padding: 0;
+      }
+
+      .mermaid {
+        margin: 18px 0 28px;
+        padding: 18px;
+        overflow-x: auto;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #ffffff;
+      }
+
+      .mermaid svg {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .callout {
+        margin: 22px 0 28px;
+        padding: 18px 20px;
+        border: 1px solid #c7d7fe;
+        border-radius: 8px;
+        background: #f3f6ff;
+        color: #344054;
+      }
+
+      .review-footer {
+        margin-top: 42px;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 980px) {
+        .document-shell {
+          width: min(100% - 24px, 760px);
+          grid-template-columns: 1fr;
+        }
+
+        .toc-sidebar {
+          position: static;
+          max-height: none;
+        }
+
+        .document-main,
+        .review-cover {
+          padding: 28px 22px;
+        }
+      }
+
+      @media print {
+        body {
+          background: white;
+          font-size: 11pt;
+        }
+
+        body::before,
+        .toc-sidebar {
+          display: none;
+        }
+
+        .document-shell {
+          display: block;
+          width: 100%;
+          margin: 0;
+        }
+
+        .review-cover,
+        .document-main {
+          border: 0;
+          box-shadow: none;
+          padding: 0;
+        }
+
+        .review-cover {
+          page-break-after: always;
+          margin-bottom: 24px;
+        }
+
+        h1,
+        h2,
+        h3 {
+          break-after: avoid;
+        }
+
+        table,
+        pre,
+        .mermaid {
+          break-inside: avoid;
+        }
+      }
+    </style>
+  </head>
+<body>
+  <div class="document-shell">
+    <header class="review-cover">
+      <p class="review-kicker">Technical Product Requirements Document</p>
+      <h1 class="review-title">Central Programme Management Portal</h1>
+      <p class="review-subtitle">
+        A structured, review-ready system overview for a secure role-based portal to manage programme governance,
+        operations, institutions, students, resources, projects, funding, monitoring, reporting and administration.
+      </p>
+      <div class="review-meta" aria-label="Document metadata">
+        <span>Version v0.1 Draft</span>
+        <span>Review Document</span>
+        <span>Generated 12 June 2026</span>
+      </div>
+    </header>
+        <aside class="toc-sidebar">
+      <h2>Contents</h2>
+      <ul>
+      <li><a
+      href="#central-programme-management-portal-technical-prd-system-overview"
+      id="toc-central-programme-management-portal-technical-prd-system-overview">Central
+      Programme Management Portal — Technical PRD &amp; System
+      Overview</a>
+      <ul>
+      <li><a href="#executive-summary" id="toc-executive-summary">1.
+      Executive Summary</a></li>
+      <li><a href="#product-vision" id="toc-product-vision">2. Product
+      Vision</a></li>
+      <li><a href="#product-objectives" id="toc-product-objectives">3.
+      Product Objectives</a>
+      <ul>
+      <li><a href="#operational-objectives"
+      id="toc-operational-objectives">3.1 Operational
+      Objectives</a></li>
+      <li><a href="#governance-objectives"
+      id="toc-governance-objectives">3.2 Governance Objectives</a></li>
+      <li><a href="#student-facing-objectives"
+      id="toc-student-facing-objectives">3.3 Student-Facing
+      Objectives</a></li>
+      <li><a href="#security-objectives"
+      id="toc-security-objectives">3.4 Security Objectives</a></li>
+      </ul></li>
+      <li><a href="#core-problem-statement"
+      id="toc-core-problem-statement">4. Core Problem Statement</a></li>
+      <li><a href="#scope-of-the-platform"
+      id="toc-scope-of-the-platform">5. Scope of the Platform</a></li>
+      <li><a href="#in-scope" id="toc-in-scope">5.1 In Scope</a></li>
+      <li><a href="#out-of-scope-for-mvp"
+      id="toc-out-of-scope-for-mvp">5.2 Out of Scope for MVP</a></li>
+      <li><a href="#review-level-system-blueprint"
+      id="toc-review-level-system-blueprint">5.3 Review-Level System
+      Blueprint</a>
+      <ul>
+      <li><a href="#reviewer-takeaways"
+      id="toc-reviewer-takeaways">Reviewer Takeaways</a></li>
+      <li><a href="#mvp-priority-map" id="toc-mvp-priority-map">MVP
+      Priority Map</a></li>
+      <li><a href="#review-checklist" id="toc-review-checklist">Review
+      Checklist</a></li>
+      <li><a href="#open-decisions-for-stakeholders"
+      id="toc-open-decisions-for-stakeholders">Open Decisions for
+      Stakeholders</a></li>
+      </ul></li>
+      <li><a href="#user-types" id="toc-user-types">6. User
+      Types</a></li>
+      <li><a href="#super-admin" id="toc-super-admin">6.1 Super
+      Admin</a>
+      <ul>
+      <li><a href="#purpose" id="toc-purpose">Purpose</a></li>
+      <li><a href="#responsibilities"
+      id="toc-responsibilities">Responsibilities</a></li>
+      <li><a href="#access-level" id="toc-access-level">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#government-apex-leadership-user"
+      id="toc-government-apex-leadership-user">6.2 Government / Apex
+      Leadership User</a>
+      <ul>
+      <li><a href="#purpose-1" id="toc-purpose-1">Purpose</a></li>
+      <li><a href="#responsibilities-1"
+      id="toc-responsibilities-1">Responsibilities</a></li>
+      <li><a href="#access-level-1" id="toc-access-level-1">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#governing-council-member"
+      id="toc-governing-council-member">6.3 Governing Council Member</a>
+      <ul>
+      <li><a href="#purpose-2" id="toc-purpose-2">Purpose</a></li>
+      <li><a href="#responsibilities-2"
+      id="toc-responsibilities-2">Responsibilities</a></li>
+      <li><a href="#access-level-2" id="toc-access-level-2">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#steering-committee-member"
+      id="toc-steering-committee-member">6.4 Steering Committee
+      Member</a>
+      <ul>
+      <li><a href="#purpose-3" id="toc-purpose-3">Purpose</a></li>
+      <li><a href="#responsibilities-3"
+      id="toc-responsibilities-3">Responsibilities</a></li>
+      <li><a href="#access-level-3" id="toc-access-level-3">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#pmu-admin" id="toc-pmu-admin">6.5 PMU Admin</a>
+      <ul>
+      <li><a href="#purpose-4" id="toc-purpose-4">Purpose</a></li>
+      <li><a href="#responsibilities-4"
+      id="toc-responsibilities-4">Responsibilities</a></li>
+      <li><a href="#access-level-4" id="toc-access-level-4">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#pmu-team-member" id="toc-pmu-team-member">6.6 PMU
+      Team Member</a>
+      <ul>
+      <li><a href="#purpose-5" id="toc-purpose-5">Purpose</a></li>
+      <li><a href="#responsibilities-5"
+      id="toc-responsibilities-5">Responsibilities</a></li>
+      <li><a href="#access-level-5" id="toc-access-level-5">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#central-secretariat-user"
+      id="toc-central-secretariat-user">6.7 Central Secretariat User</a>
+      <ul>
+      <li><a href="#purpose-6" id="toc-purpose-6">Purpose</a></li>
+      <li><a href="#responsibilities-6"
+      id="toc-responsibilities-6">Responsibilities</a></li>
+      <li><a href="#access-level-6" id="toc-access-level-6">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#it-tool-team-user" id="toc-it-tool-team-user">6.8 IT
+      Tool Team User</a>
+      <ul>
+      <li><a href="#purpose-7" id="toc-purpose-7">Purpose</a></li>
+      <li><a href="#responsibilities-7"
+      id="toc-responsibilities-7">Responsibilities</a></li>
+      <li><a href="#access-level-7" id="toc-access-level-7">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#programme-team-user"
+      id="toc-programme-team-user">6.9 Programme Team User</a>
+      <ul>
+      <li><a href="#purpose-8" id="toc-purpose-8">Purpose</a></li>
+      <li><a href="#responsibilities-8"
+      id="toc-responsibilities-8">Responsibilities</a></li>
+      <li><a href="#access-level-8" id="toc-access-level-8">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#industry-collaboration-and-funding-user"
+      id="toc-industry-collaboration-and-funding-user">6.10 Industry
+      Collaboration and Funding User</a>
+      <ul>
+      <li><a href="#purpose-9" id="toc-purpose-9">Purpose</a></li>
+      <li><a href="#responsibilities-9"
+      id="toc-responsibilities-9">Responsibilities</a></li>
+      <li><a href="#access-level-9" id="toc-access-level-9">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#incubator-admin" id="toc-incubator-admin">6.11
+      Incubator Admin</a>
+      <ul>
+      <li><a href="#purpose-10" id="toc-purpose-10">Purpose</a></li>
+      <li><a href="#responsibilities-10"
+      id="toc-responsibilities-10">Responsibilities</a></li>
+      <li><a href="#access-level-10" id="toc-access-level-10">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#incubator-staff" id="toc-incubator-staff">6.12
+      Incubator Staff</a>
+      <ul>
+      <li><a href="#purpose-11" id="toc-purpose-11">Purpose</a></li>
+      <li><a href="#responsibilities-11"
+      id="toc-responsibilities-11">Responsibilities</a></li>
+      <li><a href="#access-level-11" id="toc-access-level-11">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#school-admin-principal"
+      id="toc-school-admin-principal">6.13 School Admin / Principal</a>
+      <ul>
+      <li><a href="#purpose-12" id="toc-purpose-12">Purpose</a></li>
+      <li><a href="#responsibilities-12"
+      id="toc-responsibilities-12">Responsibilities</a></li>
+      <li><a href="#access-level-12" id="toc-access-level-12">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#teacher-champion" id="toc-teacher-champion">6.14
+      Teacher / Champion</a>
+      <ul>
+      <li><a href="#purpose-13" id="toc-purpose-13">Purpose</a></li>
+      <li><a href="#responsibilities-13"
+      id="toc-responsibilities-13">Responsibilities</a></li>
+      <li><a href="#access-level-13" id="toc-access-level-13">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#student" id="toc-student">6.15 Student</a>
+      <ul>
+      <li><a href="#purpose-14" id="toc-purpose-14">Purpose</a></li>
+      <li><a href="#responsibilities-14"
+      id="toc-responsibilities-14">Responsibilities</a></li>
+      <li><a href="#access-level-14" id="toc-access-level-14">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#mentor-expert" id="toc-mentor-expert">6.16 Mentor /
+      Expert</a>
+      <ul>
+      <li><a href="#purpose-15" id="toc-purpose-15">Purpose</a></li>
+      <li><a href="#responsibilities-15"
+      id="toc-responsibilities-15">Responsibilities</a></li>
+      <li><a href="#access-level-15" id="toc-access-level-15">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#industry-partner" id="toc-industry-partner">6.17
+      Industry Partner</a>
+      <ul>
+      <li><a href="#purpose-16" id="toc-purpose-16">Purpose</a></li>
+      <li><a href="#responsibilities-16"
+      id="toc-responsibilities-16">Responsibilities</a></li>
+      <li><a href="#access-level-16" id="toc-access-level-16">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#funding-partner-csr-user"
+      id="toc-funding-partner-csr-user">6.18 Funding Partner / CSR
+      User</a>
+      <ul>
+      <li><a href="#purpose-17" id="toc-purpose-17">Purpose</a></li>
+      <li><a href="#responsibilities-17"
+      id="toc-responsibilities-17">Responsibilities</a></li>
+      <li><a href="#access-level-17" id="toc-access-level-17">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#monitoring-and-evaluation-user"
+      id="toc-monitoring-and-evaluation-user">6.19 Monitoring and
+      Evaluation User</a>
+      <ul>
+      <li><a href="#purpose-18" id="toc-purpose-18">Purpose</a></li>
+      <li><a href="#responsibilities-18"
+      id="toc-responsibilities-18">Responsibilities</a></li>
+      <li><a href="#access-level-18" id="toc-access-level-18">Access
+      Level</a></li>
+      </ul></li>
+      <li><a href="#public-viewer" id="toc-public-viewer">6.20 Public
+      Viewer</a>
+      <ul>
+      <li><a href="#purpose-19" id="toc-purpose-19">Purpose</a></li>
+      <li><a href="#responsibilities-19"
+      id="toc-responsibilities-19">Responsibilities</a></li>
+      <li><a href="#access-level-19" id="toc-access-level-19">Access
+      Level</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#user-access-matrix" id="toc-user-access-matrix">7.
+      User Access Matrix</a></li>
+      <li><a href="#user-flows" id="toc-user-flows">8. User Flows</a>
+      <ul>
+      <li><a href="#end-to-end-programme-flow"
+      id="toc-end-to-end-programme-flow">8.0 End-to-End Programme
+      Flow</a></li>
+      <li><a href="#cross-role-handoff-flow"
+      id="toc-cross-role-handoff-flow">8.0.1 Cross-Role Handoff
+      Flow</a></li>
+      <li><a href="#pmu-admin-flow" id="toc-pmu-admin-flow">8.1 PMU
+      Admin Flow</a></li>
+      <li><a href="#committee-flow" id="toc-committee-flow">8.2
+      Committee Flow</a></li>
+      <li><a href="#secretariat-flow" id="toc-secretariat-flow">8.3
+      Secretariat Flow</a></li>
+      <li><a href="#incubator-admin-flow"
+      id="toc-incubator-admin-flow">8.4 Incubator Admin Flow</a></li>
+      <li><a href="#school-admin-flow" id="toc-school-admin-flow">8.5
+      School Admin Flow</a></li>
+      <li><a href="#teacher-flow" id="toc-teacher-flow">8.6 Teacher
+      Flow</a></li>
+      <li><a href="#student-flow" id="toc-student-flow">8.7 Student
+      Flow</a></li>
+      <li><a href="#mentor-flow" id="toc-mentor-flow">8.8 Mentor
+      Flow</a></li>
+      <li><a href="#industry-partner-flow"
+      id="toc-industry-partner-flow">8.9 Industry Partner Flow</a></li>
+      <li><a href="#funding-partner-flow"
+      id="toc-funding-partner-flow">8.10 Funding Partner Flow</a></li>
+      <li><a href="#me-flow" id="toc-me-flow">8.11 M&amp;E Flow</a></li>
+      </ul></li>
+      <li><a href="#core-product-modules"
+      id="toc-core-product-modules">9. Core Product Modules</a>
+      <ul>
+      <li><a href="#authentication-and-identity-management"
+      id="toc-authentication-and-identity-management">9.1 Authentication
+      and Identity Management</a>
+      <ul>
+      <li><a href="#features" id="toc-features">Features</a></li>
+      <li><a href="#requirements"
+      id="toc-requirements">Requirements</a></li>
+      </ul></li>
+      <li><a href="#role-based-access-control"
+      id="toc-role-based-access-control">9.2 Role-Based Access
+      Control</a>
+      <ul>
+      <li><a href="#features-1" id="toc-features-1">Features</a></li>
+      <li><a href="#requirements-1"
+      id="toc-requirements-1">Requirements</a></li>
+      </ul></li>
+      <li><a href="#organization-hierarchy-management"
+      id="toc-organization-hierarchy-management">9.3 Organization
+      Hierarchy Management</a>
+      <ul>
+      <li><a href="#features-2" id="toc-features-2">Features</a></li>
+      </ul></li>
+      <li><a href="#committee-management"
+      id="toc-committee-management">9.4 Committee Management</a>
+      <ul>
+      <li><a href="#features-3" id="toc-features-3">Features</a></li>
+      </ul></li>
+      <li><a href="#people-directory" id="toc-people-directory">9.5
+      People Directory</a>
+      <ul>
+      <li><a href="#features-4" id="toc-features-4">Features</a></li>
+      </ul></li>
+      <li><a href="#incubator-management"
+      id="toc-incubator-management">9.6 Incubator Management</a>
+      <ul>
+      <li><a href="#features-5" id="toc-features-5">Features</a></li>
+      </ul></li>
+      <li><a href="#school-management" id="toc-school-management">9.7
+      School Management</a>
+      <ul>
+      <li><a href="#features-6" id="toc-features-6">Features</a></li>
+      </ul></li>
+      <li><a href="#student-management" id="toc-student-management">9.8
+      Student Management</a>
+      <ul>
+      <li><a href="#features-7" id="toc-features-7">Features</a></li>
+      <li><a href="#privacy-requirement"
+      id="toc-privacy-requirement">Privacy Requirement</a></li>
+      </ul></li>
+      <li><a href="#curriculum-and-resource-management"
+      id="toc-curriculum-and-resource-management">9.9 Curriculum and
+      Resource Management</a>
+      <ul>
+      <li><a href="#features-8" id="toc-features-8">Features</a></li>
+      </ul></li>
+      <li><a href="#project-and-innovation-tracking"
+      id="toc-project-and-innovation-tracking">9.10 Project and
+      Innovation Tracking</a>
+      <ul>
+      <li><a href="#features-9" id="toc-features-9">Features</a></li>
+      <li><a href="#project-state-flow"
+      id="toc-project-state-flow">Project State Flow</a></li>
+      </ul></li>
+      <li><a href="#problem-statement-management"
+      id="toc-problem-statement-management">9.11 Problem Statement
+      Management</a>
+      <ul>
+      <li><a href="#features-10" id="toc-features-10">Features</a></li>
+      </ul></li>
+      <li><a href="#mentor-and-expert-management"
+      id="toc-mentor-and-expert-management">9.12 Mentor and Expert
+      Management</a>
+      <ul>
+      <li><a href="#features-11" id="toc-features-11">Features</a></li>
+      </ul></li>
+      <li><a href="#event-and-activity-management"
+      id="toc-event-and-activity-management">9.13 Event and Activity
+      Management</a>
+      <ul>
+      <li><a href="#features-12" id="toc-features-12">Features</a></li>
+      </ul></li>
+      <li><a href="#industry-partner-management"
+      id="toc-industry-partner-management">9.14 Industry Partner
+      Management</a>
+      <ul>
+      <li><a href="#features-13" id="toc-features-13">Features</a></li>
+      </ul></li>
+      <li><a href="#funding-and-grant-management"
+      id="toc-funding-and-grant-management">9.15 Funding and Grant
+      Management</a>
+      <ul>
+      <li><a href="#features-14" id="toc-features-14">Features</a></li>
+      </ul></li>
+      <li><a href="#document-repository"
+      id="toc-document-repository">9.16 Document Repository</a>
+      <ul>
+      <li><a href="#features-15" id="toc-features-15">Features</a></li>
+      </ul></li>
+      <li><a href="#task-and-action-item-management"
+      id="toc-task-and-action-item-management">9.17 Task and Action Item
+      Management</a>
+      <ul>
+      <li><a href="#features-16" id="toc-features-16">Features</a></li>
+      </ul></li>
+      <li><a href="#notification-system"
+      id="toc-notification-system">9.18 Notification System</a>
+      <ul>
+      <li><a href="#channels" id="toc-channels">Channels</a></li>
+      <li><a href="#notification-types"
+      id="toc-notification-types">Notification Types</a></li>
+      </ul></li>
+      <li><a href="#audit-logs" id="toc-audit-logs">9.19 Audit Logs</a>
+      <ul>
+      <li><a href="#events-to-log" id="toc-events-to-log">Events to
+      Log</a></li>
+      <li><a href="#requirements-2"
+      id="toc-requirements-2">Requirements</a></li>
+      </ul></li>
+      </ul></li>
+      <li><a href="#information-architecture"
+      id="toc-information-architecture">10. Information Architecture</a>
+      <ul>
+      <li><a href="#top-level-navigation"
+      id="toc-top-level-navigation">10.1 Top-Level Navigation</a></li>
+      <li><a href="#dashboard-sections" id="toc-dashboard-sections">10.2
+      Dashboard Sections</a></li>
+      <li><a href="#governance-sections"
+      id="toc-governance-sections">10.3 Governance Sections</a></li>
+      <li><a href="#institution-sections"
+      id="toc-institution-sections">10.4 Institution Sections</a></li>
+      <li><a href="#learning-sections" id="toc-learning-sections">10.5
+      Learning Sections</a></li>
+      <li><a href="#project-sections" id="toc-project-sections">10.6
+      Project Sections</a></li>
+      </ul></li>
+      <li><a href="#dashboard-requirements"
+      id="toc-dashboard-requirements">11. Dashboard Requirements</a>
+      <ul>
+      <li><a href="#pmu-dashboard" id="toc-pmu-dashboard">11.1 PMU
+      Dashboard</a></li>
+      <li><a href="#school-dashboard" id="toc-school-dashboard">11.2
+      School Dashboard</a></li>
+      <li><a href="#student-dashboard" id="toc-student-dashboard">11.3
+      Student Dashboard</a></li>
+      <li><a href="#incubator-dashboard"
+      id="toc-incubator-dashboard">11.4 Incubator Dashboard</a></li>
+      <li><a href="#leadership-dashboard"
+      id="toc-leadership-dashboard">11.5 Leadership Dashboard</a></li>
+      </ul></li>
+      <li><a href="#reporting-requirements"
+      id="toc-reporting-requirements">12. Reporting Requirements</a>
+      <ul>
+      <li><a href="#standard-reports" id="toc-standard-reports">12.1
+      Standard Reports</a></li>
+      <li><a href="#report-features" id="toc-report-features">12.2
+      Report Features</a></li>
+      </ul></li>
+      <li><a href="#recommended-technical-architecture"
+      id="toc-recommended-technical-architecture">13. Recommended
+      Technical Architecture</a>
+      <ul>
+      <li><a href="#architecture-type" id="toc-architecture-type">13.1
+      Architecture Type</a></li>
+      <li><a href="#why-modular-monolith-first"
+      id="toc-why-modular-monolith-first">13.2 Why Modular Monolith
+      First</a></li>
+      <li><a href="#backend-modules" id="toc-backend-modules">13.3
+      Backend Modules</a></li>
+      <li><a href="#architecture-principles"
+      id="toc-architecture-principles">13.4 Architecture
+      Principles</a></li>
+      <li><a href="#high-level-architecture"
+      id="toc-high-level-architecture">13.5 High-Level
+      Architecture</a></li>
+      <li><a href="#domain-module-map" id="toc-domain-module-map">13.6
+      Domain Module Map</a></li>
+      <li><a href="#data-and-reporting-flow"
+      id="toc-data-and-reporting-flow">13.7 Data and Reporting
+      Flow</a></li>
+      <li><a href="#deployment-architecture"
+      id="toc-deployment-architecture">13.8 Deployment
+      Architecture</a></li>
+      </ul></li>
+      <li><a href="#recommended-tech-stack"
+      id="toc-recommended-tech-stack">14. Recommended Tech Stack</a>
+      <ul>
+      <li><a href="#frontend" id="toc-frontend">14.1 Frontend</a></li>
+      <li><a href="#backend" id="toc-backend">14.2 Backend</a></li>
+      <li><a href="#database" id="toc-database">14.3 Database</a></li>
+      <li><a href="#cache" id="toc-cache">14.4 Cache</a></li>
+      <li><a href="#search" id="toc-search">14.5 Search</a></li>
+      <li><a href="#object-storage" id="toc-object-storage">14.6 Object
+      Storage</a></li>
+      <li><a href="#authentication" id="toc-authentication">14.7
+      Authentication</a></li>
+      <li><a href="#workflow-engine" id="toc-workflow-engine">14.8
+      Workflow Engine</a></li>
+      <li><a href="#queue" id="toc-queue">14.9 Queue</a></li>
+      <li><a href="#analytics" id="toc-analytics">14.10
+      Analytics</a></li>
+      <li><a href="#devops" id="toc-devops">14.11 DevOps</a></li>
+      </ul></li>
+      <li><a href="#scalability-strategy"
+      id="toc-scalability-strategy">15. Scalability Strategy</a>
+      <ul>
+      <li><a href="#scaling-stages" id="toc-scaling-stages">15.1 Scaling
+      Stages</a>
+      <ul>
+      <li><a href="#stage-1-pilot" id="toc-stage-1-pilot">Stage 1:
+      Pilot</a></li>
+      <li><a href="#stage-2-state-scale"
+      id="toc-stage-2-state-scale">Stage 2: State Scale</a></li>
+      <li><a href="#stage-3-national-scale"
+      id="toc-stage-3-national-scale">Stage 3: National Scale</a></li>
+      </ul></li>
+      <li><a href="#frontend-scaling" id="toc-frontend-scaling">15.2
+      Frontend Scaling</a></li>
+      <li><a href="#backend-scaling" id="toc-backend-scaling">15.3
+      Backend Scaling</a></li>
+      <li><a href="#database-scaling" id="toc-database-scaling">15.4
+      Database Scaling</a></li>
+      <li><a href="#file-scaling" id="toc-file-scaling">15.5 File
+      Scaling</a></li>
+      <li><a href="#reporting-scaling" id="toc-reporting-scaling">15.6
+      Reporting Scaling</a></li>
+      </ul></li>
+      <li><a href="#data-model-overview"
+      id="toc-data-model-overview">16. Data Model Overview</a>
+      <ul>
+      <li><a href="#core-entities" id="toc-core-entities">16.1 Core
+      Entities</a></li>
+      <li><a href="#simplified-entity-relationship"
+      id="toc-simplified-entity-relationship">16.2 Simplified Entity
+      Relationship</a></li>
+      </ul></li>
+      <li><a href="#security-architecture"
+      id="toc-security-architecture">17. Security Architecture</a>
+      <ul>
+      <li><a href="#security-goals" id="toc-security-goals">17.1
+      Security Goals</a></li>
+      <li><a href="#security-principles"
+      id="toc-security-principles">17.2 Security Principles</a></li>
+      <li><a href="#authentication-security"
+      id="toc-authentication-security">17.3 Authentication
+      Security</a></li>
+      <li><a href="#authorization-security"
+      id="toc-authorization-security">17.4 Authorization
+      Security</a></li>
+      <li><a href="#data-security" id="toc-data-security">17.5 Data
+      Security</a>
+      <ul>
+      <li><a href="#data-in-transit" id="toc-data-in-transit">Data in
+      Transit</a></li>
+      <li><a href="#data-at-rest" id="toc-data-at-rest">Data at
+      Rest</a></li>
+      <li><a href="#sensitive-data-handling"
+      id="toc-sensitive-data-handling">Sensitive Data Handling</a></li>
+      </ul></li>
+      <li><a href="#api-security" id="toc-api-security">17.6 API
+      Security</a></li>
+      <li><a href="#application-security"
+      id="toc-application-security">17.7 Application Security</a></li>
+      <li><a href="#file-security" id="toc-file-security">17.8 File
+      Security</a></li>
+      <li><a href="#audit-and-compliance"
+      id="toc-audit-and-compliance">17.9 Audit and Compliance</a></li>
+      </ul></li>
+      <li><a href="#backup-and-disaster-recovery"
+      id="toc-backup-and-disaster-recovery">18. Backup and Disaster
+      Recovery</a>
+      <ul>
+      <li><a href="#backup-strategy" id="toc-backup-strategy">18.1
+      Backup Strategy</a></li>
+      <li><a href="#suggested-targets" id="toc-suggested-targets">18.2
+      Suggested Targets</a></li>
+      </ul></li>
+      <li><a href="#privacy-and-data-governance"
+      id="toc-privacy-and-data-governance">19. Privacy and Data
+      Governance</a>
+      <ul>
+      <li><a href="#data-classification"
+      id="toc-data-classification">19.1 Data Classification</a></li>
+      <li><a href="#restricted-data" id="toc-restricted-data">19.2
+      Restricted Data</a></li>
+      <li><a href="#consent-and-notice" id="toc-consent-and-notice">19.3
+      Consent and Notice</a></li>
+      </ul></li>
+      <li><a href="#non-functional-requirements"
+      id="toc-non-functional-requirements">20. Non-Functional
+      Requirements</a>
+      <ul>
+      <li><a href="#performance" id="toc-performance">20.1
+      Performance</a></li>
+      <li><a href="#availability" id="toc-availability">20.2
+      Availability</a></li>
+      <li><a href="#reliability" id="toc-reliability">20.3
+      Reliability</a></li>
+      <li><a href="#usability" id="toc-usability">20.4
+      Usability</a></li>
+      <li><a href="#maintainability" id="toc-maintainability">20.5
+      Maintainability</a></li>
+      <li><a href="#observability" id="toc-observability">20.6
+      Observability</a></li>
+      </ul></li>
+      <li><a href="#workflow-and-approval-system"
+      id="toc-workflow-and-approval-system">21. Workflow and Approval
+      System</a>
+      <ul>
+      <li><a href="#workflows-required" id="toc-workflows-required">21.1
+      Workflows Required</a></li>
+      <li><a href="#generic-approval-flow"
+      id="toc-generic-approval-flow">21.2 Generic Approval Flow</a></li>
+      <li><a href="#maker-checker-flow" id="toc-maker-checker-flow">21.3
+      Maker-Checker Flow</a></li>
+      </ul></li>
+      <li><a href="#api-strategy" id="toc-api-strategy">22. API
+      Strategy</a>
+      <ul>
+      <li><a href="#api-principles" id="toc-api-principles">22.1 API
+      Principles</a></li>
+      <li><a href="#api-categories" id="toc-api-categories">22.2 API
+      Categories</a></li>
+      </ul></li>
+      <li><a href="#integration-strategy"
+      id="toc-integration-strategy">23. Integration Strategy</a>
+      <ul>
+      <li><a href="#initial-integrations"
+      id="toc-initial-integrations">23.1 Initial Integrations</a></li>
+      <li><a href="#future-integrations"
+      id="toc-future-integrations">23.2 Future Integrations</a></li>
+      </ul></li>
+      <li><a href="#deployment-strategy"
+      id="toc-deployment-strategy">24. Deployment Strategy</a>
+      <ul>
+      <li><a href="#environments" id="toc-environments">24.1
+      Environments</a></li>
+      <li><a href="#cicd" id="toc-cicd">24.2 CI/CD</a></li>
+      <li><a href="#release-strategy" id="toc-release-strategy">24.3
+      Release Strategy</a></li>
+      </ul></li>
+      <li><a href="#monitoring-and-observability"
+      id="toc-monitoring-and-observability">25. Monitoring and
+      Observability</a>
+      <ul>
+      <li><a href="#technical-monitoring"
+      id="toc-technical-monitoring">25.1 Technical Monitoring</a></li>
+      <li><a href="#business-monitoring"
+      id="toc-business-monitoring">25.2 Business Monitoring</a></li>
+      <li><a href="#alerts" id="toc-alerts">25.3 Alerts</a></li>
+      </ul></li>
+      <li><a href="#data-import-and-migration"
+      id="toc-data-import-and-migration">26. Data Import and
+      Migration</a>
+      <ul>
+      <li><a href="#import-requirements"
+      id="toc-import-requirements">26.1 Import Requirements</a></li>
+      <li><a href="#import-format" id="toc-import-format">26.2 Import
+      Format</a></li>
+      <li><a href="#import-validation" id="toc-import-validation">26.3
+      Import Validation</a></li>
+      </ul></li>
+      <li><a href="#search-requirements"
+      id="toc-search-requirements">27. Search Requirements</a>
+      <ul>
+      <li><a href="#global-search" id="toc-global-search">27.1 Global
+      Search</a></li>
+      <li><a href="#search-security" id="toc-search-security">27.2
+      Search Security</a></li>
+      </ul></li>
+      <li><a href="#ai-ready-future-scope"
+      id="toc-ai-ready-future-scope">28. AI-Ready Future Scope</a></li>
+      <li><a href="#development-roadmap"
+      id="toc-development-roadmap">29. Development Roadmap</a>
+      <ul>
+      <li><a href="#phase-0-discovery-and-design"
+      id="toc-phase-0-discovery-and-design">29.1 Phase 0: Discovery and
+      Design</a></li>
+      <li><a href="#phase-1-mvp" id="toc-phase-1-mvp">29.2 Phase 1:
+      MVP</a></li>
+      <li><a href="#phase-2-workflow-and-scale"
+      id="toc-phase-2-workflow-and-scale">29.3 Phase 2: Workflow and
+      Scale</a></li>
+      <li><a href="#phase-3-national-scale"
+      id="toc-phase-3-national-scale">29.4 Phase 3: National
+      Scale</a></li>
+      </ul></li>
+      <li><a href="#mvp-user-stories" id="toc-mvp-user-stories">30. MVP
+      User Stories</a>
+      <ul>
+      <li><a href="#authentication-1" id="toc-authentication-1">30.1
+      Authentication</a></li>
+      <li><a href="#user-management" id="toc-user-management">30.2 User
+      Management</a></li>
+      <li><a href="#institution-management"
+      id="toc-institution-management">30.3 Institution
+      Management</a></li>
+      <li><a href="#student-management-1"
+      id="toc-student-management-1">30.4 Student Management</a></li>
+      <li><a href="#project-tracking" id="toc-project-tracking">30.5
+      Project Tracking</a></li>
+      <li><a href="#reporting" id="toc-reporting">30.6
+      Reporting</a></li>
+      <li><a href="#document-management"
+      id="toc-document-management">30.7 Document Management</a></li>
+      </ul></li>
+      <li><a href="#risks-and-mitigation"
+      id="toc-risks-and-mitigation">31. Risks and Mitigation</a></li>
+      <li><a href="#acceptance-criteria-for-mvp"
+      id="toc-acceptance-criteria-for-mvp">32. Acceptance Criteria for
+      MVP</a></li>
+      <li><a href="#open-questions" id="toc-open-questions">33. Open
+      Questions</a></li>
+      <li><a href="#final-recommendation"
+      id="toc-final-recommendation">34. Final Recommendation</a></li>
+      <li><a href="#appendix-a-suggested-initial-module-priority"
+      id="toc-appendix-a-suggested-initial-module-priority">Appendix A:
+      Suggested Initial Module Priority</a></li>
+      <li><a href="#appendix-b-suggested-initial-database-tables"
+      id="toc-appendix-b-suggested-initial-database-tables">Appendix B:
+      Suggested Initial Database Tables</a></li>
+      <li><a href="#appendix-c-suggested-permissions"
+      id="toc-appendix-c-suggested-permissions">Appendix C: Suggested
+      Permissions</a></li>
+      <li><a href="#appendix-d-next-steps"
+      id="toc-appendix-d-next-steps">Appendix D: Next Steps</a></li>
+      </ul>
+    </aside>
+        <main class="document-main">
+      <div class="callout">
+        <strong>Review note:</strong> This HTML document is formatted from the source PRD for easier stakeholder review.
+        The content defines the software platform only and does not describe the programme scheme itself.
+      </div>
+      <h1
+      id="central-programme-management-portal-technical-prd-system-overview">Central
+      Programme Management Portal — Technical PRD &amp; System
+      Overview</h1>
+      <p><strong>Version:</strong> v0.1 Draft<br />
+      <strong>Document Type:</strong> Technical Product Requirements
+      Document<br />
+      <strong>Purpose:</strong> Define the software system required to
+      centrally manage a multi-stakeholder programme involving
+      governance teams, committees, programme teams, incubators,
+      schools, students, mentors, curriculum, resources, projects,
+      funding, monitoring, reporting and administration.<br />
+      <strong>Important Note:</strong> This document does
+      <strong>not</strong> describe the scheme itself. It only defines
+      the software platform required to manage such a programme.</p>
+      <hr />
+      <h2 id="executive-summary">1. Executive Summary</h2>
+      <p>The proposed platform is a centralized web application that
+      acts as the single source of truth for all operational,
+      administrative, academic, governance and monitoring activities
+      related to the programme.</p>
+      <p>The portal will replace disconnected spreadsheets, emails,
+      WhatsApp groups, manual reporting and scattered documents with one
+      secure, auditable and scalable system.</p>
+      <p>The platform will support:</p>
+      <ul>
+      <li>User and role management</li>
+      <li>Committee and governance management</li>
+      <li>People directory</li>
+      <li>Incubator management</li>
+      <li>School management</li>
+      <li>Student management</li>
+      <li>Curriculum and resource management</li>
+      <li>Project and innovation tracking</li>
+      <li>Mentor and expert engagement</li>
+      <li>Industry and funding partner management</li>
+      <li>Dashboards and reporting</li>
+      <li>Document repository</li>
+      <li>Approval workflows</li>
+      <li>Audit logs</li>
+      <li>Monitoring and evaluation</li>
+      <li>Secure data access</li>
+      </ul>
+      <p>The portal should be built as a government-grade, scalable,
+      secure and role-based digital management system.</p>
+      <hr />
+      <h2 id="product-vision">2. Product Vision</h2>
+      <p>To create a secure and scalable digital operating system for
+      managing a large multi-stakeholder programme from one central
+      platform.</p>
+      <p>The system should allow every authorized stakeholder to access
+      the right data, perform the right action, and monitor the right
+      outcomes according to their role.</p>
+      <hr />
+      <h2 id="product-objectives">3. Product Objectives</h2>
+      <h3 id="operational-objectives">3.1 Operational Objectives</h3>
+      <ul>
+      <li>Centralize all programme data.</li>
+      <li>Track institutions, users, students, projects and
+      resources.</li>
+      <li>Reduce manual reporting.</li>
+      <li>Improve accountability.</li>
+      <li>Enable real-time monitoring.</li>
+      <li>Maintain accurate records.</li>
+      <li>Provide a structured workflow for every major activity.</li>
+      </ul>
+      <h3 id="governance-objectives">3.2 Governance Objectives</h3>
+      <ul>
+      <li>Provide committee-level visibility.</li>
+      <li>Track meetings, decisions and action items.</li>
+      <li>Maintain official documentation.</li>
+      <li>Support approvals and review workflows.</li>
+      <li>Create audit-ready governance records.</li>
+      </ul>
+      <h3 id="student-facing-objectives">3.3 Student-Facing
+      Objectives</h3>
+      <ul>
+      <li>Allow students to access curriculum and resources.</li>
+      <li>Allow students to submit project work.</li>
+      <li>Allow students to receive feedback.</li>
+      <li>Track student progress and achievements.</li>
+      <li>Provide certificates or recognition records.</li>
+      </ul>
+      <h3 id="security-objectives">3.4 Security Objectives</h3>
+      <ul>
+      <li>Protect sensitive data.</li>
+      <li>Enforce role-based access.</li>
+      <li>Maintain audit logs.</li>
+      <li>Secure documents and reports.</li>
+      <li>Prevent unauthorized exports.</li>
+      <li>Support government-grade compliance practices.</li>
+      </ul>
+      <hr />
+      <h2 id="core-problem-statement">4. Core Problem Statement</h2>
+      <p>The programme requires a centralized software system because
+      large-scale multi-stakeholder initiatives often suffer from:</p>
+      <ul>
+      <li>Multiple disconnected spreadsheets</li>
+      <li>Manual follow-ups</li>
+      <li>No single source of truth</li>
+      <li>No real-time dashboards</li>
+      <li>Unclear user responsibilities</li>
+      <li>Weak document control</li>
+      <li>No formal audit trail</li>
+      <li>No structured student lifecycle</li>
+      <li>No standard reporting system</li>
+      <li>No secure access management</li>
+      <li>No clear visibility across incubators and schools</li>
+      <li>Difficulty scaling from pilot to state/national level</li>
+      </ul>
+      <p>The software must solve these problems by creating one
+      structured, secure and scalable portal.</p>
+      <hr />
+      <h2 id="scope-of-the-platform">5. Scope of the Platform</h2>
+      <h2 id="in-scope">5.1 In Scope</h2>
+      <p>The portal should include:</p>
+      <ol type="1">
+      <li>Authentication and identity management</li>
+      <li>Role-based access control</li>
+      <li>User and people directory</li>
+      <li>Organization hierarchy management</li>
+      <li>Committee management</li>
+      <li>Meeting and minutes management</li>
+      <li>Incubator management</li>
+      <li>School management</li>
+      <li>Student management</li>
+      <li>Teacher/champion management</li>
+      <li>Mentor/expert management</li>
+      <li>Curriculum and resource library</li>
+      <li>Project tracking</li>
+      <li>Problem statement management</li>
+      <li>Event and activity management</li>
+      <li>Partner management</li>
+      <li>Funding/grant tracking</li>
+      <li>Document repository</li>
+      <li>Task and action item management</li>
+      <li>Dashboards</li>
+      <li>Reports</li>
+      <li>Notifications</li>
+      <li>Audit logs</li>
+      <li>Admin configuration</li>
+      <li>Data import/export</li>
+      </ol>
+      <h2 id="out-of-scope-for-mvp">5.2 Out of Scope for MVP</h2>
+      <p>The first version should not try to include everything. These
+      can be future features:</p>
+      <ul>
+      <li>Full native mobile app</li>
+      <li>AI mentor chatbot</li>
+      <li>Advanced AI analytics</li>
+      <li>Offline-first field app</li>
+      <li>Biometric attendance</li>
+      <li>Payment gateway</li>
+      <li>Full LMS exam engine</li>
+      <li>Public open-data website</li>
+      <li>Video conferencing inside the app</li>
+      </ul>
+      <h2 id="review-level-system-blueprint">5.3 Review-Level System
+      Blueprint</h2>
+      <p>The platform should be understood as a controlled operating
+      layer between programme stakeholders, institutional data,
+      learning/project operations and governance reporting. The diagram
+      below shows the expected review-level shape of the product.</p>
+      <pre class="mermaid"><code>flowchart LR
+  subgraph Actors[&quot;Stakeholders&quot;]
+    Leadership[&quot;Government and Apex Leadership&quot;]
+    Governance[&quot;Governing Council and Committees&quot;]
+    PMU[&quot;PMU and Secretariat&quot;]
+    Institutions[&quot;Incubators and Schools&quot;]
+    Learners[&quot;Students, Teachers and Mentors&quot;]
+    Partners[&quot;Industry, CSR and Monitoring Partners&quot;]
+  end
+
+  subgraph Portal[&quot;Central Programme Management Portal&quot;]
+    Access[&quot;Identity, RBAC and Scope Control&quot;]
+    Ops[&quot;Programme Operations&quot;]
+    Learning[&quot;Curriculum, Resources and Activities&quot;]
+    Projects[&quot;Projects, Mentoring and Evaluations&quot;]
+    GovernanceCore[&quot;Meetings, Decisions and Approvals&quot;]
+    Reporting[&quot;Dashboards, Reports and Monitoring&quot;]
+    Repository[&quot;Documents, Audit Logs and Exports&quot;]
+  end
+
+  subgraph Data[&quot;Controlled Data Layer&quot;]
+    MasterData[&quot;Master Data&quot;]
+    Transactions[&quot;Operational Records&quot;]
+    Files[&quot;Secure File Store&quot;]
+    Metrics[&quot;Indicators and Analytics&quot;]
+  end
+
+  Actors --&gt; Access
+  Access --&gt; Ops
+  Access --&gt; Learning
+  Access --&gt; Projects
+  Access --&gt; GovernanceCore
+  Ops --&gt; MasterData
+  Learning --&gt; Transactions
+  Projects --&gt; Transactions
+  GovernanceCore --&gt; Files
+  Repository --&gt; Files
+  Transactions --&gt; Reporting
+  MasterData --&gt; Reporting
+  Metrics --&gt; Reporting
+  Reporting --&gt; Leadership
+  Reporting --&gt; Governance</code></pre>
+      <h3 id="reviewer-takeaways">Reviewer Takeaways</h3>
+      <ul>
+      <li>The portal is not only a data-entry system; it is a controlled
+      workflow, evidence and reporting system.</li>
+      <li>Every action should be linked to a role, scope, institution
+      and audit trail.</li>
+      <li>Dashboards should be fed from structured operational records,
+      not from manually uploaded summary spreadsheets.</li>
+      <li>The MVP should prioritize reliable master data, RBAC,
+      workflows, reporting and document control before advanced
+      intelligence features.</li>
+      </ul>
+      <h3 id="mvp-priority-map">MVP Priority Map</h3>
+      <table>
+      <colgroup>
+      <col style="width: 25%" />
+      <col style="width: 25%" />
+      <col style="width: 25%" />
+      <col style="width: 25%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Priority</th>
+      <th>Capability Area</th>
+      <th>Why It Matters</th>
+      <th>MVP Expectation</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>P0</td>
+      <td>Identity, RBAC and scoped access</td>
+      <td>Protects sensitive programme and student data</td>
+      <td>Role, permission and organization scope enforced in every
+      backend API</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Master data and hierarchy</td>
+      <td>Creates the single source of truth</td>
+      <td>Clean records for users, roles, regions, incubators, schools
+      and students</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Core operations</td>
+      <td>Enables day-to-day execution</td>
+      <td>Incubator, school, student, curriculum, activity and project
+      modules usable by assigned roles</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Governance workflows</td>
+      <td>Makes decisions traceable</td>
+      <td>Meetings, minutes, decisions, approvals and action items with
+      audit history</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Dashboards and reports</td>
+      <td>Supports leadership monitoring</td>
+      <td>Role-based programme, institution, project and indicator
+      dashboards</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Document repository</td>
+      <td>Preserves evidence and official records</td>
+      <td>Secure upload, tagging, versioning, access control and export
+      controls</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Notifications</td>
+      <td>Reduces manual follow-up</td>
+      <td>In-app and email notifications for approvals, assignments,
+      reminders and escalations</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Data import/export</td>
+      <td>Supports rollout and reporting</td>
+      <td>Validated imports, approved exports and export audit logs</td>
+      </tr>
+      <tr>
+      <td>P2</td>
+      <td>Advanced analytics and AI</td>
+      <td>Improves intelligence after data maturity</td>
+      <td>Deferred until trusted operational data is available</td>
+      </tr>
+      </tbody>
+      </table>
+      <h3 id="review-checklist">Review Checklist</h3>
+      <ul>
+      <li>Confirm the listed user roles match the real operating
+      model.</li>
+      <li>Confirm which workflows require maker-checker approval in
+      MVP.</li>
+      <li>Confirm the minimum dashboard indicators required for
+      launch.</li>
+      <li>Confirm student data privacy, export restrictions and
+      retention expectations.</li>
+      <li>Confirm whether integrations are required in MVP or can remain
+      future-ready.</li>
+      <li>Confirm which reports must be downloadable for official review
+      meetings.</li>
+      </ul>
+      <h3 id="open-decisions-for-stakeholders">Open Decisions for
+      Stakeholders</h3>
+      <table>
+      <colgroup>
+      <col style="width: 33%" />
+      <col style="width: 33%" />
+      <col style="width: 33%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Decision Area</th>
+      <th>Question to Resolve</th>
+      <th>Suggested Owner</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Role hierarchy</td>
+      <td>Can one user hold multiple active roles across
+      institutions?</td>
+      <td>PMU and IT Tool Team</td>
+      </tr>
+      <tr>
+      <td>Data visibility</td>
+      <td>Which leadership dashboards should show aggregated-only
+      student data?</td>
+      <td>Government/Apex Leadership</td>
+      </tr>
+      <tr>
+      <td>Approval policy</td>
+      <td>Which modules need single approval vs maker-checker
+      approval?</td>
+      <td>PMU and Secretariat</td>
+      </tr>
+      <tr>
+      <td>Reporting cadence</td>
+      <td>Which reports are monthly, quarterly and event-triggered?</td>
+      <td>PMU and Monitoring Team</td>
+      </tr>
+      <tr>
+      <td>Document control</td>
+      <td>Which document types require versioning and retention
+      rules?</td>
+      <td>Secretariat and Legal/Admin</td>
+      </tr>
+      <tr>
+      <td>Rollout approach</td>
+      <td>Should schools be onboarded by region, incubator cluster or
+      programme cohort?</td>
+      <td>PMU</td>
+      </tr>
+      </tbody>
+      </table>
+      <hr />
+      <h2 id="user-types">6. User Types</h2>
+      <p>The system will have multiple user types. One person may have
+      more than one role.</p>
+      <hr />
+      <h2 id="super-admin">6.1 Super Admin</h2>
+      <h3 id="purpose">Purpose</h3>
+      <p>Technical owner of the platform.</p>
+      <h3 id="responsibilities">Responsibilities</h3>
+      <ul>
+      <li>Configure the system</li>
+      <li>Manage all users</li>
+      <li>Manage roles and permissions</li>
+      <li>Configure security settings</li>
+      <li>Manage integrations</li>
+      <li>Monitor system health</li>
+      <li>View audit logs</li>
+      <li>Manage backups and environment settings</li>
+      </ul>
+      <h3 id="access-level">Access Level</h3>
+      <p>Full platform access.</p>
+      <hr />
+      <h2 id="government-apex-leadership-user">6.2 Government / Apex
+      Leadership User</h2>
+      <h3 id="purpose-1">Purpose</h3>
+      <p>High-level monitoring and decision-making.</p>
+      <h3 id="responsibilities-1">Responsibilities</h3>
+      <ul>
+      <li>View dashboards</li>
+      <li>Track programme health</li>
+      <li>Review reports</li>
+      <li>View governance updates</li>
+      <li>Monitor risks</li>
+      <li>Track impact indicators</li>
+      </ul>
+      <h3 id="access-level-1">Access Level</h3>
+      <p>Mostly read-only access with some approval rights if
+      required.</p>
+      <hr />
+      <h2 id="governing-council-member">6.3 Governing Council
+      Member</h2>
+      <h3 id="purpose-2">Purpose</h3>
+      <p>Strategic oversight.</p>
+      <h3 id="responsibilities-2">Responsibilities</h3>
+      <ul>
+      <li>View committee documents</li>
+      <li>Review meeting agendas</li>
+      <li>Review minutes</li>
+      <li>Approve strategic decisions</li>
+      <li>Track major action items</li>
+      <li>View progress reports</li>
+      </ul>
+      <h3 id="access-level-2">Access Level</h3>
+      <p>Governance-level read/comment/approve access.</p>
+      <hr />
+      <h2 id="steering-committee-member">6.4 Steering Committee
+      Member</h2>
+      <h3 id="purpose-3">Purpose</h3>
+      <p>Operational governance and review.</p>
+      <h3 id="responsibilities-3">Responsibilities</h3>
+      <ul>
+      <li>Review PMU updates</li>
+      <li>Track implementation status</li>
+      <li>Approve operational decisions</li>
+      <li>View risks and escalations</li>
+      <li>Monitor action items</li>
+      </ul>
+      <h3 id="access-level-3">Access Level</h3>
+      <p>Read, comment and approve access for assigned governance
+      areas.</p>
+      <hr />
+      <h2 id="pmu-admin">6.5 PMU Admin</h2>
+      <h3 id="purpose-4">Purpose</h3>
+      <p>Central operational administrator.</p>
+      <h3 id="responsibilities-4">Responsibilities</h3>
+      <ul>
+      <li>Manage programme data</li>
+      <li>Create institutions</li>
+      <li>Add incubators and schools</li>
+      <li>Assign users</li>
+      <li>Monitor execution</li>
+      <li>Generate reports</li>
+      <li>Manage workflows</li>
+      <li>Track tasks</li>
+      <li>Coordinate with all teams</li>
+      </ul>
+      <h3 id="access-level-4">Access Level</h3>
+      <p>Full programme-level operational access.</p>
+      <hr />
+      <h2 id="pmu-team-member">6.6 PMU Team Member</h2>
+      <h3 id="purpose-5">Purpose</h3>
+      <p>Day-to-day execution.</p>
+      <h3 id="responsibilities-5">Responsibilities</h3>
+      <ul>
+      <li>Update programme progress</li>
+      <li>Manage assigned regions or clusters</li>
+      <li>Track incubators and schools</li>
+      <li>Review reports</li>
+      <li>Upload documents</li>
+      <li>Follow up on action items</li>
+      </ul>
+      <h3 id="access-level-5">Access Level</h3>
+      <p>Create/update access for assigned areas.</p>
+      <hr />
+      <h2 id="central-secretariat-user">6.7 Central Secretariat
+      User</h2>
+      <h3 id="purpose-6">Purpose</h3>
+      <p>Governance coordination and documentation.</p>
+      <h3 id="responsibilities-6">Responsibilities</h3>
+      <ul>
+      <li>Manage meeting calendars</li>
+      <li>Prepare agendas</li>
+      <li>Upload minutes</li>
+      <li>Track decisions</li>
+      <li>Track action items</li>
+      <li>Send official updates</li>
+      <li>Maintain committee documents</li>
+      </ul>
+      <h3 id="access-level-6">Access Level</h3>
+      <p>Access to committees, meetings, documents and action items.</p>
+      <hr />
+      <h2 id="it-tool-team-user">6.8 IT Tool Team User</h2>
+      <h3 id="purpose-7">Purpose</h3>
+      <p>Technical product support.</p>
+      <h3 id="responsibilities-7">Responsibilities</h3>
+      <ul>
+      <li>Support users</li>
+      <li>Manage configuration</li>
+      <li>Track bugs</li>
+      <li>Handle data imports</li>
+      <li>Monitor usage</li>
+      <li>Coordinate feature requests</li>
+      </ul>
+      <h3 id="access-level-7">Access Level</h3>
+      <p>Technical support access, but restricted from sensitive data
+      unless required.</p>
+      <hr />
+      <h2 id="programme-team-user">6.9 Programme Team User</h2>
+      <h3 id="purpose-8">Purpose</h3>
+      <p>Programme execution and content operations.</p>
+      <h3 id="responsibilities-8">Responsibilities</h3>
+      <ul>
+      <li>Manage curriculum</li>
+      <li>Manage interventions</li>
+      <li>Track execution calendar</li>
+      <li>Coordinate schools and incubators</li>
+      <li>Monitor student participation</li>
+      <li>Review field progress</li>
+      </ul>
+      <h3 id="access-level-8">Access Level</h3>
+      <p>Operational access to programme execution modules.</p>
+      <hr />
+      <h2 id="industry-collaboration-and-funding-user">6.10 Industry
+      Collaboration and Funding User</h2>
+      <h3 id="purpose-9">Purpose</h3>
+      <p>Manage partners, funding and challenge/problem statements.</p>
+      <h3 id="responsibilities-9">Responsibilities</h3>
+      <ul>
+      <li>Maintain partner database</li>
+      <li>Track funding opportunities</li>
+      <li>Upload proposals and MoUs</li>
+      <li>Manage problem statements</li>
+      <li>Track sponsored activities</li>
+      <li>Track funding commitments</li>
+      </ul>
+      <h3 id="access-level-9">Access Level</h3>
+      <p>Access to partner, funding and problem statement modules.</p>
+      <hr />
+      <h2 id="incubator-admin">6.11 Incubator Admin</h2>
+      <h3 id="purpose-10">Purpose</h3>
+      <p>Manage one incubator and its mapped schools.</p>
+      <h3 id="responsibilities-10">Responsibilities</h3>
+      <ul>
+      <li>Manage incubator profile</li>
+      <li>Manage schools under incubator</li>
+      <li>Manage mentors</li>
+      <li>Track projects</li>
+      <li>Schedule workshops</li>
+      <li>Submit reports</li>
+      <li>Review student submissions</li>
+      </ul>
+      <h3 id="access-level-10">Access Level</h3>
+      <p>Full access to assigned incubator and mapped schools.</p>
+      <hr />
+      <h2 id="incubator-staff">6.12 Incubator Staff</h2>
+      <h3 id="purpose-11">Purpose</h3>
+      <p>Operational staff for incubator-level activities.</p>
+      <h3 id="responsibilities-11">Responsibilities</h3>
+      <ul>
+      <li>Manage workshops</li>
+      <li>Track school progress</li>
+      <li>Support mentors</li>
+      <li>Upload activity reports</li>
+      <li>Review project submissions</li>
+      <li>Maintain lab/resource records</li>
+      </ul>
+      <h3 id="access-level-11">Access Level</h3>
+      <p>Create/update access within assigned incubator.</p>
+      <hr />
+      <h2 id="school-admin-principal">6.13 School Admin / Principal</h2>
+      <h3 id="purpose-12">Purpose</h3>
+      <p>Manage school-level participation.</p>
+      <h3 id="responsibilities-12">Responsibilities</h3>
+      <ul>
+      <li>Update school profile</li>
+      <li>Approve teachers</li>
+      <li>View students</li>
+      <li>Track participation</li>
+      <li>Submit school reports</li>
+      <li>View curriculum calendar</li>
+      <li>Track activities</li>
+      </ul>
+      <h3 id="access-level-12">Access Level</h3>
+      <p>Access limited to own school.</p>
+      <hr />
+      <h2 id="teacher-champion">6.14 Teacher / Champion</h2>
+      <h3 id="purpose-13">Purpose</h3>
+      <p>Guide students and manage school-level learning activities.</p>
+      <h3 id="responsibilities-13">Responsibilities</h3>
+      <ul>
+      <li>Add or verify students</li>
+      <li>Create student groups</li>
+      <li>Assign resources</li>
+      <li>Track student progress</li>
+      <li>Upload project updates</li>
+      <li>Review student submissions</li>
+      <li>Coordinate with mentors</li>
+      </ul>
+      <h3 id="access-level-13">Access Level</h3>
+      <p>Access to assigned school, students, curriculum and
+      projects.</p>
+      <hr />
+      <h2 id="student">6.15 Student</h2>
+      <h3 id="purpose-14">Purpose</h3>
+      <p>Access learning content and participate in
+      activities/projects.</p>
+      <h3 id="responsibilities-14">Responsibilities</h3>
+      <ul>
+      <li>View curriculum</li>
+      <li>Access resources</li>
+      <li>Join activities</li>
+      <li>Create or join projects</li>
+      <li>Submit work</li>
+      <li>Receive feedback</li>
+      <li>Track progress</li>
+      <li>Download certificates</li>
+      </ul>
+      <h3 id="access-level-14">Access Level</h3>
+      <p>Access only to own profile, assigned learning content and own
+      project/team.</p>
+      <hr />
+      <h2 id="mentor-expert">6.16 Mentor / Expert</h2>
+      <h3 id="purpose-15">Purpose</h3>
+      <p>Support students, teachers or projects.</p>
+      <h3 id="responsibilities-15">Responsibilities</h3>
+      <ul>
+      <li>View assigned projects</li>
+      <li>Give feedback</li>
+      <li>Review submissions</li>
+      <li>Attend mentoring sessions</li>
+      <li>Upload notes</li>
+      <li>Evaluate work</li>
+      </ul>
+      <h3 id="access-level-15">Access Level</h3>
+      <p>Access only to assigned students/projects/events.</p>
+      <hr />
+      <h2 id="industry-partner">6.17 Industry Partner</h2>
+      <h3 id="purpose-16">Purpose</h3>
+      <p>External organization user.</p>
+      <h3 id="responsibilities-16">Responsibilities</h3>
+      <ul>
+      <li>Submit problem statements</li>
+      <li>Assign mentors</li>
+      <li>View related projects</li>
+      <li>Provide feedback</li>
+      <li>Track sponsored activities</li>
+      <li>View partner-specific reports</li>
+      </ul>
+      <h3 id="access-level-16">Access Level</h3>
+      <p>Access limited to own organization and associated work.</p>
+      <hr />
+      <h2 id="funding-partner-csr-user">6.18 Funding Partner / CSR
+      User</h2>
+      <h3 id="purpose-17">Purpose</h3>
+      <p>Track funded activities and impact.</p>
+      <h3 id="responsibilities-17">Responsibilities</h3>
+      <ul>
+      <li>View funded components</li>
+      <li>Track utilization</li>
+      <li>View reports</li>
+      <li>Upload grant documents</li>
+      <li>Download impact reports</li>
+      </ul>
+      <h3 id="access-level-17">Access Level</h3>
+      <p>Access limited to funded components.</p>
+      <hr />
+      <h2 id="monitoring-and-evaluation-user">6.19 Monitoring and
+      Evaluation User</h2>
+      <h3 id="purpose-18">Purpose</h3>
+      <p>Evaluate programme performance.</p>
+      <h3 id="responsibilities-18">Responsibilities</h3>
+      <ul>
+      <li>View indicator data</li>
+      <li>Access reports</li>
+      <li>Upload evaluation documents</li>
+      <li>Export approved datasets</li>
+      <li>Compare institutions</li>
+      <li>Track outcomes</li>
+      </ul>
+      <h3 id="access-level-18">Access Level</h3>
+      <p>Read/export access to approved reporting datasets.</p>
+      <hr />
+      <h2 id="public-viewer">6.20 Public Viewer</h2>
+      <h3 id="purpose-19">Purpose</h3>
+      <p>Optional future public-facing user.</p>
+      <h3 id="responsibilities-19">Responsibilities</h3>
+      <ul>
+      <li>View public reports</li>
+      <li>View approved impact stories</li>
+      <li>View public dashboards</li>
+      </ul>
+      <h3 id="access-level-19">Access Level</h3>
+      <p>No access to private data.</p>
+      <hr />
+      <h1 id="user-access-matrix">7. User Access Matrix</h1>
+      <p>Legend:</p>
+      <ul>
+      <li><strong>N</strong> = No Access</li>
+      <li><strong>R</strong> = Read</li>
+      <li><strong>C</strong> = Create</li>
+      <li><strong>U</strong> = Update</li>
+      <li><strong>D</strong> = Delete</li>
+      <li><strong>A</strong> = Approve</li>
+      <li><strong>E</strong> = Export</li>
+      <li><strong>M</strong> = Manage / Configure</li>
+      </ul>
+      <table style="width:100%;">
+      <colgroup>
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Module</th>
+      <th>Super Admin</th>
+      <th>Leadership</th>
+      <th>GC</th>
+      <th>Steering</th>
+      <th>PMU Admin</th>
+      <th>PMU Team</th>
+      <th>Secretariat</th>
+      <th>IT Team</th>
+      <th>Programme Team</th>
+      <th>Industry/Funding Team</th>
+      <th>Incubator Admin</th>
+      <th>School Admin</th>
+      <th>Teacher</th>
+      <th>Student</th>
+      <th>Mentor</th>
+      <th>Industry Partner</th>
+      <th>Funding Partner</th>
+      <th>M&amp;E</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>System Settings</td>
+      <td>M</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>M</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      </tr>
+      <tr>
+      <td>User Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>M</td>
+      <td>U</td>
+      <td>R</td>
+      <td>M</td>
+      <td>U</td>
+      <td>U</td>
+      <td>U</td>
+      <td>U</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      </tr>
+      <tr>
+      <td>Role Management</td>
+      <td>M</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>M</td>
+      <td>N</td>
+      <td>N</td>
+      <td>M</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      </tr>
+      <tr>
+      <td>Committee Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R/A</td>
+      <td>R/A</td>
+      <td>C/U/A/E</td>
+      <td>R/U</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Meeting Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R/A</td>
+      <td>R/A</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Action Items</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R/A</td>
+      <td>R/A</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>R/U</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Incubator Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>School Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>C/U</td>
+      <td>U</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Student Management</td>
+      <td>M</td>
+      <td>Aggregated R</td>
+      <td>Aggregated R</td>
+      <td>Aggregated R</td>
+      <td>C/U/E</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R/U</td>
+      <td>N</td>
+      <td>R/U</td>
+      <td>R/U</td>
+      <td>C/U</td>
+      <td>R/U Own</td>
+      <td>R Assigned</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R/E</td>
+      </tr>
+      <tr>
+      <td>Curriculum Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Resource Library</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Project Tracking</td>
+      <td>M</td>
+      <td>Aggregated R</td>
+      <td>Aggregated R</td>
+      <td>Aggregated R</td>
+      <td>C/U/E</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>C/U</td>
+      <td>R/U</td>
+      <td>C/U</td>
+      <td>C/U Own</td>
+      <td>R/U Assigned</td>
+      <td>R Assigned</td>
+      <td>R Funded</td>
+      <td>R/E</td>
+      </tr>
+      <tr>
+      <td>Problem Statements</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R/U</td>
+      <td>C/U/A</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U Own</td>
+      <td>R</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Mentor Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/E</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>N</td>
+      <td>U Own</td>
+      <td>U Own Org</td>
+      <td>N</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Partner Management</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>U Own</td>
+      <td>R</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Funding Management</td>
+      <td>M</td>
+      <td>Aggregated R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R/U</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>R</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R Own</td>
+      <td>R/U Own</td>
+      <td>R/E</td>
+      </tr>
+      <tr>
+      <td>Reports</td>
+      <td>M</td>
+      <td>R/E</td>
+      <td>R/E</td>
+      <td>R/E</td>
+      <td>C/U/E</td>
+      <td>C/U/E</td>
+      <td>R/E</td>
+      <td>R</td>
+      <td>C/U/E</td>
+      <td>C/U/E</td>
+      <td>C/U/E</td>
+      <td>C/U/E</td>
+      <td>R/U</td>
+      <td>R Own</td>
+      <td>R Assigned</td>
+      <td>R Own</td>
+      <td>R Own</td>
+      <td>C/U/E</td>
+      </tr>
+      <tr>
+      <td>Dashboards</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R Own</td>
+      <td>R Assigned</td>
+      <td>R Own</td>
+      <td>R Own</td>
+      <td>R</td>
+      </tr>
+      <tr>
+      <td>Document Repository</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U/A/E</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>R/U</td>
+      <td>R</td>
+      <td>R Assigned</td>
+      <td>R Own</td>
+      <td>R Own</td>
+      <td>R/E</td>
+      </tr>
+      <tr>
+      <td>Audit Logs</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R/E</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R/E</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>R/E</td>
+      </tr>
+      <tr>
+      <td>Data Export</td>
+      <td>M</td>
+      <td>R/E</td>
+      <td>R/E</td>
+      <td>R/E</td>
+      <td>E</td>
+      <td>E</td>
+      <td>E</td>
+      <td>N</td>
+      <td>E</td>
+      <td>E</td>
+      <td>E Limited</td>
+      <td>E Limited</td>
+      <td>N</td>
+      <td>N</td>
+      <td>N</td>
+      <td>E Own</td>
+      <td>E Own</td>
+      <td>E</td>
+      </tr>
+      <tr>
+      <td>Notifications</td>
+      <td>M</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>N</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>C/U</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      <td>R</td>
+      </tr>
+      </tbody>
+      </table>
+      <hr />
+      <h1 id="user-flows">8. User Flows</h1>
+      <p>The portal has many role-specific journeys, but all journeys
+      should follow the same operational pattern: authenticate, apply
+      role and scope, perform work in the assigned module, submit or
+      approve evidence, notify the next stakeholder, and update
+      dashboards/audit logs.</p>
+      <h2 id="end-to-end-programme-flow">8.0 End-to-End Programme
+      Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+  Start[&quot;User signs in&quot;] --&gt; Scope[&quot;System applies role, organization and data scope&quot;]
+  Scope --&gt; Dashboard[&quot;Role-specific dashboard opens&quot;]
+  Dashboard --&gt; SelectModule{&quot;Select module&quot;}
+
+  SelectModule --&gt; Governance[&quot;Governance, meetings and approvals&quot;]
+  SelectModule --&gt; Institution[&quot;Incubator, school and user management&quot;]
+  SelectModule --&gt; Learning[&quot;Curriculum, resources and activities&quot;]
+  SelectModule --&gt; Project[&quot;Projects, mentoring and evaluation&quot;]
+  SelectModule --&gt; Funding[&quot;Partners, funding and problem statements&quot;]
+  SelectModule --&gt; Reporting[&quot;Dashboards, reports and exports&quot;]
+
+  Governance --&gt; Evidence[&quot;Documents, minutes, decisions and action items saved&quot;]
+  Institution --&gt; Evidence
+  Learning --&gt; Evidence
+  Project --&gt; Evidence
+  Funding --&gt; Evidence
+  Reporting --&gt; Evidence
+
+  Evidence --&gt; Workflow{&quot;Approval or review required?&quot;}
+  Workflow --&gt;|Yes| Review[&quot;Reviewer receives task and notification&quot;]
+  Review --&gt; Decision{&quot;Decision&quot;}
+  Decision --&gt;|Approve| Publish[&quot;Record is accepted or published&quot;]
+  Decision --&gt;|Return| Revise[&quot;Owner revises and resubmits&quot;]
+  Revise --&gt; Review
+  Workflow --&gt;|No| Publish
+  Publish --&gt; Audit[&quot;Audit log and activity history updated&quot;]
+  Audit --&gt; Metrics[&quot;Dashboards and monitoring indicators refreshed&quot;]
+  Metrics --&gt; End[&quot;Stakeholders view current programme status&quot;]</code></pre>
+      <h2 id="cross-role-handoff-flow">8.0.1 Cross-Role Handoff
+      Flow</h2>
+      <pre class="mermaid"><code>sequenceDiagram
+  autonumber
+  participant Student
+  participant Teacher
+  participant Incubator
+  participant Mentor
+  participant PMU
+  participant Committee
+  participant Partner
+
+  Student-&gt;&gt;Teacher: Submit project work
+  Teacher-&gt;&gt;Incubator: Forward eligible projects for review
+  Incubator-&gt;&gt;Mentor: Assign mentor or expert reviewer
+  Mentor-&gt;&gt;Incubator: Provide feedback and evaluation notes
+  Incubator-&gt;&gt;PMU: Submit activity and project report
+  PMU-&gt;&gt;Committee: Escalate decisions, risks or approvals
+  Committee-&gt;&gt;PMU: Approve, return or assign action items
+  PMU-&gt;&gt;Partner: Share approved reports or partner-specific outcomes</code></pre>
+      <h2 id="pmu-admin-flow">8.1 PMU Admin Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[PMU Dashboard]
+B --&gt; C[Create Programme Structure]
+C --&gt; D[Add Regions]
+D --&gt; E[Add Incubators]
+E --&gt; F[Map Schools]
+F --&gt; G[Assign Users]
+G --&gt; H[Monitor Progress]
+H --&gt; I[Generate Reports]
+I --&gt; J[Submit Updates to Governance]</code></pre>
+      <h2 id="committee-flow">8.2 Committee Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Committee Dashboard]
+B --&gt; C[View Meetings]
+C --&gt; D[Review Agenda]
+D --&gt; E[View Documents]
+E --&gt; F[Add Comments]
+F --&gt; G[Approve or Reject Decision]
+G --&gt; H[Track Action Items]</code></pre>
+      <h2 id="secretariat-flow">8.3 Secretariat Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Secretariat Dashboard]
+B --&gt; C[Create Meeting]
+C --&gt; D[Add Agenda]
+D --&gt; E[Invite Members]
+E --&gt; F[Upload Documents]
+F --&gt; G[Record Minutes]
+G --&gt; H[Create Action Items]
+H --&gt; I[Send Updates]</code></pre>
+      <h2 id="incubator-admin-flow">8.4 Incubator Admin Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Incubator Dashboard]
+B --&gt; C[View Assigned Schools]
+C --&gt; D[Manage Activities]
+D --&gt; E[Assign Mentors]
+E --&gt; F[Schedule Workshops]
+F --&gt; G[Review Projects]
+G --&gt; H[Submit Report]</code></pre>
+      <h2 id="school-admin-flow">8.5 School Admin Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[School Dashboard]
+B --&gt; C[Update School Profile]
+B --&gt; D[Manage Teachers]
+D --&gt; E[Verify Students]
+E --&gt; F[View Curriculum]
+F --&gt; G[Track Participation]
+G --&gt; H[Submit School Report]</code></pre>
+      <h2 id="teacher-flow">8.6 Teacher Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Teacher Dashboard]
+B --&gt; C[View Students]
+C --&gt; D[Create Groups]
+D --&gt; E[Assign Resources]
+E --&gt; F[Track Projects]
+F --&gt; G[Upload Updates]
+G --&gt; H[Review Feedback]</code></pre>
+      <h2 id="student-flow">8.7 Student Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Student Dashboard]
+B --&gt; C[View Curriculum]
+C --&gt; D[Access Resources]
+D --&gt; E[Join Activity]
+E --&gt; F[Create or Join Project]
+F --&gt; G[Submit Work]
+G --&gt; H[Receive Feedback]
+H --&gt; I[Track Progress]
+I --&gt; J[Download Certificate]</code></pre>
+      <h2 id="mentor-flow">8.8 Mentor Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Mentor Dashboard]
+B --&gt; C[View Assigned Projects]
+C --&gt; D[Review Work]
+D --&gt; E[Give Feedback]
+E --&gt; F[Schedule Session]
+F --&gt; G[Submit Notes]</code></pre>
+      <h2 id="industry-partner-flow">8.9 Industry Partner Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Partner Dashboard]
+B --&gt; C[Submit Problem Statement]
+C --&gt; D[Assign Mentor]
+D --&gt; E[View Related Projects]
+E --&gt; F[Provide Feedback]
+F --&gt; G[View Impact Report]</code></pre>
+      <h2 id="funding-partner-flow">8.10 Funding Partner Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Funding Dashboard]
+B --&gt; C[View Funded Components]
+C --&gt; D[Track Utilization]
+D --&gt; E[View Reports]
+E --&gt; F[Download Documents]</code></pre>
+      <h2 id="me-flow">8.11 M&amp;E Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Login] --&gt; B[Monitoring Dashboard]
+B --&gt; C[View Indicators]
+C --&gt; D[Access Survey Data]
+D --&gt; E[Compare Institutions]
+E --&gt; F[Upload Evaluation Report]
+F --&gt; G[Export Approved Dataset]</code></pre>
+      <hr />
+      <h1 id="core-product-modules">9. Core Product Modules</h1>
+      <h2 id="authentication-and-identity-management">9.1 Authentication
+      and Identity Management</h2>
+      <h3 id="features">Features</h3>
+      <ul>
+      <li>Secure login</li>
+      <li>Password reset</li>
+      <li>Multi-factor authentication</li>
+      <li>Single sign-on readiness</li>
+      <li>Session management</li>
+      <li>Account lockout</li>
+      <li>Login history</li>
+      <li>User activation/deactivation</li>
+      </ul>
+      <h3 id="requirements">Requirements</h3>
+      <ul>
+      <li>MFA mandatory for admin and governance users.</li>
+      <li>Password policies must be configurable.</li>
+      <li>User sessions must expire after inactivity.</li>
+      <li>Login attempts must be logged.</li>
+      </ul>
+      <hr />
+      <h2 id="role-based-access-control">9.2 Role-Based Access
+      Control</h2>
+      <h3 id="features-1">Features</h3>
+      <ul>
+      <li>Predefined roles</li>
+      <li>Custom roles</li>
+      <li>Permission groups</li>
+      <li>Organization-level scoping</li>
+      <li>Region-level scoping</li>
+      <li>Institution-level scoping</li>
+      <li>Project-level scoping</li>
+      <li>Temporary elevated access</li>
+      <li>Access review reports</li>
+      </ul>
+      <h3 id="requirements-1">Requirements</h3>
+      <ul>
+      <li>Permissions must be enforced at backend level.</li>
+      <li>UI hiding is not enough.</li>
+      <li>All permission changes must be logged.</li>
+      <li>Every data access API must check both role and scope.</li>
+      </ul>
+      <hr />
+      <h2 id="organization-hierarchy-management">9.3 Organization
+      Hierarchy Management</h2>
+      <h3 id="features-2">Features</h3>
+      <ul>
+      <li>Create national, regional and institutional hierarchy</li>
+      <li>Map incubators to regions</li>
+      <li>Map schools to incubators</li>
+      <li>Map students to schools</li>
+      <li>Assign users to organizational units</li>
+      <li>View hierarchy tree</li>
+      <li>Bulk upload hierarchy</li>
+      </ul>
+      <hr />
+      <h2 id="committee-management">9.4 Committee Management</h2>
+      <h3 id="features-3">Features</h3>
+      <ul>
+      <li>Committee creation</li>
+      <li>Member assignment</li>
+      <li>Meeting calendar</li>
+      <li>Agenda creation</li>
+      <li>Minutes of meeting</li>
+      <li>Decision register</li>
+      <li>Voting/approval</li>
+      <li>Action item assignment</li>
+      <li>Document attachments</li>
+      <li>Historical archive</li>
+      </ul>
+      <hr />
+      <h2 id="people-directory">9.5 People Directory</h2>
+      <h3 id="features-4">Features</h3>
+      <ul>
+      <li>Central profile for every person</li>
+      <li>Role mapping</li>
+      <li>Organization mapping</li>
+      <li>Contact details</li>
+      <li>Status</li>
+      <li>Assigned responsibilities</li>
+      <li>Activity history</li>
+      <li>Search and filters</li>
+      <li>Import/export</li>
+      </ul>
+      <hr />
+      <h2 id="incubator-management">9.6 Incubator Management</h2>
+      <h3 id="features-5">Features</h3>
+      <ul>
+      <li>Incubator profile</li>
+      <li>Assigned schools</li>
+      <li>Staff users</li>
+      <li>Mentor pool</li>
+      <li>Facility/resource records</li>
+      <li>Activity calendar</li>
+      <li>Workshop records</li>
+      <li>Project review board</li>
+      <li>Incubator reports</li>
+      <li>Performance dashboard</li>
+      </ul>
+      <hr />
+      <h2 id="school-management">9.7 School Management</h2>
+      <h3 id="features-6">Features</h3>
+      <ul>
+      <li>School profile</li>
+      <li>School users</li>
+      <li>Teacher/champion assignment</li>
+      <li>Student records</li>
+      <li>Curriculum access</li>
+      <li>Activity calendar</li>
+      <li>Reports</li>
+      <li>Participation tracking</li>
+      <li>Performance dashboard</li>
+      </ul>
+      <hr />
+      <h2 id="student-management">9.8 Student Management</h2>
+      <h3 id="features-7">Features</h3>
+      <ul>
+      <li>Student profile</li>
+      <li>Enrollment</li>
+      <li>Guardian details where required</li>
+      <li>School mapping</li>
+      <li>Group/team assignment</li>
+      <li>Learning progress</li>
+      <li>Project participation</li>
+      <li>Attendance if required</li>
+      <li>Achievements</li>
+      <li>Certificates</li>
+      <li>Feedback history</li>
+      <li>Alumni status</li>
+      </ul>
+      <h3 id="privacy-requirement">Privacy Requirement</h3>
+      <p>Student personal data must be strictly protected using
+      role-based and institution-scoped access.</p>
+      <hr />
+      <h2 id="curriculum-and-resource-management">9.9 Curriculum and
+      Resource Management</h2>
+      <h3 id="features-8">Features</h3>
+      <ul>
+      <li>Curriculum library</li>
+      <li>Resource repository</li>
+      <li>Grade-wise or cohort-wise content</li>
+      <li>Topic-wise content</li>
+      <li>Activity plans</li>
+      <li>Downloadable files</li>
+      <li>Videos or external links</li>
+      <li>Version control</li>
+      <li>Approval workflow</li>
+      <li>Publishing workflow</li>
+      <li>Access analytics</li>
+      </ul>
+      <hr />
+      <h2 id="project-and-innovation-tracking">9.10 Project and
+      Innovation Tracking</h2>
+      <h3 id="features-9">Features</h3>
+      <ul>
+      <li>Project creation</li>
+      <li>Team formation</li>
+      <li>Problem statement mapping</li>
+      <li>Mentor assignment</li>
+      <li>Milestone tracking</li>
+      <li>Submission uploads</li>
+      <li>Feedback</li>
+      <li>Rubric-based evaluation</li>
+      <li>Review status</li>
+      <li>Demo selection</li>
+      <li>Prototype status</li>
+      <li>Incubation status</li>
+      </ul>
+      <h3 id="project-state-flow">Project State Flow</h3>
+      <pre class="mermaid"><code>stateDiagram-v2
+[*] --&gt; Idea
+Idea --&gt; Submitted
+Submitted --&gt; UnderReview
+UnderReview --&gt; NeedsRevision
+NeedsRevision --&gt; Submitted
+UnderReview --&gt; Approved
+Approved --&gt; InProgress
+InProgress --&gt; PrototypeSubmitted
+PrototypeSubmitted --&gt; Evaluated
+Evaluated --&gt; SelectedForDemo
+SelectedForDemo --&gt; IncubationReview
+IncubationReview --&gt; Incubated
+IncubationReview --&gt; Archived</code></pre>
+      <hr />
+      <h2 id="problem-statement-management">9.11 Problem Statement
+      Management</h2>
+      <h3 id="features-10">Features</h3>
+      <ul>
+      <li>Problem statement submission</li>
+      <li>Domain/category tagging</li>
+      <li>Owner assignment</li>
+      <li>Approval workflow</li>
+      <li>Publishing workflow</li>
+      <li>Project mapping</li>
+      <li>Mentor mapping</li>
+      <li>Status tracking</li>
+      </ul>
+      <hr />
+      <h2 id="mentor-and-expert-management">9.12 Mentor and Expert
+      Management</h2>
+      <h3 id="features-11">Features</h3>
+      <ul>
+      <li>Mentor profile</li>
+      <li>Expertise tags</li>
+      <li>Availability</li>
+      <li>Assigned projects</li>
+      <li>Session notes</li>
+      <li>Feedback history</li>
+      <li>Evaluation forms</li>
+      <li>Conflict of interest declaration</li>
+      </ul>
+      <hr />
+      <h2 id="event-and-activity-management">9.13 Event and Activity
+      Management</h2>
+      <h3 id="features-12">Features</h3>
+      <ul>
+      <li>Event creation</li>
+      <li>Registration</li>
+      <li>Participant list</li>
+      <li>Attendance</li>
+      <li>Resource upload</li>
+      <li>Feedback forms</li>
+      <li>Certificates</li>
+      <li>Event report</li>
+      <li>Calendar integration</li>
+      </ul>
+      <hr />
+      <h2 id="industry-partner-management">9.14 Industry Partner
+      Management</h2>
+      <h3 id="features-13">Features</h3>
+      <ul>
+      <li>Partner profile</li>
+      <li>Contact people</li>
+      <li>MoU documents</li>
+      <li>Problem statements</li>
+      <li>Assigned mentors</li>
+      <li>Sponsored activities</li>
+      <li>Partner reports</li>
+      </ul>
+      <hr />
+      <h2 id="funding-and-grant-management">9.15 Funding and Grant
+      Management</h2>
+      <h3 id="features-14">Features</h3>
+      <ul>
+      <li>Funding partner profiles</li>
+      <li>Grant records</li>
+      <li>Fund allocation metadata</li>
+      <li>Utilization tracking</li>
+      <li>Supporting documents</li>
+      <li>Milestone-based reporting</li>
+      <li>Exportable summaries</li>
+      <li>Audit trail</li>
+      </ul>
+      <hr />
+      <h2 id="document-repository">9.16 Document Repository</h2>
+      <h3 id="features-15">Features</h3>
+      <ul>
+      <li>Folder structure</li>
+      <li>File upload</li>
+      <li>Version control</li>
+      <li>Access control</li>
+      <li>Approval workflow</li>
+      <li>Tags</li>
+      <li>Search</li>
+      <li>Expiry reminders</li>
+      <li>Download logs</li>
+      <li>Document classification</li>
+      </ul>
+      <hr />
+      <h2 id="task-and-action-item-management">9.17 Task and Action Item
+      Management</h2>
+      <h3 id="features-16">Features</h3>
+      <ul>
+      <li>Task creation</li>
+      <li>Owner assignment</li>
+      <li>Due date</li>
+      <li>Priority</li>
+      <li>Status</li>
+      <li>Comments</li>
+      <li>Attachments</li>
+      <li>Escalation</li>
+      <li>Reminders</li>
+      <li>Completion evidence</li>
+      </ul>
+      <hr />
+      <h2 id="notification-system">9.18 Notification System</h2>
+      <h3 id="channels">Channels</h3>
+      <ul>
+      <li>In-app</li>
+      <li>Email</li>
+      <li>SMS</li>
+      <li>WhatsApp integration</li>
+      <li>Push notifications in future</li>
+      </ul>
+      <h3 id="notification-types">Notification Types</h3>
+      <ul>
+      <li>Task assigned</li>
+      <li>Meeting reminder</li>
+      <li>Approval requested</li>
+      <li>Report due</li>
+      <li>Report overdue</li>
+      <li>Feedback received</li>
+      <li>New resource published</li>
+      <li>Event reminder</li>
+      <li>Risk escalation</li>
+      </ul>
+      <hr />
+      <h2 id="audit-logs">9.19 Audit Logs</h2>
+      <h3 id="events-to-log">Events to Log</h3>
+      <ul>
+      <li>Login/logout</li>
+      <li>Failed login</li>
+      <li>User creation</li>
+      <li>Role changes</li>
+      <li>Permission changes</li>
+      <li>Document upload/download</li>
+      <li>Record creation/update/deletion</li>
+      <li>Approval/rejection</li>
+      <li>Data export</li>
+      <li>API access</li>
+      <li>Admin setting changes</li>
+      </ul>
+      <h3 id="requirements-2">Requirements</h3>
+      <ul>
+      <li>Audit logs must be immutable.</li>
+      <li>Logs must include timestamp, user, IP, device, action and
+      affected entity.</li>
+      <li>Logs must not be editable by normal admins.</li>
+      <li>Logs must be searchable by authorized users.</li>
+      </ul>
+      <hr />
+      <h1 id="information-architecture">10. Information
+      Architecture</h1>
+      <h2 id="top-level-navigation">10.1 Top-Level Navigation</h2>
+      <ol type="1">
+      <li>Dashboard</li>
+      <li>Governance</li>
+      <li>People</li>
+      <li>Institutions</li>
+      <li>Students</li>
+      <li>Learning</li>
+      <li>Projects</li>
+      <li>Events</li>
+      <li>Partners</li>
+      <li>Funding</li>
+      <li>Reports</li>
+      <li>Documents</li>
+      <li>Tasks</li>
+      <li>Notifications</li>
+      <li>Admin</li>
+      </ol>
+      <h2 id="dashboard-sections">10.2 Dashboard Sections</h2>
+      <ul>
+      <li>My Dashboard</li>
+      <li>National Overview</li>
+      <li>State/Region Overview</li>
+      <li>Incubator Overview</li>
+      <li>School Overview</li>
+      <li>Student Progress</li>
+      <li>Project Pipeline</li>
+      <li>Funding Overview</li>
+      <li>Risk Overview</li>
+      </ul>
+      <h2 id="governance-sections">10.3 Governance Sections</h2>
+      <ul>
+      <li>Committees</li>
+      <li>Meetings</li>
+      <li>Agendas</li>
+      <li>Minutes</li>
+      <li>Decisions</li>
+      <li>Action Items</li>
+      <li>Documents</li>
+      </ul>
+      <h2 id="institution-sections">10.4 Institution Sections</h2>
+      <ul>
+      <li>Regions</li>
+      <li>Incubators</li>
+      <li>Clusters</li>
+      <li>Schools</li>
+      <li>Teachers</li>
+      <li>Facilities</li>
+      </ul>
+      <h2 id="learning-sections">10.5 Learning Sections</h2>
+      <ul>
+      <li>Curriculum</li>
+      <li>Resources</li>
+      <li>Assignments</li>
+      <li>Activity Guides</li>
+      <li>Templates</li>
+      <li>Assessments</li>
+      </ul>
+      <h2 id="project-sections">10.6 Project Sections</h2>
+      <ul>
+      <li>All Projects</li>
+      <li>My Projects</li>
+      <li>Problem Statements</li>
+      <li>Mentors</li>
+      <li>Reviews</li>
+      <li>Demo Days</li>
+      <li>Incubation Pipeline</li>
+      </ul>
+      <hr />
+      <h1 id="dashboard-requirements">11. Dashboard Requirements</h1>
+      <h2 id="pmu-dashboard">11.1 PMU Dashboard</h2>
+      <p>Should show:</p>
+      <ul>
+      <li>Total schools</li>
+      <li>Total incubators</li>
+      <li>Total students</li>
+      <li>Active projects</li>
+      <li>Reports pending</li>
+      <li>Action items pending</li>
+      <li>Upcoming meetings</li>
+      <li>Risk alerts</li>
+      <li>Partner engagement</li>
+      <li>Funding overview</li>
+      </ul>
+      <h2 id="school-dashboard">11.2 School Dashboard</h2>
+      <p>Should show:</p>
+      <ul>
+      <li>Enrolled students</li>
+      <li>Active teachers</li>
+      <li>Assigned curriculum</li>
+      <li>Active projects</li>
+      <li>Upcoming activities</li>
+      <li>Reports due</li>
+      <li>Student progress</li>
+      </ul>
+      <h2 id="student-dashboard">11.3 Student Dashboard</h2>
+      <p>Should show:</p>
+      <ul>
+      <li>Assigned curriculum</li>
+      <li>Resources</li>
+      <li>Project status</li>
+      <li>Feedback</li>
+      <li>Upcoming activities</li>
+      <li>Achievements</li>
+      <li>Certificates</li>
+      </ul>
+      <h2 id="incubator-dashboard">11.4 Incubator Dashboard</h2>
+      <p>Should show:</p>
+      <ul>
+      <li>Assigned schools</li>
+      <li>Active mentors</li>
+      <li>Active projects</li>
+      <li>Workshops conducted</li>
+      <li>Reports due</li>
+      <li>Risk status</li>
+      </ul>
+      <h2 id="leadership-dashboard">11.5 Leadership Dashboard</h2>
+      <p>Should show:</p>
+      <ul>
+      <li>High-level KPIs</li>
+      <li>Regional performance</li>
+      <li>Funding summary</li>
+      <li>Impact metrics</li>
+      <li>Risk heatmap</li>
+      <li>Governance action items</li>
+      </ul>
+      <hr />
+      <h1 id="reporting-requirements">12. Reporting Requirements</h1>
+      <h2 id="standard-reports">12.1 Standard Reports</h2>
+      <ul>
+      <li>User report</li>
+      <li>Institution report</li>
+      <li>Student report</li>
+      <li>Project report</li>
+      <li>Curriculum usage report</li>
+      <li>Event report</li>
+      <li>Mentor activity report</li>
+      <li>Funding report</li>
+      <li>Partner engagement report</li>
+      <li>Committee action item report</li>
+      <li>Risk report</li>
+      <li>Audit report</li>
+      <li>Monitoring and evaluation report</li>
+      </ul>
+      <h2 id="report-features">12.2 Report Features</h2>
+      <ul>
+      <li>Filters</li>
+      <li>Date ranges</li>
+      <li>Region filters</li>
+      <li>Institution filters</li>
+      <li>Export to CSV</li>
+      <li>Export to PDF</li>
+      <li>Scheduled reports</li>
+      <li>Role-based visibility</li>
+      <li>Aggregated and detailed views</li>
+      </ul>
+      <hr />
+      <h1 id="recommended-technical-architecture">13. Recommended
+      Technical Architecture</h1>
+      <h2 id="architecture-type">13.1 Architecture Type</h2>
+      <p>The recommended architecture is a <strong>modular
+      monolith</strong> for MVP, built with clear domain boundaries and
+      deployed on cloud-native infrastructure.</p>
+      <p>This gives speed during MVP while allowing future migration to
+      microservices.</p>
+      <h2 id="why-modular-monolith-first">13.2 Why Modular Monolith
+      First</h2>
+      <ul>
+      <li>Faster development</li>
+      <li>Easier debugging</li>
+      <li>Lower DevOps complexity</li>
+      <li>Better consistency for workflows</li>
+      <li>Easier deployment</li>
+      <li>Easier testing</li>
+      <li>Can be split into services later</li>
+      </ul>
+      <h2 id="backend-modules">13.3 Backend Modules</h2>
+      <ul>
+      <li>Auth Module</li>
+      <li>User Module</li>
+      <li>RBAC Module</li>
+      <li>Organization Module</li>
+      <li>Committee Module</li>
+      <li>Institution Module</li>
+      <li>Student Module</li>
+      <li>Learning Module</li>
+      <li>Project Module</li>
+      <li>Partner Module</li>
+      <li>Funding Module</li>
+      <li>Reporting Module</li>
+      <li>Notification Module</li>
+      <li>Document Module</li>
+      <li>Audit Module</li>
+      <li>Admin Module</li>
+      </ul>
+      <h2 id="architecture-principles">13.4 Architecture Principles</h2>
+      <ul>
+      <li>Keep MVP delivery simple with a modular monolith, but enforce
+      clean domain boundaries from day one.</li>
+      <li>Treat RBAC, audit logging, file security and approval state as
+      platform services used by every module.</li>
+      <li>Store master data once and reference it across workflows
+      instead of duplicating institutional or user records.</li>
+      <li>Make reports reproducible from system records so governance
+      reviews can be traced back to evidence.</li>
+      <li>Design integration points through APIs and event queues so
+      external systems can be added without disrupting core
+      workflows.</li>
+      </ul>
+      <h2 id="high-level-architecture">13.5 High-Level Architecture</h2>
+      <pre class="mermaid"><code>flowchart TD
+  User[&quot;Browser or mobile browser&quot;] --&gt; Edge[&quot;CDN, WAF and TLS&quot;]
+  Edge --&gt; Frontend[&quot;Frontend web application&quot;]
+  Frontend --&gt; API[&quot;Backend API gateway&quot;]
+
+  API --&gt; Auth[&quot;Auth, RBAC and session service&quot;]
+  API --&gt; Workflow[&quot;Workflow and approval service&quot;]
+  API --&gt; Modules[&quot;Domain modules&quot;]
+  API --&gt; Reporting[&quot;Reporting and dashboard service&quot;]
+
+  Modules --&gt; Programme[&quot;Programme, institution and people modules&quot;]
+  Modules --&gt; Learning[&quot;Curriculum, resources and events&quot;]
+  Modules --&gt; Project[&quot;Projects, mentors and evaluations&quot;]
+  Modules --&gt; Partner[&quot;Partners, funding and problem statements&quot;]
+  Modules --&gt; Governance[&quot;Committees, meetings and action items&quot;]
+
+  Programme --&gt; DB[(&quot;PostgreSQL primary database&quot;)]
+  Learning --&gt; DB
+  Project --&gt; DB
+  Partner --&gt; DB
+  Governance --&gt; DB
+  Workflow --&gt; DB
+  Reporting --&gt; Warehouse[(&quot;Reporting views or analytics store&quot;)]
+  DB --&gt; Warehouse
+
+  Modules --&gt; Files[(&quot;Object storage for documents&quot;)]
+  API --&gt; Cache[(&quot;Redis cache and sessions&quot;)]
+  API --&gt; Search[(&quot;Search index&quot;)]
+  Workflow --&gt; Queue[(&quot;Message queue&quot;)]
+  Queue --&gt; Notify[&quot;Email, SMS and in-app notifications&quot;]
+  API --&gt; Audit[&quot;Audit log service&quot;]
+  Audit --&gt; DB
+  Observability[&quot;Logs, metrics and alerts&quot;] --&gt; API</code></pre>
+      <h2 id="domain-module-map">13.6 Domain Module Map</h2>
+      <pre class="mermaid"><code>flowchart LR
+  subgraph Platform[&quot;Platform Services&quot;]
+    Identity[&quot;Identity and Access&quot;]
+    RBAC[&quot;RBAC and Scope Engine&quot;]
+    Audit[&quot;Audit and Activity Logs&quot;]
+    Workflow[&quot;Workflow Engine&quot;]
+    Notification[&quot;Notification Service&quot;]
+    Documents[&quot;Document Service&quot;]
+  end
+
+  subgraph Operations[&quot;Programme Operations&quot;]
+    Org[&quot;Organization Hierarchy&quot;]
+    People[&quot;People Directory&quot;]
+    Incubator[&quot;Incubator Management&quot;]
+    School[&quot;School Management&quot;]
+    Student[&quot;Student Management&quot;]
+  end
+
+  subgraph Delivery[&quot;Learning and Innovation Delivery&quot;]
+    Curriculum[&quot;Curriculum Library&quot;]
+    Resources[&quot;Resource Repository&quot;]
+    Events[&quot;Events and Activities&quot;]
+    Projects[&quot;Project Tracking&quot;]
+    Mentors[&quot;Mentor Management&quot;]
+  end
+
+  subgraph Governance[&quot;Governance and Partnerships&quot;]
+    Committees[&quot;Committee Management&quot;]
+    Meetings[&quot;Meetings and Minutes&quot;]
+    Decisions[&quot;Decision Register&quot;]
+    Partners[&quot;Partner Management&quot;]
+    Funding[&quot;Funding and Grants&quot;]
+  end
+
+  subgraph Intelligence[&quot;Monitoring and Reporting&quot;]
+    Indicators[&quot;Monitoring Indicators&quot;]
+    Dashboards[&quot;Dashboards&quot;]
+    Reports[&quot;Reports and Exports&quot;]
+  end
+
+  Identity --&gt; RBAC
+  RBAC --&gt; Operations
+  RBAC --&gt; Delivery
+  RBAC --&gt; Governance
+  Operations --&gt; Indicators
+  Delivery --&gt; Indicators
+  Governance --&gt; Indicators
+  Indicators --&gt; Dashboards
+  Indicators --&gt; Reports
+  Workflow --&gt; Committees
+  Workflow --&gt; Projects
+  Workflow --&gt; Funding
+  Documents --&gt; Meetings
+  Documents --&gt; Resources
+  Documents --&gt; Funding
+  Audit --&gt; Reports
+  Notification --&gt; Workflow</code></pre>
+      <h2 id="data-and-reporting-flow">13.7 Data and Reporting Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+  Entry[&quot;Operational data entry&quot;] --&gt; Validate[&quot;Validation and permission checks&quot;]
+  Validate --&gt; Master[&quot;Master records updated&quot;]
+  Validate --&gt; Transaction[&quot;Transaction records created&quot;]
+  Validate --&gt; FileUpload[&quot;Documents uploaded&quot;]
+
+  FileUpload --&gt; VirusScan[&quot;Malware scan and file metadata&quot;]
+  VirusScan --&gt; ObjectStore[(&quot;Secure object storage&quot;)]
+  Master --&gt; Database[(&quot;PostgreSQL&quot;)]
+  Transaction --&gt; Database
+  Database --&gt; AuditTrail[&quot;Audit trail and history&quot;]
+  Database --&gt; ReportingViews[&quot;Reporting views and indicators&quot;]
+  ReportingViews --&gt; Dashboard[&quot;Role-based dashboards&quot;]
+  ReportingViews --&gt; Scheduled[&quot;Scheduled reports&quot;]
+  ReportingViews --&gt; Export[&quot;Approved exports&quot;]
+  Dashboard --&gt; Review[&quot;Leadership, PMU and monitoring review&quot;]
+  Scheduled --&gt; Review
+  Export --&gt; Review</code></pre>
+      <h2 id="deployment-architecture">13.8 Deployment Architecture</h2>
+      <pre class="mermaid"><code>flowchart TD
+  Users[&quot;Users&quot;] --&gt; CDN[&quot;CDN and WAF&quot;]
+  CDN --&gt; LB[&quot;Load balancer&quot;]
+  LB --&gt; FE[&quot;Frontend containers&quot;]
+  FE --&gt; API[&quot;Backend API containers&quot;]
+  API --&gt; DB[(&quot;Managed PostgreSQL&quot;)]
+  API --&gt; Cache[(&quot;Redis&quot;)]
+  API --&gt; Storage[(&quot;Object storage&quot;)]
+  API --&gt; Search[(&quot;OpenSearch or managed search&quot;)]
+  API --&gt; Queue[(&quot;Message queue&quot;)]
+  API --&gt; WF[&quot;Workflow engine&quot;]
+  API --&gt; Logs[&quot;Monitoring, logs and alerts&quot;]</code></pre>
+      <hr />
+      <h1 id="recommended-tech-stack">14. Recommended Tech Stack</h1>
+      <h2 id="frontend">14.1 Frontend</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Next.js</li>
+      <li>React</li>
+      <li>TypeScript</li>
+      <li>Tailwind CSS</li>
+      <li>shadcn/ui</li>
+      <li>TanStack Query</li>
+      <li>Zod</li>
+      <li>React Hook Form</li>
+      </ul>
+      <p>Reason:</p>
+      <ul>
+      <li>Scalable frontend framework</li>
+      <li>Good dashboard development experience</li>
+      <li>Strong type safety</li>
+      <li>Good accessibility support</li>
+      <li>Responsive web support</li>
+      <li>Strong ecosystem</li>
+      </ul>
+      <hr />
+      <h2 id="backend">14.2 Backend</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>NestJS</li>
+      <li>TypeScript</li>
+      <li>Prisma ORM</li>
+      <li>REST APIs initially</li>
+      <li>GraphQL selectively for complex dashboards</li>
+      </ul>
+      <p>Reason:</p>
+      <ul>
+      <li>Enterprise-grade architecture</li>
+      <li>Modular backend structure</li>
+      <li>Type safety</li>
+      <li>Strong RBAC support</li>
+      <li>Easy testing</li>
+      <li>Easy integration with queues and workflows</li>
+      </ul>
+      <hr />
+      <h2 id="database">14.3 Database</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>PostgreSQL</li>
+      </ul>
+      <p>Reason:</p>
+      <ul>
+      <li>Strong relational model</li>
+      <li>Reliable transactions</li>
+      <li>Good for structured institutional data</li>
+      <li>Supports JSONB for flexible fields</li>
+      <li>Mature backup and replication</li>
+      <li>Good indexing and reporting support</li>
+      </ul>
+      <hr />
+      <h2 id="cache">14.4 Cache</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Redis</li>
+      </ul>
+      <p>Use cases:</p>
+      <ul>
+      <li>Session cache</li>
+      <li>Rate limiting</li>
+      <li>Dashboard cache</li>
+      <li>Frequently accessed reference data</li>
+      <li>OTP/MFA temporary storage</li>
+      <li>Background job support</li>
+      </ul>
+      <hr />
+      <h2 id="search">14.5 Search</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>OpenSearch or Elasticsearch</li>
+      </ul>
+      <p>Use cases:</p>
+      <ul>
+      <li>Global search</li>
+      <li>Document metadata search</li>
+      <li>Student search</li>
+      <li>Project search</li>
+      <li>Institution search</li>
+      <li>Full-text search</li>
+      </ul>
+      <hr />
+      <h2 id="object-storage">14.6 Object Storage</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>S3-compatible storage</li>
+      <li>AWS S3, Azure Blob, GCP Storage, MinIO or government-approved
+      equivalent</li>
+      </ul>
+      <p>Use cases:</p>
+      <ul>
+      <li>Documents</li>
+      <li>Curriculum files</li>
+      <li>Student submissions</li>
+      <li>Reports</li>
+      <li>Certificates</li>
+      <li>Images</li>
+      </ul>
+      <hr />
+      <h2 id="authentication">14.7 Authentication</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Keycloak</li>
+      </ul>
+      <p>Reason:</p>
+      <ul>
+      <li>Open-source identity provider</li>
+      <li>Supports OIDC and SAML</li>
+      <li>Supports MFA</li>
+      <li>Supports SSO</li>
+      <li>Supports role mapping</li>
+      <li>Can integrate with government identity systems later</li>
+      </ul>
+      <hr />
+      <h2 id="workflow-engine">14.8 Workflow Engine</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Temporal or Camunda</li>
+      </ul>
+      <p>Use cases:</p>
+      <ul>
+      <li>Approval flows</li>
+      <li>Report review</li>
+      <li>Committee decisions</li>
+      <li>Funding review</li>
+      <li>Project review</li>
+      <li>Escalations</li>
+      <li>Reminders</li>
+      </ul>
+      <hr />
+      <h2 id="queue">14.9 Queue</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>RabbitMQ for MVP</li>
+      <li>Kafka later if event scale becomes very high</li>
+      </ul>
+      <p>Use cases:</p>
+      <ul>
+      <li>Notifications</li>
+      <li>Email sending</li>
+      <li>Report generation</li>
+      <li>File processing</li>
+      <li>Audit event streaming</li>
+      <li>Background jobs</li>
+      </ul>
+      <hr />
+      <h2 id="analytics">14.10 Analytics</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Metabase for quick internal analytics</li>
+      <li>Apache Superset for advanced dashboards later</li>
+      <li>Custom dashboards inside product for role-based views</li>
+      </ul>
+      <hr />
+      <h2 id="devops">14.11 DevOps</h2>
+      <p>Recommended:</p>
+      <ul>
+      <li>Docker</li>
+      <li>Kubernetes</li>
+      <li>Helm</li>
+      <li>GitHub Actions / GitLab CI</li>
+      <li>ArgoCD</li>
+      <li>Terraform</li>
+      <li>Prometheus</li>
+      <li>Grafana</li>
+      <li>Loki / ELK</li>
+      <li>OpenTelemetry</li>
+      </ul>
+      <hr />
+      <h1 id="scalability-strategy">15. Scalability Strategy</h1>
+      <h2 id="scaling-stages">15.1 Scaling Stages</h2>
+      <h3 id="stage-1-pilot">Stage 1: Pilot</h3>
+      <ul>
+      <li>50–100 schools</li>
+      <li>Few thousand students</li>
+      <li>Limited users</li>
+      <li>Single-region deployment</li>
+      </ul>
+      <h3 id="stage-2-state-scale">Stage 2: State Scale</h3>
+      <ul>
+      <li>300–500 schools</li>
+      <li>Tens of thousands of students</li>
+      <li>Multiple incubators</li>
+      <li>More reporting load</li>
+      </ul>
+      <h3 id="stage-3-national-scale">Stage 3: National Scale</h3>
+      <ul>
+      <li>2,000+ schools</li>
+      <li>Lakhs of students</li>
+      <li>Thousands of teachers</li>
+      <li>Multiple partners</li>
+      <li>Heavy dashboards and reports</li>
+      </ul>
+      <h2 id="frontend-scaling">15.2 Frontend Scaling</h2>
+      <ul>
+      <li>CDN caching</li>
+      <li>Static asset optimization</li>
+      <li>Lazy loading</li>
+      <li>Route-level code splitting</li>
+      <li>Responsive UI</li>
+      <li>Low-bandwidth mode</li>
+      </ul>
+      <h2 id="backend-scaling">15.3 Backend Scaling</h2>
+      <ul>
+      <li>Stateless API containers</li>
+      <li>Horizontal pod autoscaling</li>
+      <li>Queue-based background jobs</li>
+      <li>Read replicas</li>
+      <li>Modular service boundaries</li>
+      <li>Rate limiting</li>
+      </ul>
+      <h2 id="database-scaling">15.4 Database Scaling</h2>
+      <ul>
+      <li>Proper indexes</li>
+      <li>Read replicas</li>
+      <li>Partitioning for large tables</li>
+      <li>Archival strategy</li>
+      <li>Query optimization</li>
+      <li>Materialized views for dashboards</li>
+      </ul>
+      <h2 id="file-scaling">15.5 File Scaling</h2>
+      <ul>
+      <li>Store files in object storage</li>
+      <li>Use signed URLs</li>
+      <li>Virus scan uploads</li>
+      <li>Lifecycle policies for old files</li>
+      <li>Avoid storing files in database</li>
+      </ul>
+      <h2 id="reporting-scaling">15.6 Reporting Scaling</h2>
+      <ul>
+      <li>Pre-aggregated metrics</li>
+      <li>Dashboard caching</li>
+      <li>Async report generation</li>
+      <li>Data warehouse in later phase</li>
+      </ul>
+      <hr />
+      <h1 id="data-model-overview">16. Data Model Overview</h1>
+      <h2 id="core-entities">16.1 Core Entities</h2>
+      <ul>
+      <li>User</li>
+      <li>Role</li>
+      <li>Permission</li>
+      <li>OrganizationUnit</li>
+      <li>Committee</li>
+      <li>Meeting</li>
+      <li>Decision</li>
+      <li>ActionItem</li>
+      <li>Incubator</li>
+      <li>School</li>
+      <li>Student</li>
+      <li>Teacher</li>
+      <li>Mentor</li>
+      <li>Partner</li>
+      <li>FundingRecord</li>
+      <li>Curriculum</li>
+      <li>Resource</li>
+      <li>Project</li>
+      <li>ProblemStatement</li>
+      <li>Event</li>
+      <li>Report</li>
+      <li>Document</li>
+      <li>Notification</li>
+      <li>AuditLog</li>
+      </ul>
+      <h2 id="simplified-entity-relationship">16.2 Simplified Entity
+      Relationship</h2>
+      <pre class="mermaid"><code>erDiagram
+USER ||--o{ USER_ROLE : has
+ROLE ||--o{ USER_ROLE : assigned
+ROLE ||--o{ ROLE_PERMISSION : contains
+PERMISSION ||--o{ ROLE_PERMISSION : grants
+
+ORGANIZATION_UNIT ||--o{ USER : contains
+ORGANIZATION_UNIT ||--o{ ORGANIZATION_UNIT : parent_child
+
+INCUBATOR ||--o{ SCHOOL : manages
+SCHOOL ||--o{ STUDENT : has
+SCHOOL ||--o{ TEACHER : has
+TEACHER ||--o{ STUDENT : mentors
+
+STUDENT ||--o{ PROJECT_MEMBER : joins
+PROJECT ||--o{ PROJECT_MEMBER : has
+PROJECT ||--o{ PROJECT_SUBMISSION : receives
+PROJECT ||--o{ PROJECT_REVIEW : reviewed_by
+MENTOR ||--o{ PROJECT_REVIEW : gives
+
+COMMITTEE ||--o{ MEETING : conducts
+MEETING ||--o{ DECISION : records
+MEETING ||--o{ ACTION_ITEM : creates
+
+PARTNER ||--o{ PROBLEM_STATEMENT : submits
+PROBLEM_STATEMENT ||--o{ PROJECT : maps_to
+PARTNER ||--o{ FUNDING_RECORD : funds
+
+DOCUMENT ||--o{ DOCUMENT_VERSION : has
+USER ||--o{ AUDIT_LOG : performs</code></pre>
+      <hr />
+      <h1 id="security-architecture">17. Security Architecture</h1>
+      <h2 id="security-goals">17.1 Security Goals</h2>
+      <p>The portal must protect:</p>
+      <ul>
+      <li>Student data</li>
+      <li>Institutional data</li>
+      <li>Governance documents</li>
+      <li>Funding records</li>
+      <li>Reports</li>
+      <li>User credentials</li>
+      <li>Audit trails</li>
+      </ul>
+      <h2 id="security-principles">17.2 Security Principles</h2>
+      <ul>
+      <li>Least privilege</li>
+      <li>Defense in depth</li>
+      <li>Zero trust</li>
+      <li>Secure by default</li>
+      <li>Encrypt sensitive data</li>
+      <li>Audit important actions</li>
+      <li>Minimize data collection</li>
+      <li>Separate duties</li>
+      <li>Regular security testing</li>
+      </ul>
+      <h2 id="authentication-security">17.3 Authentication Security</h2>
+      <ul>
+      <li>MFA for admins and privileged users</li>
+      <li>Strong password policy</li>
+      <li>Account lockout</li>
+      <li>Session timeout</li>
+      <li>Refresh token rotation</li>
+      <li>Device/session visibility</li>
+      <li>Login anomaly detection later</li>
+      </ul>
+      <h2 id="authorization-security">17.4 Authorization Security</h2>
+      <ul>
+      <li>Backend-enforced RBAC</li>
+      <li>Attribute-based checks for institution scope</li>
+      <li>No direct object access without ownership check</li>
+      <li>Approval needed for privileged role assignment</li>
+      <li>Regular access reviews</li>
+      </ul>
+      <h2 id="data-security">17.5 Data Security</h2>
+      <h3 id="data-in-transit">Data in Transit</h3>
+      <ul>
+      <li>HTTPS everywhere</li>
+      <li>TLS 1.2 minimum</li>
+      <li>TLS 1.3 preferred</li>
+      <li>Secure cookies</li>
+      <li>HSTS enabled</li>
+      </ul>
+      <h3 id="data-at-rest">Data at Rest</h3>
+      <ul>
+      <li>Database encryption</li>
+      <li>Object storage encryption</li>
+      <li>Encrypted backups</li>
+      <li>Encrypted secrets</li>
+      <li>Field-level encryption for highly sensitive fields</li>
+      </ul>
+      <h3 id="sensitive-data-handling">Sensitive Data Handling</h3>
+      <ul>
+      <li>Mask student personal data where possible</li>
+      <li>Avoid unnecessary exposure of phone/email</li>
+      <li>Track exports</li>
+      <li>Restrict downloads</li>
+      <li>Watermark sensitive reports in future</li>
+      </ul>
+      <h2 id="api-security">17.6 API Security</h2>
+      <ul>
+      <li>API Gateway</li>
+      <li>Rate limiting</li>
+      <li>JWT validation</li>
+      <li>RBAC middleware</li>
+      <li>Input validation</li>
+      <li>Output sanitization</li>
+      <li>CORS restrictions</li>
+      <li>Request logging</li>
+      <li>Abuse detection</li>
+      </ul>
+      <h2 id="application-security">17.7 Application Security</h2>
+      <ul>
+      <li>OWASP Top 10 mitigation</li>
+      <li>Secure coding practices</li>
+      <li>Dependency scanning</li>
+      <li>Static code analysis</li>
+      <li>Dynamic testing</li>
+      <li>Penetration testing before production</li>
+      <li>Secure file uploads</li>
+      <li>Content Security Policy</li>
+      </ul>
+      <h2 id="file-security">17.8 File Security</h2>
+      <ul>
+      <li>File type validation</li>
+      <li>File size limits</li>
+      <li>Virus/malware scanning</li>
+      <li>Private object storage buckets</li>
+      <li>Signed URLs</li>
+      <li>Download logging</li>
+      <li>Version history</li>
+      </ul>
+      <h2 id="audit-and-compliance">17.9 Audit and Compliance</h2>
+      <p>The system must maintain:</p>
+      <ul>
+      <li>Login logs</li>
+      <li>Admin logs</li>
+      <li>Export logs</li>
+      <li>Access logs</li>
+      <li>Approval logs</li>
+      <li>Security event logs</li>
+      <li>Data change logs</li>
+      </ul>
+      <p>Audit logs should be immutable, searchable and exportable only
+      by authorized users.</p>
+      <hr />
+      <h1 id="backup-and-disaster-recovery">18. Backup and Disaster
+      Recovery</h1>
+      <h2 id="backup-strategy">18.1 Backup Strategy</h2>
+      <ul>
+      <li>Daily automated database backups</li>
+      <li>Point-in-time recovery</li>
+      <li>Object storage backup</li>
+      <li>Configuration backup</li>
+      <li>Encrypted backups</li>
+      <li>Regular restore testing</li>
+      </ul>
+      <h2 id="suggested-targets">18.2 Suggested Targets</h2>
+      <ul>
+      <li>MVP RPO: 24 hours</li>
+      <li>MVP RTO: 8 hours</li>
+      <li>Production RPO: 1 hour</li>
+      <li>Production RTO: 2 hours</li>
+      </ul>
+      <hr />
+      <h1 id="privacy-and-data-governance">19. Privacy and Data
+      Governance</h1>
+      <h2 id="data-classification">19.1 Data Classification</h2>
+      <p>Data should be classified as:</p>
+      <ol type="1">
+      <li>Public</li>
+      <li>Internal</li>
+      <li>Confidential</li>
+      <li>Restricted</li>
+      </ol>
+      <h2 id="restricted-data">19.2 Restricted Data</h2>
+      <p>Restricted data includes:</p>
+      <ul>
+      <li>Student personal data</li>
+      <li>Guardian data</li>
+      <li>Private institutional data</li>
+      <li>Funding records</li>
+      <li>Governance documents</li>
+      <li>Audit logs</li>
+      <li>User credentials</li>
+      <li>Security configuration</li>
+      </ul>
+      <h2 id="consent-and-notice">19.3 Consent and Notice</h2>
+      <p>Where student data is collected, the system should support:</p>
+      <ul>
+      <li>Consent capture</li>
+      <li>Guardian consent if required</li>
+      <li>Privacy notice</li>
+      <li>Data use declaration</li>
+      <li>Data correction process</li>
+      </ul>
+      <hr />
+      <h1 id="non-functional-requirements">20. Non-Functional
+      Requirements</h1>
+      <h2 id="performance">20.1 Performance</h2>
+      <ul>
+      <li>Common page load under 3 seconds</li>
+      <li>Dashboard load under 5 seconds with cached data</li>
+      <li>Search results under 2 seconds for common queries</li>
+      <li>Heavy reports generated asynchronously</li>
+      </ul>
+      <h2 id="availability">20.2 Availability</h2>
+      <ul>
+      <li>MVP target: 99.5%</li>
+      <li>Production target: 99.9%</li>
+      <li>Health checks</li>
+      <li>Auto restart</li>
+      <li>Planned maintenance mode</li>
+      </ul>
+      <h2 id="reliability">20.3 Reliability</h2>
+      <ul>
+      <li>Retry mechanisms</li>
+      <li>Idempotent APIs</li>
+      <li>Graceful failure handling</li>
+      <li>Data validation at all layers</li>
+      </ul>
+      <h2 id="usability">20.4 Usability</h2>
+      <ul>
+      <li>Responsive web design</li>
+      <li>Simple school/student interface</li>
+      <li>Low bandwidth support</li>
+      <li>Clear navigation</li>
+      <li>Multilingual-ready structure</li>
+      <li>Accessibility-friendly UI</li>
+      </ul>
+      <h2 id="maintainability">20.5 Maintainability</h2>
+      <ul>
+      <li>Modular codebase</li>
+      <li>TypeScript across frontend/backend</li>
+      <li>Automated tests</li>
+      <li>API documentation</li>
+      <li>Code review process</li>
+      <li>Environment-based configuration</li>
+      </ul>
+      <h2 id="observability">20.6 Observability</h2>
+      <ul>
+      <li>Metrics</li>
+      <li>Logs</li>
+      <li>Traces</li>
+      <li>Error reporting</li>
+      <li>Uptime monitoring</li>
+      <li>User activity monitoring</li>
+      <li>Business KPI monitoring</li>
+      </ul>
+      <hr />
+      <h1 id="workflow-and-approval-system">21. Workflow and Approval
+      System</h1>
+      <h2 id="workflows-required">21.1 Workflows Required</h2>
+      <ul>
+      <li>User approval</li>
+      <li>School approval</li>
+      <li>Incubator approval</li>
+      <li>Curriculum approval</li>
+      <li>Problem statement approval</li>
+      <li>Project review</li>
+      <li>Funding document approval</li>
+      <li>Report approval</li>
+      <li>Committee decision approval</li>
+      </ul>
+      <h2 id="generic-approval-flow">21.2 Generic Approval Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Draft Created] --&gt; B[Submitted]
+B --&gt; C[Reviewer Assigned]
+C --&gt; D{Approved?}
+D --&gt;|Yes| E[Published or Accepted]
+D --&gt;|No| F[Returned for Revision]
+F --&gt; A
+E --&gt; G[Archived Later]</code></pre>
+      <h2 id="maker-checker-flow">21.3 Maker-Checker Flow</h2>
+      <pre class="mermaid"><code>flowchart TD
+A[Maker Creates Request] --&gt; B[System Validates]
+B --&gt; C[Checker Reviews]
+C --&gt; D{Decision}
+D --&gt;|Approve| E[Action Executed]
+D --&gt;|Reject| F[Request Rejected]
+E --&gt; G[Audit Log Created]
+F --&gt; G</code></pre>
+      <hr />
+      <h1 id="api-strategy">22. API Strategy</h1>
+      <h2 id="api-principles">22.1 API Principles</h2>
+      <ul>
+      <li>API-first design</li>
+      <li>REST for standard CRUD</li>
+      <li>GraphQL only where useful</li>
+      <li>OpenAPI documentation</li>
+      <li>Versioned APIs</li>
+      <li>Secure by default</li>
+      <li>Consistent error format</li>
+      <li>Pagination</li>
+      <li>Filtering and sorting</li>
+      <li>Audit logging for sensitive APIs</li>
+      </ul>
+      <h2 id="api-categories">22.2 API Categories</h2>
+      <ul>
+      <li>Auth APIs</li>
+      <li>User APIs</li>
+      <li>Role APIs</li>
+      <li>Institution APIs</li>
+      <li>Student APIs</li>
+      <li>Curriculum APIs</li>
+      <li>Project APIs</li>
+      <li>Partner APIs</li>
+      <li>Funding APIs</li>
+      <li>Report APIs</li>
+      <li>Document APIs</li>
+      <li>Notification APIs</li>
+      <li>Audit APIs</li>
+      </ul>
+      <hr />
+      <h1 id="integration-strategy">23. Integration Strategy</h1>
+      <h2 id="initial-integrations">23.1 Initial Integrations</h2>
+      <ul>
+      <li>Email service</li>
+      <li>SMS gateway</li>
+      <li>WhatsApp notification provider</li>
+      <li>Object storage</li>
+      <li>Identity provider</li>
+      <li>Analytics dashboard</li>
+      </ul>
+      <h2 id="future-integrations">23.2 Future Integrations</h2>
+      <ul>
+      <li>Government SSO</li>
+      <li>Document verification systems</li>
+      <li>LMS systems</li>
+      <li>Video platforms</li>
+      <li>BI tools</li>
+      <li>Data warehouse</li>
+      <li>AI assistant</li>
+      <li>External survey tools</li>
+      </ul>
+      <hr />
+      <h1 id="deployment-strategy">24. Deployment Strategy</h1>
+      <h2 id="environments">24.1 Environments</h2>
+      <ul>
+      <li>Local</li>
+      <li>Development</li>
+      <li>Staging</li>
+      <li>UAT</li>
+      <li>Production</li>
+      <li>Disaster Recovery</li>
+      </ul>
+      <h2 id="cicd">24.2 CI/CD</h2>
+      <ul>
+      <li>Code pushed to repository</li>
+      <li>Automated linting</li>
+      <li>Automated tests</li>
+      <li>Security scan</li>
+      <li>Docker build</li>
+      <li>Deploy to staging</li>
+      <li>Approval gate</li>
+      <li>Deploy to production</li>
+      </ul>
+      <h2 id="release-strategy">24.3 Release Strategy</h2>
+      <ul>
+      <li>Feature flags</li>
+      <li>Versioned releases</li>
+      <li>Rollback support</li>
+      <li>Database migration strategy</li>
+      <li>Maintenance mode support</li>
+      </ul>
+      <hr />
+      <h1 id="monitoring-and-observability">25. Monitoring and
+      Observability</h1>
+      <h2 id="technical-monitoring">25.1 Technical Monitoring</h2>
+      <ul>
+      <li>CPU</li>
+      <li>Memory</li>
+      <li>Disk</li>
+      <li>Network</li>
+      <li>API latency</li>
+      <li>Error rate</li>
+      <li>Database load</li>
+      <li>Queue length</li>
+      <li>Job failures</li>
+      </ul>
+      <h2 id="business-monitoring">25.2 Business Monitoring</h2>
+      <ul>
+      <li>Active users</li>
+      <li>Login frequency</li>
+      <li>Report submission rate</li>
+      <li>Project submission rate</li>
+      <li>Curriculum access</li>
+      <li>Pending approvals</li>
+      <li>Overdue tasks</li>
+      <li>Institution activity</li>
+      </ul>
+      <h2 id="alerts">25.3 Alerts</h2>
+      <ul>
+      <li>System downtime</li>
+      <li>High error rate</li>
+      <li>Failed backups</li>
+      <li>Security events</li>
+      <li>Suspicious login attempts</li>
+      <li>High database load</li>
+      <li>Queue backlog</li>
+      <li>Report generation failures</li>
+      </ul>
+      <hr />
+      <h1 id="data-import-and-migration">26. Data Import and
+      Migration</h1>
+      <h2 id="import-requirements">26.1 Import Requirements</h2>
+      <p>The system should support bulk imports for:</p>
+      <ul>
+      <li>Users</li>
+      <li>Schools</li>
+      <li>Incubators</li>
+      <li>Students</li>
+      <li>Mentors</li>
+      <li>Curriculum</li>
+      <li>Resources</li>
+      <li>Projects</li>
+      <li>Partners</li>
+      </ul>
+      <h2 id="import-format">26.2 Import Format</h2>
+      <ul>
+      <li>CSV</li>
+      <li>XLSX</li>
+      <li>JSON for technical imports</li>
+      </ul>
+      <h2 id="import-validation">26.3 Import Validation</h2>
+      <ul>
+      <li>Required field validation</li>
+      <li>Duplicate detection</li>
+      <li>Email/phone validation</li>
+      <li>Institution mapping validation</li>
+      <li>Error report generation</li>
+      <li>Preview before final import</li>
+      </ul>
+      <hr />
+      <h1 id="search-requirements">27. Search Requirements</h1>
+      <h2 id="global-search">27.1 Global Search</h2>
+      <p>Users should be able to search across permitted data:</p>
+      <ul>
+      <li>People</li>
+      <li>Schools</li>
+      <li>Incubators</li>
+      <li>Students</li>
+      <li>Projects</li>
+      <li>Documents</li>
+      <li>Meetings</li>
+      <li>Tasks</li>
+      <li>Partners</li>
+      <li>Reports</li>
+      </ul>
+      <h2 id="search-security">27.2 Search Security</h2>
+      <p>Search must respect access control. Users should never discover
+      unauthorized records through search results.</p>
+      <hr />
+      <h1 id="ai-ready-future-scope">28. AI-Ready Future Scope</h1>
+      <p>The platform should be designed so AI features can be added
+      later.</p>
+      <p>Possible AI features:</p>
+      <ul>
+      <li>AI report generator</li>
+      <li>AI meeting summary</li>
+      <li>AI project feedback assistant</li>
+      <li>AI curriculum recommendation</li>
+      <li>AI risk detection</li>
+      <li>AI mentor matching</li>
+      <li>AI dashboard insights</li>
+      <li>AI document search</li>
+      <li>AI translation for regional languages</li>
+      </ul>
+      <p>AI should not be a core dependency for MVP.</p>
+      <hr />
+      <h1 id="development-roadmap">29. Development Roadmap</h1>
+      <h2 id="phase-0-discovery-and-design">29.1 Phase 0: Discovery and
+      Design</h2>
+      <ul>
+      <li>Finalize requirements</li>
+      <li>Confirm roles</li>
+      <li>Confirm workflows</li>
+      <li>Create wireframes</li>
+      <li>Define data model</li>
+      <li>Define security model</li>
+      <li>Create implementation plan</li>
+      </ul>
+      <h2 id="phase-1-mvp">29.2 Phase 1: MVP</h2>
+      <ul>
+      <li>Auth and RBAC</li>
+      <li>User management</li>
+      <li>Organization hierarchy</li>
+      <li>Incubator management</li>
+      <li>School management</li>
+      <li>Student management</li>
+      <li>Curriculum/resources</li>
+      <li>Project tracking</li>
+      <li>Document repository</li>
+      <li>Basic dashboards</li>
+      <li>Reports</li>
+      <li>Audit logs</li>
+      </ul>
+      <h2 id="phase-2-workflow-and-scale">29.3 Phase 2: Workflow and
+      Scale</h2>
+      <ul>
+      <li>Advanced approvals</li>
+      <li>Committee management</li>
+      <li>Meeting management</li>
+      <li>Funding management</li>
+      <li>Industry partner module</li>
+      <li>Advanced reporting</li>
+      <li>Notification engine</li>
+      <li>Search engine</li>
+      <li>Bulk imports</li>
+      <li>M&amp;E workflows</li>
+      </ul>
+      <h2 id="phase-3-national-scale">29.4 Phase 3: National Scale</h2>
+      <ul>
+      <li>Advanced analytics</li>
+      <li>Data warehouse</li>
+      <li>AI features</li>
+      <li>Mobile app</li>
+      <li>Offline support</li>
+      <li>External integrations</li>
+      <li>Public impact portal</li>
+      <li>Multilingual content</li>
+      </ul>
+      <hr />
+      <h1 id="mvp-user-stories">30. MVP User Stories</h1>
+      <h2 id="authentication-1">30.1 Authentication</h2>
+      <ul>
+      <li>As a user, I want to log in securely so that I can access the
+      portal.</li>
+      <li>As an admin, I want to assign roles so that users get correct
+      access.</li>
+      <li>As a privileged user, I want MFA so that my account is
+      protected.</li>
+      </ul>
+      <h2 id="user-management">30.2 User Management</h2>
+      <ul>
+      <li>As a PMU admin, I want to create users so that stakeholders
+      can access the portal.</li>
+      <li>As an admin, I want to deactivate users so that former users
+      cannot access data.</li>
+      <li>As an admin, I want to bulk upload users so that onboarding is
+      faster.</li>
+      </ul>
+      <h2 id="institution-management">30.3 Institution Management</h2>
+      <ul>
+      <li>As a PMU user, I want to create incubators so that I can
+      manage implementation partners.</li>
+      <li>As a PMU user, I want to map schools to incubators so that
+      accountability is clear.</li>
+      <li>As an incubator admin, I want to view my schools so that I can
+      manage them.</li>
+      </ul>
+      <h2 id="student-management-1">30.4 Student Management</h2>
+      <ul>
+      <li>As a teacher, I want to add students so that they can access
+      the portal.</li>
+      <li>As a student, I want to view my curriculum so that I know what
+      to learn.</li>
+      <li>As a PMU admin, I want to view student counts by school so
+      that I can monitor reach.</li>
+      </ul>
+      <h2 id="project-tracking">30.5 Project Tracking</h2>
+      <ul>
+      <li>As a student, I want to create a project so that I can submit
+      my work.</li>
+      <li>As a mentor, I want to review assigned projects so that I can
+      guide students.</li>
+      <li>As a teacher, I want to track project status so that I can
+      support students.</li>
+      </ul>
+      <h2 id="reporting">30.6 Reporting</h2>
+      <ul>
+      <li>As a PMU user, I want dashboards so that I can monitor
+      progress.</li>
+      <li>As a school admin, I want to submit reports so that the PMU
+      has updated data.</li>
+      <li>As a leadership user, I want high-level dashboards so that I
+      can make decisions.</li>
+      </ul>
+      <h2 id="document-management">30.7 Document Management</h2>
+      <ul>
+      <li>As a user, I want to upload documents so that records are
+      stored centrally.</li>
+      <li>As an admin, I want document permissions so that sensitive
+      files are protected.</li>
+      <li>As a user, I want document versioning so that old and new
+      versions are traceable.</li>
+      </ul>
+      <hr />
+      <h1 id="risks-and-mitigation">31. Risks and Mitigation</h1>
+      <table>
+      <colgroup>
+      <col style="width: 33%" />
+      <col style="width: 33%" />
+      <col style="width: 33%" />
+      </colgroup>
+      <thead>
+      <tr>
+      <th>Risk</th>
+      <th>Impact</th>
+      <th>Mitigation</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>Low adoption by schools</td>
+      <td>High</td>
+      <td>Simple UI, training, onboarding support</td>
+      </tr>
+      <tr>
+      <td>Data quality issues</td>
+      <td>High</td>
+      <td>Validation, bulk import checks, approval workflows</td>
+      </tr>
+      <tr>
+      <td>Security breach</td>
+      <td>Very High</td>
+      <td>MFA, RBAC, encryption, audit logs, pen testing</td>
+      </tr>
+      <tr>
+      <td>Over-complex MVP</td>
+      <td>High</td>
+      <td>Modular phase-wise rollout</td>
+      </tr>
+      <tr>
+      <td>Poor internet in schools</td>
+      <td>Medium</td>
+      <td>Lightweight UI, low-bandwidth mode, future offline
+      support</td>
+      </tr>
+      <tr>
+      <td>Role confusion</td>
+      <td>Medium</td>
+      <td>Clear RBAC matrix and onboarding</td>
+      </tr>
+      <tr>
+      <td>Reporting overload</td>
+      <td>Medium</td>
+      <td>Standard templates and automated reports</td>
+      </tr>
+      <tr>
+      <td>Scalability issues</td>
+      <td>High</td>
+      <td>Cloud-native deployment and database optimization</td>
+      </tr>
+      <tr>
+      <td>Unauthorized data exports</td>
+      <td>High</td>
+      <td>Export permissions, audit logs, watermarking</td>
+      </tr>
+      <tr>
+      <td>Vendor lock-in</td>
+      <td>Medium</td>
+      <td>Open-source-first architecture where possible</td>
+      </tr>
+      </tbody>
+      </table>
+      <hr />
+      <h1 id="acceptance-criteria-for-mvp">32. Acceptance Criteria for
+      MVP</h1>
+      <p>The MVP will be considered successful if:</p>
+      <ol type="1">
+      <li>Admin can create and manage users.</li>
+      <li>Roles and permissions work correctly.</li>
+      <li>Incubators and schools can be created and mapped.</li>
+      <li>Students can be onboarded and linked to schools.</li>
+      <li>Curriculum/resources can be uploaded and viewed by
+      students.</li>
+      <li>Projects can be created, tracked and reviewed.</li>
+      <li>Basic dashboards show real-time metrics.</li>
+      <li>Reports can be generated and exported.</li>
+      <li>Documents can be uploaded with access control.</li>
+      <li>Audit logs capture major actions.</li>
+      <li>System supports secure login and MFA for admins.</li>
+      <li>Data access is correctly restricted by role and
+      institution.</li>
+      </ol>
+      <hr />
+      <h1 id="open-questions">33. Open Questions</h1>
+      <p>These should be clarified before implementation:</p>
+      <ol type="1">
+      <li>Will the platform be hosted on public cloud, government cloud
+      or on-prem infrastructure?</li>
+      <li>Is government SSO required from day one?</li>
+      <li>Is student guardian consent required during onboarding?</li>
+      <li>What is the expected user count for the first year?</li>
+      <li>Will schools upload students manually or through bulk
+      import?</li>
+      <li>Should the platform support multiple languages in MVP?</li>
+      <li>Will funding records be official financial records or only
+      tracking metadata?</li>
+      <li>What reports are mandatory for leadership review?</li>
+      <li>Who approves curriculum before publication?</li>
+      <li>Who owns final data governance policy?</li>
+      <li>What is the required audit log retention period?</li>
+      <li>Should external partners access the same portal or a separate
+      partner portal?</li>
+      <li>Is mobile app required or responsive web enough
+      initially?</li>
+      </ol>
+      <hr />
+      <h1 id="final-recommendation">34. Final Recommendation</h1>
+      <p>The portal should be built as a secure, modular, scalable web
+      application with strong role-based access control, centralized
+      data management, auditable workflows and real-time dashboards.</p>
+      <p>Recommended approach:</p>
+      <ul>
+      <li>Build MVP as a modular monolith using Next.js, NestJS and
+      PostgreSQL.</li>
+      <li>Use Keycloak for authentication and RBAC.</li>
+      <li>Use object storage for documents.</li>
+      <li>Use Redis for caching and background jobs.</li>
+      <li>Use OpenSearch for search.</li>
+      <li>Use Kubernetes-ready infrastructure from the beginning.</li>
+      <li>Implement strict audit logging and data security
+      controls.</li>
+      <li>Keep the system API-first and integration-ready.</li>
+      <li>Scale gradually from pilot to state-level to national-level
+      deployment.</li>
+      </ul>
+      <p>The first version should focus on becoming a reliable
+      operational system. Advanced AI, mobile apps and complex analytics
+      can be added after the core workflows and data model are
+      stable.</p>
+      <hr />
+      <h1 id="appendix-a-suggested-initial-module-priority">Appendix A:
+      Suggested Initial Module Priority</h1>
+      <table>
+      <thead>
+      <tr>
+      <th>Priority</th>
+      <th>Module</th>
+      <th>Reason</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+      <td>P0</td>
+      <td>Auth &amp; RBAC</td>
+      <td>Foundation of secure access</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>User Management</td>
+      <td>Required for all workflows</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Organization Hierarchy</td>
+      <td>Required to map institutions</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Incubator &amp; School Management</td>
+      <td>Core operational structure</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Student Management</td>
+      <td>Core beneficiary tracking</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Curriculum &amp; Resources</td>
+      <td>Student-facing value</td>
+      </tr>
+      <tr>
+      <td>P0</td>
+      <td>Project Tracking</td>
+      <td>Core innovation workflow</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Dashboards</td>
+      <td>Management visibility</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Reports</td>
+      <td>Review and monitoring</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Document Repository</td>
+      <td>Central source of truth</td>
+      </tr>
+      <tr>
+      <td>P1</td>
+      <td>Audit Logs</td>
+      <td>Government-grade accountability</td>
+      </tr>
+      <tr>
+      <td>P2</td>
+      <td>Committee Management</td>
+      <td>Governance workflow</td>
+      </tr>
+      <tr>
+      <td>P2</td>
+      <td>Funding Management</td>
+      <td>Partner and grant tracking</td>
+      </tr>
+      <tr>
+      <td>P2</td>
+      <td>Advanced M&amp;E</td>
+      <td>Impact evaluation</td>
+      </tr>
+      <tr>
+      <td>P3</td>
+      <td>AI Features</td>
+      <td>Future enhancement</td>
+      </tr>
+      </tbody>
+      </table>
+      <hr />
+      <h1 id="appendix-b-suggested-initial-database-tables">Appendix B:
+      Suggested Initial Database Tables</h1>
+      <ul>
+      <li>users</li>
+      <li>roles</li>
+      <li>permissions</li>
+      <li>user_roles</li>
+      <li>role_permissions</li>
+      <li>organization_units</li>
+      <li>incubators</li>
+      <li>schools</li>
+      <li>students</li>
+      <li>teachers</li>
+      <li>mentors</li>
+      <li>partners</li>
+      <li>committees</li>
+      <li>committee_members</li>
+      <li>meetings</li>
+      <li>meeting_minutes</li>
+      <li>decisions</li>
+      <li>action_items</li>
+      <li>curriculum_items</li>
+      <li>resources</li>
+      <li>projects</li>
+      <li>project_members</li>
+      <li>project_submissions</li>
+      <li>project_reviews</li>
+      <li>problem_statements</li>
+      <li>events</li>
+      <li>event_participants</li>
+      <li>funding_records</li>
+      <li>reports</li>
+      <li>documents</li>
+      <li>document_versions</li>
+      <li>notifications</li>
+      <li>audit_logs</li>
+      </ul>
+      <hr />
+      <h1 id="appendix-c-suggested-permissions">Appendix C: Suggested
+      Permissions</h1>
+      <ul>
+      <li>user.read</li>
+      <li>user.create</li>
+      <li>user.update</li>
+      <li>user.delete</li>
+      <li>role.manage</li>
+      <li>institution.read</li>
+      <li>institution.create</li>
+      <li>institution.update</li>
+      <li>student.read</li>
+      <li>student.create</li>
+      <li>student.update</li>
+      <li>student.export</li>
+      <li>curriculum.read</li>
+      <li>curriculum.create</li>
+      <li>curriculum.publish</li>
+      <li>project.read</li>
+      <li>project.create</li>
+      <li>project.review</li>
+      <li>project.approve</li>
+      <li>report.read</li>
+      <li>report.create</li>
+      <li>report.export</li>
+      <li>document.read</li>
+      <li>document.upload</li>
+      <li>document.approve</li>
+      <li>funding.read</li>
+      <li>funding.update</li>
+      <li>committee.read</li>
+      <li>committee.manage</li>
+      <li>audit.read</li>
+      <li>system.manage</li>
+      </ul>
+      <hr />
+      <h1 id="appendix-d-next-steps">Appendix D: Next Steps</h1>
+      <ol type="1">
+      <li>Review this overview document.</li>
+      <li>Finalize user roles and permissions.</li>
+      <li>Finalize MVP module list.</li>
+      <li>Create wireframes.</li>
+      <li>Create detailed database schema.</li>
+      <li>Create API specification.</li>
+      <li>Create sprint-wise development plan.</li>
+      <li>Create security checklist.</li>
+      <li>Create deployment plan.</li>
+      <li>Start MVP implementation.</li>
+      </ol>
+      <footer class="review-footer">
+        Central Programme Management Portal PRD. Prepared as a shareable HTML review document.
+      </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    function prepareMermaidBlocks() {
+      document.querySelectorAll("pre.mermaid, pre > code.language-mermaid").forEach((node) => {
+        const source = node.matches("pre.mermaid") ? node.textContent : node.textContent;
+        const wrapper = document.createElement("div");
+        wrapper.className = "mermaid";
+        wrapper.textContent = source
+          .replace(/&gt;/g, ">")
+          .replace(/&lt;/g, "<")
+          .replace(/&amp;/g, "&");
+        const replaceTarget = node.matches("pre.mermaid") ? node : node.parentElement;
+        replaceTarget.replaceWith(wrapper);
+      });
+    }
+
+    prepareMermaidBlocks();
+
+    document.querySelectorAll(".document-main table").forEach((table) => {
+      if (table.parentElement && table.parentElement.classList.contains("table-wrap")) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrap";
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "loose",
+        theme: "base",
+        themeVariables: {
+          primaryColor: "#eef8f4",
+          primaryTextColor: "#182230",
+          primaryBorderColor: "#0f766e",
+          lineColor: "#667085",
+          secondaryColor: "#edf3f8",
+          tertiaryColor: "#fff7ed"
+        }
+      });
+      mermaid.run({ nodes: document.querySelectorAll(".mermaid") });
+    }
+  </script>
+</body>
+</html>

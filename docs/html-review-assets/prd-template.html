@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>$if(title-prefix)$$title-prefix$ - $endif$$pagetitle$</title>
+  $for(header-includes)$
+  $header-includes$
+  $endfor$
+</head>
+<body>
+  <div class="document-shell">
+    <header class="review-cover">
+      <p class="review-kicker">Technical Product Requirements Document</p>
+      <h1 class="review-title">Central Programme Management Portal</h1>
+      <p class="review-subtitle">
+        A structured, review-ready system overview for a secure role-based portal to manage programme governance,
+        operations, institutions, students, resources, projects, funding, monitoring, reporting and administration.
+      </p>
+      <div class="review-meta" aria-label="Document metadata">
+        <span>Version v0.1 Draft</span>
+        <span>Review Document</span>
+        <span>Generated 12 June 2026</span>
+      </div>
+    </header>
+    $if(toc)$
+    <aside class="toc-sidebar">
+      <h2>Contents</h2>
+      $toc$
+    </aside>
+    $endif$
+    <main class="document-main">
+      <div class="callout">
+        <strong>Review note:</strong> This HTML document is formatted from the source PRD for easier stakeholder review.
+        The content defines the software platform only and does not describe the programme scheme itself.
+      </div>
+      $body$
+      <footer class="review-footer">
+        Central Programme Management Portal PRD. Prepared as a shareable HTML review document.
+      </footer>
+    </main>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+  <script>
+    function prepareMermaidBlocks() {
+      document.querySelectorAll("pre.mermaid, pre > code.language-mermaid").forEach((node) => {
+        const source = node.matches("pre.mermaid") ? node.textContent : node.textContent;
+        const wrapper = document.createElement("div");
+        wrapper.className = "mermaid";
+        wrapper.textContent = source
+          .replace(/&gt;/g, ">")
+          .replace(/&lt;/g, "<")
+          .replace(/&amp;/g, "&");
+        const replaceTarget = node.matches("pre.mermaid") ? node : node.parentElement;
+        replaceTarget.replaceWith(wrapper);
+      });
+    }
+
+    prepareMermaidBlocks();
+
+    document.querySelectorAll(".document-main table").forEach((table) => {
+      if (table.parentElement && table.parentElement.classList.contains("table-wrap")) return;
+      const wrapper = document.createElement("div");
+      wrapper.className = "table-wrap";
+      table.parentNode.insertBefore(wrapper, table);
+      wrapper.appendChild(table);
+    });
+
+    if (window.mermaid) {
+      mermaid.initialize({
+        startOnLoad: false,
+        securityLevel: "loose",
+        theme: "base",
+        themeVariables: {
+          primaryColor: "#eef8f4",
+          primaryTextColor: "#182230",
+          primaryBorderColor: "#0f766e",
+          lineColor: "#667085",
+          secondaryColor: "#edf3f8",
+          tertiaryColor: "#fff7ed"
+        }
+      });
+      mermaid.run({ nodes: document.querySelectorAll(".mermaid") });
+    }
+  </script>
+</body>
+</html>
