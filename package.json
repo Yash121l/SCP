@@ -1,0 +1,29 @@
+{
+  "name": "scp-programme-portal",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.24.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo build",
+    "dev": "turbo dev --parallel",
+    "dev:server": "pnpm --filter @scp/server dev",
+    "dev:web": "pnpm --filter @scp/web dev",
+    "typecheck": "turbo typecheck",
+    "db:migrate": "pnpm --filter @scp/database db:migrate",
+    "db:seed": "pnpm --filter @scp/contracts build && pnpm --filter @scp/database db:seed",
+    "smoke": "pnpm --filter @scp/server smoke",
+    "compose:up": "docker-compose up --build",
+    "compose:down": "docker-compose down -v",
+    "clean": "rm -rf apps/*/dist packages/*/dist .turbo"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.32",
+    "turbo": "^2.9.18",
+    "typescript": "^5.8.3"
+  }
+}
