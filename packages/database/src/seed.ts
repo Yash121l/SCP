@@ -462,10 +462,10 @@ const projectSeeds: ProjectSeed[] = [
     domain: "Water and sanitation",
     institutionCode: "MODEL-SCH",
     problemStatement:
-      "School taps are left open during breaks, creating avoidable water loss and unreliable maintenance signals.",
+      "School taps are left open during breaks, creating avoidable water loss and unreliable maintenance signals.\\n\\nCurrently, the school loses over 500 liters of water weekly due to manual negligence. The existing infrastructure lacks automated shut-offs and there is no tracking system to identify which blocks are consuming the most water.\\n\\nThis impacts both the school budget and local conservation efforts, making it critical to establish a localized tracking mechanism.",
     reviewNote: "Prototype needs steering review before pilot budget is released.",
     solutionSummary:
-      "A low-cost sensor and classroom dashboard that flags abnormal usage and assigns student maintenance follow-ups.",
+      "A low-cost sensor and classroom dashboard that flags abnormal usage and assigns student maintenance follow-ups.\\n\\nUpdates:\\n- On 25th: Initial sensor blueprint approved by the science department.\\n- On 27th: First working prototype assembled using Arduino and basic flow sensors.\\n- On 28th: Successfully completed local dry-run tests. Waiting for steering committee approval to deploy in Block A washrooms.\\n\\nNext steps include calibrating the dashboard metrics and assigning student shifts.",
     status: "under_review",
     studentEmail: "student@scp.local",
     title: "Smart Water Use Monitor",
@@ -474,9 +474,9 @@ const projectSeeds: ProjectSeed[] = [
     domain: "Accessibility",
     institutionCode: "RIVER-SCH",
     problemStatement:
-      "Visitors and new students struggle to find labs, offices, and safety points across the campus.",
+      "Visitors and new students struggle to find labs, offices, and safety points across the campus.\\n\\nThe sprawling nature of the school means that crucial areas like the infirmary and the administration block are hard to locate without physical guidance. There are currently only text-based signs, which do not account for non-native speakers or visually impaired visitors.\\n\\nA more inclusive, universally understood wayfinding system is required.",
     solutionSummary:
-      "QR-enabled wayfinding markers with multilingual directions and an admin sheet for school staff updates.",
+      "QR-enabled wayfinding markers with multilingual directions and an admin sheet for school staff updates.\\n\\nUpdates:\\n- On 26th: Mapped out all key campus locations and established high-traffic zones.\\n- On 27th: Drafted initial multilingual audio directions.\\n- On 28th: Printed preliminary QR codes and placed them in test locations for user feedback.\\n\\nThe system is expected to be expanded to the sports complex by next month.",
     status: "proposed",
     studentEmail: "aarav.student@scp.local",
     title: "Inclusive Campus Wayfinding",
@@ -485,10 +485,10 @@ const projectSeeds: ProjectSeed[] = [
     domain: "Circular economy",
     institutionCode: "HILL-SCH",
     problemStatement:
-      "Reusable packaging and paper waste from the residential block is not being tracked or converted into learning activities.",
+      "Reusable packaging and paper waste from the residential block is not being tracked or converted into learning activities.\\n\\nEvery month, the hostel generates significant amounts of paper waste that is simply discarded. There is a lack of awareness among students about recycling potential and no infrastructure to process this waste internally.\\n\\nWe need a sustainable loop that turns this waste into a resource.",
     reviewNote: "Incubator employee is monitoring material sourcing before completion review.",
     solutionSummary:
-      "A student-run waste-to-art studio with weekly inventory, local mentor sessions, and public exhibition milestones.",
+      "A student-run waste-to-art studio with weekly inventory, local mentor sessions, and public exhibition milestones.\\n\\nUpdates:\\n- On 26th: Secured a dedicated room in the residential block for the studio.\\n- On 27th: Collected the first batch of 50kg paper waste.\\n- On 28th: Held the first student-led sorting and pulping session.\\n\\nWe are currently planning a local exhibition to showcase the upcycled art next week.",
     status: "in_progress",
     studentEmail: "tanya.student@scp.local",
     title: "Local Waste-to-Art Studio",

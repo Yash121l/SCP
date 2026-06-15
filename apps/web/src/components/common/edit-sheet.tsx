@@ -2,6 +2,9 @@ import { useEffect, useMemo, useState, type FormEvent } from "react";
 import { X } from "lucide-react";
 import { Button } from "@scp/ui";
 
+import { LocationPicker } from "./location-picker.js";
+import { AddressAutocomplete } from "./address-autocomplete.js";
+
 export type EditSheetField = {
   label: string;
   max?: number;
@@ -11,7 +14,7 @@ export type EditSheetField = {
   options?: Array<{ label: string; value: string }>;
   placeholder?: string;
   required?: boolean;
-  type?: "email" | "number" | "select" | "textarea" | "text";
+  type?: "email" | "number" | "select" | "textarea" | "text" | "location" | "address";
 };
 
 type Values = Record<string, string | number | null | undefined>;
@@ -52,7 +55,16 @@ export function EditSheet({
   title: string;
 }) {
   const [values, setValues] = useState<Record<string, string>>(() =>
-    Object.fromEntries(fields.map((field) => [field.name, asInputValue(initialValues[field.name])])),
+    Object.fromEntries(
+      fields.flatMap((field) =>
+        field.type === "location"
+          ? [
+              ["latitude", asInputValue(initialValues["latitude"])],
+              ["longitude", asInputValue(initialValues["longitude"])],
+            ]
+          : [[field.name, asInputValue(initialValues[field.name])]]
+      )
+    )
   );
   const [error, setError] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
@@ -94,7 +106,17 @@ export function EditSheet({
 
     setSaving(true);
     try {
-      await onSubmit(Object.fromEntries(fields.map((field) => [field.name, parseValue(field, values[field.name] ?? "")])));
+      await onSubmit(
+        Object.assign(
+          {},
+          ...fields.map((field) => {
+            if (field.type === "location") {
+              return { latitude: Number(values.latitude), longitude: Number(values.longitude) };
+            }
+            return { [field.name]: parseValue(field, values[field.name] ?? "") };
+          })
+        )
+      );
     } catch (unknownError) {
       setError(unknownError instanceof Error ? unknownError.message : "Could not save changes");
     } finally {
@@ -119,7 +141,7 @@ export function EditSheet({
         <form onSubmit={(event) => void submit(event)}>
           <div className="sheet-fields">
             {fields.map((field) => (
-              <label className={field.type === "textarea" ? "span-2" : undefined} key={field.name}>
+              <label className={field.type === "textarea" || field.type === "location" || field.type === "address" ? "span-2" : undefined} key={field.name}>
                 <span>{field.label}</span>
                 {field.type === "select" ? (
                   <select
@@ -142,6 +164,24 @@ export function EditSheet({
                     rows={4}
                     maxLength={field.maxLength}
                     value={values[field.name] ?? ""}
+                  />
+                ) : field.type === "location" ? (
+                  <LocationPicker
+                    latitude={Number(values["latitude"]) || 0}
+                    longitude={Number(values["longitude"]) || 0}
+                    onChange={(lat, lng) => setValues((current) => ({ ...current, latitude: String(lat), longitude: String(lng) }))}
+                  />
+                ) : field.type === "address" ? (
+                  <AddressAutocomplete
+                    placeholder={field.placeholder}
+                    required={field.required}
+                    value={values[field.name] ?? ""}
+                    onChange={(val) => setValues((current) => ({ ...current, [field.name]: val }))}
+                    onLocationFound={(lat, lng) => {
+                      if (fields.some(f => f.type === "location")) {
+                        setValues((current) => ({ ...current, latitude: String(lat), longitude: String(lng) }));
+                      }
+                    }}
                   />
                 ) : (
                   <input

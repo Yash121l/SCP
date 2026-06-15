@@ -67,8 +67,11 @@ function learnerValues(learner: CurriculumStageLearner) {
 function stageValues(stage: CurriculumStage) {
   return {
     completedSessions: stage.completedSessions,
+    detail: stage.detail,
+    attachmentUrl: stage.attachmentUrl,
     nextTopic: stage.nextTopic,
     plannedSessions: stage.plannedSessions,
+    sequence: stage.sequence,
     status: stage.status,
     title: stage.title,
   };
@@ -162,6 +165,7 @@ export function CurriculumDetailView() {
   const linkedProjects = learners.filter((learner) => learner.projectId && learner.projectTitle);
   const stageFields: EditSheetField[] = [
     { label: "Stage title", maxLength: 160, name: "title", required: true },
+    { label: "Sequence order", min: 1, name: "sequence", required: true, type: "number" },
     {
       label: "Status",
       name: "status",
@@ -178,6 +182,8 @@ export function CurriculumDetailView() {
       required: true,
       type: "number",
     },
+    { label: "Detail notes", maxLength: 1000, name: "detail", type: "textarea" },
+    { label: "Attachment URL", name: "attachmentUrl", type: "text", placeholder: "https://drive.google.com/..." },
     { label: "Next topic", maxLength: 240, name: "nextTopic", required: true, type: "textarea" },
   ];
 
@@ -315,6 +321,18 @@ export function CurriculumDetailView() {
                   <span>Next topic</span>
                   <strong>{stage.nextTopic}</strong>
                 </div>
+                {stage.detail && (
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <span>Detail note</span>
+                    <strong>{stage.detail}</strong>
+                  </div>
+                )}
+                {stage.attachmentUrl && (
+                  <div style={{ gridColumn: "1 / -1" }}>
+                    <span>Attachment</span>
+                    <strong><a href={stage.attachmentUrl} target="_blank" rel="noreferrer">View attached material</a></strong>
+                  </div>
+                )}
               </div>
               <div className="progress-track">
                 <span style={{ width: `${stage.completionPercent}%` }} />

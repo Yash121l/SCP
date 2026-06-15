@@ -30,6 +30,9 @@ export const curriculumStageUpdateSchema = z
     plannedSessions: z.number().int().min(0).optional(),
     status: curriculumDeliveryStatusSchema.optional(),
     title: z.string().trim().min(2).max(160).optional(),
+    detail: z.string().trim().max(1000).optional(),
+    attachmentUrl: z.string().url().nullable().optional(),
+    sequence: z.number().int().min(1).optional(),
   })
   .refine(
     (input) =>

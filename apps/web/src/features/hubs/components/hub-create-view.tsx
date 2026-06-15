@@ -64,8 +64,17 @@ export function HubCreateView() {
         }
       />
 
+      <div className="flow-steps-wrapper">
+        <ol className="flow-steps">
+          <li className="active">Create incubator anchor</li>
+          <li>Map 5-10 schools to the incubator</li>
+          <li>Assign incubator employees and school champions</li>
+          <li>Enroll students and track project activity</li>
+        </ol>
+      </div>
+
       <section className="create-flow">
-        <Panel title="Incubator identity" className="span-7">
+        <Panel title="Incubator identity">
           <form className="entity-form" onSubmit={submit}>
             <label>
               <span>Incubator code</span>
@@ -106,15 +115,6 @@ export function HubCreateView() {
               </Button>
             </div>
           </form>
-        </Panel>
-
-        <Panel title="Next in flow" className="span-5">
-          <ol className="flow-steps">
-            <li className="active">Create incubator anchor</li>
-            <li>Map 5-10 schools to the incubator</li>
-            <li>Assign incubator employees and school champions</li>
-            <li>Enroll students and track project activity</li>
-          </ol>
         </Panel>
       </section>
     </div>

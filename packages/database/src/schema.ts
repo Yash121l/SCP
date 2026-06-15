@@ -339,6 +339,8 @@ export const curriculumStages = pgTable(
     completedSessions: integer("completed_sessions").notNull().default(0),
     status: curriculumDeliveryStatus("status").notNull().default("planned"),
     nextTopic: text("next_topic").notNull().default("Session planning pending"),
+    detail: text("detail").notNull().default(""),
+    attachmentUrl: text("attachment_url"),
     createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
   },

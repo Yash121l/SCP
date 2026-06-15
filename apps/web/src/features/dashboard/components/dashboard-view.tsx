@@ -740,13 +740,7 @@ export function DashboardView() {
             <ActiveTrends curriculum={summary.curriculum} feedbackCount={summary.feedback.length} projects={summary.projects} />
           </section>
 
-          <section className="rail-card map-rail-card">
-            <header>
-              <h2>Geography</h2>
-              <Badge tone="green">Map view</Badge>
-            </header>
-            <GeographicPanel institutions={summary.institutions} />
-          </section>
+
 
           <section className="rail-card">
             <header>
@@ -777,6 +771,9 @@ export function DashboardView() {
         </Panel>
         <Panel title="Curriculum progress" className="span-5" action={<Badge tone="blue">C4 delivery</Badge>}>
           <CurriculumChart rows={summary.curriculum} />
+        </Panel>
+        <Panel title="Geography" className="span-7" action={<Badge tone="green">Map view</Badge>}>
+          <GeographicPanel institutions={summary.institutions} />
         </Panel>
         <Panel title="Operational indicators" className="span-7">
           <IndicatorList indicators={summary.indicators} />

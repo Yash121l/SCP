@@ -7,6 +7,9 @@ import { useAuth } from "../../features/auth/auth-context.js";
 import { useWorkspaceDataState } from "../../features/workspace/workspace-data.js";
 import { apiGet } from "../../lib/api.js";
 import { ThemeToggle } from "../theme/theme-toggle.js";
+import { useCommandPalette } from "./command-palette-context.js";
+import { useMobileSidebar } from "./mobile-sidebar-context.js";
+import { Menu } from "lucide-react";
 
 const searchTypeLabel: Record<SearchResult["type"], string> = {
   approval: "approval",
@@ -71,60 +74,27 @@ export function Topbar({ user, onLogout }: { user: SessionUser; onLogout: () => 
   const { summary } = useWorkspaceDataState();
   const location = useLocation();
   const navigate = useNavigate();
+  const { setIsOpen: setCommandPaletteOpen } = useCommandPalette();
+  const { toggle: toggleMobileSidebar } = useMobileSidebar();
   const [panel, setPanel] = useState<"notifications" | null>(null);
-  const [query, setQuery] = useState("");
-  const [results, setResults] = useState<SearchResult[]>([]);
-
-  useEffect(() => {
-    const handle = window.setTimeout(() => {
-      if (!query.trim()) {
-        setResults([]);
-        return;
-      }
-
-      void apiGet<{ results: SearchResult[] }>(
-        `/api/search?q=${encodeURIComponent(query.trim())}`,
-        session?.token,
-      )
-        .then((payload) => setResults(payload.results))
-        .catch(() => setResults([]));
-    }, 180);
-
-    return () => window.clearTimeout(handle);
-  }, [query, session?.token]);
-
-  function goTo(result: SearchResult) {
-    setQuery("");
-    setResults([]);
-    navigate(result.path);
-  }
 
   return (
     <header className="topbar">
+      <button 
+        className="mobile-sidebar-toggle" 
+        onClick={toggleMobileSidebar}
+      >
+        <Menu size={20} />
+      </button>
       <h1>{titleForPath(location.pathname)}</h1>
-      <div className="search-box">
-        <Search size={16} />
-        <input
-          onChange={(event) => setQuery(event.target.value)}
-          onKeyDown={(event) => {
-            if (event.key === "Enter" && results[0]) {
-              goTo(results[0]);
-            }
-          }}
-          placeholder="Search incubators, schools, projects, employees"
-          value={query}
-        />
-        {results.length > 0 && (
-          <div className="topbar-popover search-results">
-            {results.map((result) => (
-              <button key={`${result.type}-${result.id}`} onClick={() => goTo(result)} type="button">
-                <strong>{result.label}</strong>
-                <span>{result.meta}</span>
-                <Badge tone="blue">{searchTypeLabel[result.type]}</Badge>
-              </button>
-            ))}
-          </div>
-        )}
+      <div 
+        className="search-box" 
+        onClick={() => setCommandPaletteOpen(true)}
+        style={{ cursor: "text" }}
+      >
+        <Search size={16} color="var(--text-muted)" />
+        <span style={{ color: "var(--text-muted)", fontSize: "13px", flex: 1 }}>Search incubators, schools, projects...</span>
+        <Badge tone="neutral" style={{ fontSize: "10px", padding: "2px 6px" }}>⌘K</Badge>
       </div>
       <div className="topbar-actions">
         <ThemeToggle />

@@ -76,8 +76,17 @@ export function StudentCreateView() {
         }
       />
 
+      <div className="flow-steps-wrapper">
+        <ol className="flow-steps">
+          <li>Choose school scope</li>
+          <li className="active">Create student record</li>
+          <li>Review student detail and mentorship assignment</li>
+          <li>Track student projects and status changes</li>
+        </ol>
+      </div>
+
       <section className="create-flow">
-        <Panel title="Student record" className="span-7">
+        <Panel title="Student record">
           <form className="entity-form wide" onSubmit={submit}>
             <label>
               <span>Name</span>
@@ -140,15 +149,6 @@ export function StudentCreateView() {
               </Button>
             </div>
           </form>
-        </Panel>
-
-        <Panel title="Next in flow" className="span-5">
-          <ol className="flow-steps">
-            <li>Choose school scope</li>
-            <li className="active">Create student record</li>
-            <li>Review student detail and mentorship assignment</li>
-            <li>Track student projects and status changes</li>
-          </ol>
         </Panel>
       </section>
     </div>

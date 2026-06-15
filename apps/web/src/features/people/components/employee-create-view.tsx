@@ -65,8 +65,17 @@ export function EmployeeCreateView() {
         }
       />
 
+      <div className="flow-steps-wrapper">
+        <ol className="flow-steps">
+          <li>Choose incubator scope</li>
+          <li className="active">Create employee assignment</li>
+          <li>Assign student mentorship where needed</li>
+          <li>Track activity through school and student records</li>
+        </ol>
+      </div>
+
       <section className="create-flow">
-        <Panel title="Employee assignment" className="span-7">
+        <Panel title="Employee assignment">
           <form className="entity-form wide" onSubmit={submit}>
             <label>
               <span>Name</span>
@@ -116,15 +125,6 @@ export function EmployeeCreateView() {
               </Button>
             </div>
           </form>
-        </Panel>
-
-        <Panel title="Next in flow" className="span-5">
-          <ol className="flow-steps">
-            <li>Choose incubator scope</li>
-            <li className="active">Create employee assignment</li>
-            <li>Assign student mentorship where needed</li>
-            <li>Track activity through school and student records</li>
-          </ol>
         </Panel>
       </section>
     </div>

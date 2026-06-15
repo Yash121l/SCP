@@ -42,8 +42,7 @@ export function HubsView() {
       required: true,
       type: "select",
     },
-    { label: "Latitude", max: 90, min: -90, name: "latitude", type: "number" },
-    { label: "Longitude", max: 180, min: -180, name: "longitude", type: "number" },
+    { label: "Map Coordinates", name: "location", type: "location" },
     { label: "Performance score", max: 100, min: 0, name: "performanceScore", type: "number" },
     { label: "Geography note", name: "geographyNote", type: "textarea" },
   ];

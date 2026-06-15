@@ -70,8 +70,17 @@ export function ProjectCreateView() {
         }
       />
 
+      <div className="flow-steps-wrapper">
+        <ol className="flow-steps">
+          <li className="active">Raise project request</li>
+          <li>Approval entry is created automatically</li>
+          <li>Committee reviews in Governance</li>
+          <li>Project status moves through execution</li>
+        </ol>
+      </div>
+
       <section className="create-flow">
-        <Panel title="Project request" className="span-7">
+        <Panel title="Project request">
           <form className="entity-form wide" onSubmit={submit}>
             <label className="full-width">
               <span>Project title</span>
@@ -129,15 +138,6 @@ export function ProjectCreateView() {
               </Button>
             </div>
           </form>
-        </Panel>
-
-        <Panel title="Next in flow" className="span-5">
-          <ol className="flow-steps">
-            <li className="active">Raise project request</li>
-            <li>Approval entry is created automatically</li>
-            <li>Committee reviews in Governance</li>
-            <li>Project status moves through execution</li>
-          </ol>
         </Panel>
       </section>
     </div>

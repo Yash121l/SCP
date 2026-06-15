@@ -218,7 +218,9 @@ export function createCurriculumRepository(db: DatabaseClient) {
       const assignment = await toAssignment(row, scope);
       const stageRows = await db
         .select({
+          attachmentUrl: curriculumStages.attachmentUrl,
           completedSessions: curriculumStages.completedSessions,
+          detail: curriculumStages.detail,
           id: curriculumStages.id,
           nextTopic: curriculumStages.nextTopic,
           plannedSessions: curriculumStages.plannedSessions,
@@ -335,9 +337,12 @@ export function createCurriculumRepository(db: DatabaseClient) {
       await db
         .update(curriculumStages)
         .set({
+          ...(input.attachmentUrl !== undefined ? { attachmentUrl: input.attachmentUrl } : {}),
           ...(input.completedSessions !== undefined ? { completedSessions: input.completedSessions } : {}),
+          ...(input.detail !== undefined ? { detail: input.detail } : {}),
           ...(input.nextTopic !== undefined ? { nextTopic: input.nextTopic } : {}),
           ...(input.plannedSessions !== undefined ? { plannedSessions: input.plannedSessions } : {}),
+          ...(input.sequence !== undefined ? { sequence: input.sequence } : {}),
           ...(input.status !== undefined ? { status: input.status } : {}),
           ...(input.title !== undefined ? { title: input.title } : {}),
           updatedAt: new Date(),

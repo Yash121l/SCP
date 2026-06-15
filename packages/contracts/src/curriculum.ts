@@ -44,8 +44,10 @@ export type CurriculumStageLearner = {
 
 export type CurriculumStage = {
   id: string;
+  attachmentUrl: string | null;
   completedSessions: number;
   completionPercent: number;
+  detail: string;
   learners: CurriculumStageLearner[];
   nextTopic: string;
   plannedSessions: number;

@@ -5,6 +5,7 @@ import { userHasPermission, type Institution } from "@scp/contracts";
 import { Button, Panel } from "@scp/ui";
 import { EmptyPermission } from "../../../components/common/empty-permission.js";
 import { ViewHeader } from "../../../components/common/view-header.js";
+import { AddressAutocomplete } from "../../../components/common/address-autocomplete.js";
 import { apiPost } from "../../../lib/api.js";
 import { useAuth } from "../../auth/auth-context.js";
 import { useWorkspaceDataState, useWorkspaceSummary } from "../../workspace/workspace-data.js";
@@ -16,6 +17,8 @@ type InstitutionForm = {
   district: string;
   employeeCount: number;
   hubId: string;
+  latitude?: number;
+  longitude?: number;
   name: string;
   principalName: string;
   projectCount: number;
@@ -71,6 +74,8 @@ export function InstitutionCreateView() {
           ...form,
           code: form.code || undefined,
           hubId,
+          latitude: form.latitude || 0,
+          longitude: form.longitude || 0,
         },
         session?.token,
       );
@@ -94,8 +99,17 @@ export function InstitutionCreateView() {
         }
       />
 
-      <section className="create-flow">
-        <Panel title="School profile" className="span-7">
+      <div style={{ marginBottom: "20px" }}>
+        <ol className="flow-steps" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "10px" }}>
+          <li style={{ background: "var(--panel)" }}>Choose the incubator anchor</li>
+          <li className="active" style={{ background: "var(--panel)" }}>Create school profile</li>
+          <li style={{ background: "var(--panel)" }}>Assign employees or school champions</li>
+          <li style={{ background: "var(--panel)" }}>Enroll students and project records</li>
+        </ol>
+      </div>
+
+      <section className="create-flow" style={{ display: "block" }}>
+        <Panel title="School profile">
           <form className="entity-form wide" onSubmit={submit}>
             <label>
               <span>School name</span>
@@ -141,7 +155,12 @@ export function InstitutionCreateView() {
             </label>
             <label className="full-width">
               <span>Address</span>
-              <input onChange={(event) => setForm((value) => ({ ...value, address: event.target.value }))} required value={form.address} />
+              <AddressAutocomplete
+                value={form.address}
+                onChange={(address) => setForm((value) => ({ ...value, address }))}
+                onLocationFound={(latitude, longitude) => setForm((value) => ({ ...value, latitude, longitude }))}
+                required
+              />
             </label>
             {error && <p className="form-error full-width">{error}</p>}
             <div className="form-actions full-width">
@@ -154,15 +173,6 @@ export function InstitutionCreateView() {
               </Button>
             </div>
           </form>
-        </Panel>
-
-        <Panel title="Next in flow" className="span-5">
-          <ol className="flow-steps">
-            <li>Choose the incubator anchor</li>
-            <li className="active">Create school profile</li>
-            <li>Assign employees or school champions</li>
-            <li>Enroll students and project records</li>
-          </ol>
         </Panel>
       </section>
     </div>
