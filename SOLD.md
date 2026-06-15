@@ -48,6 +48,7 @@ This file is the project decision log for the Central Programme Management Porta
 - Role ownership is workflow-specific: steering committee creates incubators and assigns incubator employees; incubators create schools; schools create students; project/curriculum work remains scoped by role. Dashboards should render role-specific workspaces instead of one shared page with disabled or missing controls.
 - Steering committee has `hubs:manage` and `people:manage`; incubators keep `institutions:manage`; schools keep `students:manage`. These permissions are enforced in backend RBAC and mirrored in navigation/actions.
 - Record detail pages must expose the same permission-aware update/archive/delete controls as their index rows, using the shared compact edit drawer. Edit drawers should keep fields top-aligned, fixed-height where appropriate and validation-bounded for geography, scores and count metrics.
+- EC2/Nginx deployment uses the standalone `docker-compose.ec2.yml` file, not a merge with the local `docker-compose.yml`, so Postgres remains private on the Docker network and only web/API bind to localhost for Nginx proxying.
 
 ## Open Decisions
 

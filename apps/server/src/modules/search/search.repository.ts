@@ -14,6 +14,13 @@ import { and, asc, eq, ilike, or } from "drizzle-orm";
 
 type SearchScope = {
   canSeeAll: boolean;
+  canSearchApprovals: boolean;
+  canSearchCurriculum: boolean;
+  canSearchEmployees: boolean;
+  canSearchHubs: boolean;
+  canSearchInstitutions: boolean;
+  canSearchProjects: boolean;
+  canSearchStudents: boolean;
   hubId: string | null;
   institutionId?: string | null;
   studentId?: string | null;
@@ -66,75 +73,89 @@ export function createSearchRepository(db: DatabaseClient) {
           : eq(curriculumAssignments.hubId, "");
 
       const [hubs, institutionRows, employeeRows, studentRows, projectRows, curriculumRows, approvalRows] = await Promise.all([
-        db
-          .select({ code: incubationHubs.code, id: incubationHubs.id, name: incubationHubs.name, region: incubationHubs.region })
-          .from(incubationHubs)
-          .where(hubWhere)
-          .orderBy(asc(incubationHubs.name))
-          .limit(5),
-        db
-          .select({ district: institutions.district, id: institutions.id, name: institutions.name, type: institutions.type })
-          .from(institutions)
-          .where(and(institutionScope, or(ilike(institutions.name, term), ilike(institutions.code, term))))
-          .orderBy(asc(institutions.name))
-          .limit(6),
-        db
-          .select({ designation: hubEmployees.designation, id: hubEmployees.id, name: hubEmployees.name })
-          .from(hubEmployees)
-          .where(and(employeeScope, or(ilike(hubEmployees.name, term), ilike(hubEmployees.email, term))))
-          .orderBy(asc(hubEmployees.name))
-          .limit(6),
-        db
-          .select({ grade: students.grade, id: students.id, name: students.name })
-          .from(students)
-          .where(and(studentScope, or(ilike(students.name, term), ilike(students.email, term))))
-          .orderBy(asc(students.name))
-          .limit(6),
-        db
-          .select({ domain: studentProjects.domain, id: studentProjects.id, ownerName: studentProjects.ownerName, title: studentProjects.title })
-          .from(studentProjects)
-          .where(
-            and(
-              projectScope,
-              or(
-                ilike(studentProjects.title, term),
-                ilike(studentProjects.domain, term),
-                ilike(studentProjects.ownerName, term),
-              ),
-            ),
-          )
-          .orderBy(asc(studentProjects.title))
-          .limit(6),
-        db
-          .select({
-            code: curriculumModules.code,
-            domain: curriculumModules.domain,
-            hubName: incubationHubs.name,
-            id: curriculumAssignments.id,
-            title: curriculumModules.title,
-          })
-          .from(curriculumAssignments)
-          .innerJoin(curriculumModules, eq(curriculumAssignments.moduleId, curriculumModules.id))
-          .innerJoin(incubationHubs, eq(curriculumAssignments.hubId, incubationHubs.id))
-          .where(
-            and(
-              curriculumScope,
-              or(
-                ilike(curriculumModules.title, term),
-                ilike(curriculumModules.code, term),
-                ilike(curriculumModules.domain, term),
-                ilike(incubationHubs.name, term),
-              ),
-            ),
-          )
-          .orderBy(asc(curriculumModules.code))
-          .limit(6),
-        db
-          .select({ id: approvals.id, module: approvals.module, title: approvals.title })
-          .from(approvals)
-          .where(or(ilike(approvals.title, term), ilike(approvals.module, term)))
-          .orderBy(asc(approvals.dueAt))
-          .limit(scope.canSeeAll ? 4 : 0),
+        scope.canSearchHubs
+          ? db
+              .select({ code: incubationHubs.code, id: incubationHubs.id, name: incubationHubs.name, region: incubationHubs.region })
+              .from(incubationHubs)
+              .where(hubWhere)
+              .orderBy(asc(incubationHubs.name))
+              .limit(5)
+          : [],
+        scope.canSearchInstitutions
+          ? db
+              .select({ district: institutions.district, id: institutions.id, name: institutions.name, type: institutions.type })
+              .from(institutions)
+              .where(and(institutionScope, or(ilike(institutions.name, term), ilike(institutions.code, term))))
+              .orderBy(asc(institutions.name))
+              .limit(6)
+          : [],
+        scope.canSearchEmployees
+          ? db
+              .select({ designation: hubEmployees.designation, id: hubEmployees.id, name: hubEmployees.name })
+              .from(hubEmployees)
+              .where(and(employeeScope, or(ilike(hubEmployees.name, term), ilike(hubEmployees.email, term))))
+              .orderBy(asc(hubEmployees.name))
+              .limit(6)
+          : [],
+        scope.canSearchStudents
+          ? db
+              .select({ grade: students.grade, id: students.id, name: students.name })
+              .from(students)
+              .where(and(studentScope, or(ilike(students.name, term), ilike(students.email, term))))
+              .orderBy(asc(students.name))
+              .limit(6)
+          : [],
+        scope.canSearchProjects
+          ? db
+              .select({ domain: studentProjects.domain, id: studentProjects.id, ownerName: studentProjects.ownerName, title: studentProjects.title })
+              .from(studentProjects)
+              .where(
+                and(
+                  projectScope,
+                  or(
+                    ilike(studentProjects.title, term),
+                    ilike(studentProjects.domain, term),
+                    ilike(studentProjects.ownerName, term),
+                  ),
+                ),
+              )
+              .orderBy(asc(studentProjects.title))
+              .limit(6)
+          : [],
+        scope.canSearchCurriculum
+          ? db
+              .select({
+                code: curriculumModules.code,
+                domain: curriculumModules.domain,
+                hubName: incubationHubs.name,
+                id: curriculumAssignments.id,
+                title: curriculumModules.title,
+              })
+              .from(curriculumAssignments)
+              .innerJoin(curriculumModules, eq(curriculumAssignments.moduleId, curriculumModules.id))
+              .innerJoin(incubationHubs, eq(curriculumAssignments.hubId, incubationHubs.id))
+              .where(
+                and(
+                  curriculumScope,
+                  or(
+                    ilike(curriculumModules.title, term),
+                    ilike(curriculumModules.code, term),
+                    ilike(curriculumModules.domain, term),
+                    ilike(incubationHubs.name, term),
+                  ),
+                ),
+              )
+              .orderBy(asc(curriculumModules.code))
+              .limit(6)
+          : [],
+        scope.canSearchApprovals
+          ? db
+              .select({ id: approvals.id, module: approvals.module, title: approvals.title })
+              .from(approvals)
+              .where(or(ilike(approvals.title, term), ilike(approvals.module, term)))
+              .orderBy(asc(approvals.dueAt))
+              .limit(4)
+          : [],
       ]);
 
       return [
