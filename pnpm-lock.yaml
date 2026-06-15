@@ -18,6 +18,19 @@ importers:
         specifier: ^5.8.3
         version: 5.9.3
 
+  apps/api:
+    dependencies:
+      '@scp/server':
+        specifier: workspace:*
+        version: link:../server
+    devDependencies:
+      '@types/node':
+        specifier: ^22.15.32
+        version: 22.19.21
+      typescript:
+        specifier: ^5.8.3
+        version: 5.9.3
+
   apps/server:
     dependencies:
       '@fastify/cookie':

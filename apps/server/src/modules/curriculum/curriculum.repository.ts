@@ -16,6 +16,11 @@ import type {
   CurriculumStageLearner,
 } from "@scp/contracts";
 import { and, asc, eq, sql } from "drizzle-orm";
+import type {
+  CurriculumAssignmentUpdateInput,
+  CurriculumLearnerUpdateInput,
+  CurriculumStageUpdateInput,
+} from "./curriculum.schemas.js";
 
 type CurriculumScope = {
   canSeeAll: boolean;
@@ -133,6 +138,73 @@ export function createCurriculumRepository(db: DatabaseClient) {
     };
   }
 
+  async function assignmentIdForStage(stageId: string, scope: CurriculumScope) {
+    const [row] = await db
+      .select({ assignmentId: curriculumStages.assignmentId })
+      .from(curriculumStages)
+      .innerJoin(curriculumAssignments, eq(curriculumStages.assignmentId, curriculumAssignments.id))
+      .where(and(eq(curriculumStages.id, stageId), scopedAssignmentWhere(scope)))
+      .limit(1);
+
+    return row?.assignmentId ?? null;
+  }
+
+  async function assignmentIdForLearner(learnerId: string, scope: CurriculumScope) {
+    const [row] = await db
+      .select({ assignmentId: curriculumStages.assignmentId })
+      .from(curriculumStageStudents)
+      .innerJoin(curriculumStages, eq(curriculumStageStudents.stageId, curriculumStages.id))
+      .innerJoin(curriculumAssignments, eq(curriculumStages.assignmentId, curriculumAssignments.id))
+      .where(and(eq(curriculumStageStudents.id, learnerId), scopedAssignmentWhere(scope)))
+      .limit(1);
+
+    return row?.assignmentId ?? null;
+  }
+
+  async function recalculateAssignment(assignmentId: string) {
+    const stages = await db
+      .select({
+        completedSessions: curriculumStages.completedSessions,
+        nextTopic: curriculumStages.nextTopic,
+        plannedSessions: curriculumStages.plannedSessions,
+        sequence: curriculumStages.sequence,
+        status: curriculumStages.status,
+      })
+      .from(curriculumStages)
+      .where(eq(curriculumStages.assignmentId, assignmentId))
+      .orderBy(asc(curriculumStages.sequence));
+
+    if (stages.length === 0) {
+      return;
+    }
+
+    const plannedSessions = stages.reduce((total, stage) => total + stage.plannedSessions, 0);
+    const completedSessions = stages.reduce((total, stage) => total + stage.completedSessions, 0);
+    const status = stages.every((stage) => stage.status === "completed")
+      ? "completed"
+      : stages.some((stage) => stage.status === "at_risk")
+        ? "at_risk"
+        : stages.some((stage) => stage.status === "active")
+          ? "active"
+          : "planned";
+    const nextTopic =
+      stages.find((stage) => stage.status === "active" && stage.nextTopic)?.nextTopic ??
+      stages.find((stage) => stage.status !== "completed" && stage.nextTopic)?.nextTopic ??
+      stages[stages.length - 1]?.nextTopic ??
+      "Session planning pending";
+
+    await db
+      .update(curriculumAssignments)
+      .set({
+        completedSessions,
+        nextTopic,
+        plannedSessions,
+        status,
+        updatedAt: new Date(),
+      })
+      .where(eq(curriculumAssignments.id, assignmentId));
+  }
+
   return {
     async getById(id: string, scope: CurriculumScope): Promise<CurriculumDetail | null> {
       const [row] = await assignmentSelect()
@@ -200,6 +272,80 @@ export function createCurriculumRepository(db: DatabaseClient) {
         .limit(500);
 
       return Promise.all(rows.map((row) => toAssignment(row, scope)));
+    },
+
+    async updateAssignment(
+      id: string,
+      input: CurriculumAssignmentUpdateInput,
+      scope: CurriculumScope,
+    ): Promise<CurriculumDetail | null> {
+      const existing = await this.getById(id, scope);
+      if (!existing) {
+        return null;
+      }
+
+      await db
+        .update(curriculumAssignments)
+        .set({
+          ...(input.completedSessions !== undefined ? { completedSessions: input.completedSessions } : {}),
+          ...(input.nextTopic !== undefined ? { nextTopic: input.nextTopic } : {}),
+          ...(input.ownerEmployeeId !== undefined ? { ownerEmployeeId: input.ownerEmployeeId } : {}),
+          ...(input.plannedSessions !== undefined ? { plannedSessions: input.plannedSessions } : {}),
+          ...(input.status !== undefined ? { status: input.status } : {}),
+          updatedAt: new Date(),
+        })
+        .where(eq(curriculumAssignments.id, id));
+
+      return this.getById(id, scope);
+    },
+
+    async updateLearner(
+      id: string,
+      input: CurriculumLearnerUpdateInput,
+      scope: CurriculumScope,
+    ): Promise<CurriculumDetail | null> {
+      const assignmentId = await assignmentIdForLearner(id, scope);
+      if (!assignmentId) {
+        return null;
+      }
+
+      await db
+        .update(curriculumStageStudents)
+        .set({
+          ...(input.evidenceNote !== undefined ? { evidenceNote: input.evidenceNote } : {}),
+          ...(input.projectId !== undefined ? { projectId: input.projectId } : {}),
+          ...(input.status !== undefined ? { status: input.status } : {}),
+          updatedAt: new Date(),
+        })
+        .where(eq(curriculumStageStudents.id, id));
+
+      return this.getById(assignmentId, scope);
+    },
+
+    async updateStage(
+      id: string,
+      input: CurriculumStageUpdateInput,
+      scope: CurriculumScope,
+    ): Promise<CurriculumDetail | null> {
+      const assignmentId = await assignmentIdForStage(id, scope);
+      if (!assignmentId) {
+        return null;
+      }
+
+      await db
+        .update(curriculumStages)
+        .set({
+          ...(input.completedSessions !== undefined ? { completedSessions: input.completedSessions } : {}),
+          ...(input.nextTopic !== undefined ? { nextTopic: input.nextTopic } : {}),
+          ...(input.plannedSessions !== undefined ? { plannedSessions: input.plannedSessions } : {}),
+          ...(input.status !== undefined ? { status: input.status } : {}),
+          ...(input.title !== undefined ? { title: input.title } : {}),
+          updatedAt: new Date(),
+        })
+        .where(eq(curriculumStages.id, id));
+
+      await recalculateAssignment(assignmentId);
+      return this.getById(assignmentId, scope);
     },
   };
 }

@@ -1,11 +1,12 @@
 import type { FastifyInstance } from "fastify";
-import { z } from "zod";
 import type { Services } from "../../services.js";
 import { authenticate, requirePermission } from "../../security/authenticate.js";
-
-const routeParamsWithIdSchema = z.object({
-  id: z.string().uuid(),
-});
+import {
+  curriculumAssignmentUpdateSchema,
+  curriculumLearnerUpdateSchema,
+  curriculumStageUpdateSchema,
+  routeParamsWithIdSchema,
+} from "./curriculum.schemas.js";
 
 export async function registerCurriculumRoutes(app: FastifyInstance, services: Services) {
   app.get(
@@ -25,6 +26,63 @@ export async function registerCurriculumRoutes(app: FastifyInstance, services: S
 
       if (!curriculum) {
         return reply.code(404).send({ message: "Curriculum assignment not found" });
+      }
+
+      return { curriculum };
+    },
+  );
+
+  app.patch(
+    "/curriculum/:id",
+    { preHandler: [authenticate(services.auth), requirePermission("curriculum:manage")] },
+    async (request, reply) => {
+      const params = routeParamsWithIdSchema.parse(request.params);
+      const curriculum = await services.curriculum.updateAssignment(
+        request.user!,
+        params.id,
+        curriculumAssignmentUpdateSchema.parse(request.body),
+      );
+
+      if (!curriculum) {
+        return reply.code(404).send({ message: "Curriculum assignment not found" });
+      }
+
+      return { curriculum };
+    },
+  );
+
+  app.patch(
+    "/curriculum/learners/:id",
+    { preHandler: [authenticate(services.auth), requirePermission("curriculum:manage")] },
+    async (request, reply) => {
+      const params = routeParamsWithIdSchema.parse(request.params);
+      const curriculum = await services.curriculum.updateLearner(
+        request.user!,
+        params.id,
+        curriculumLearnerUpdateSchema.parse(request.body),
+      );
+
+      if (!curriculum) {
+        return reply.code(404).send({ message: "Curriculum learner not found" });
+      }
+
+      return { curriculum };
+    },
+  );
+
+  app.patch(
+    "/curriculum/stages/:id",
+    { preHandler: [authenticate(services.auth), requirePermission("curriculum:manage")] },
+    async (request, reply) => {
+      const params = routeParamsWithIdSchema.parse(request.params);
+      const curriculum = await services.curriculum.updateStage(
+        request.user!,
+        params.id,
+        curriculumStageUpdateSchema.parse(request.body),
+      );
+
+      if (!curriculum) {
+        return reply.code(404).send({ message: "Curriculum stage not found" });
       }
 
       return { curriculum };

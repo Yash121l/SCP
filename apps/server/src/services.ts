@@ -59,7 +59,10 @@ export function createServices(
     audit,
     repository: createGovernanceRepository(db),
   });
-  const curriculum = createCurriculumService(createCurriculumRepository(db));
+  const curriculum = createCurriculumService({
+    audit,
+    repository: createCurriculumRepository(db),
+  });
   const experts = createExpertService({
     audit,
     repository: createExpertRepository(db),
