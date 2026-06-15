@@ -1,11 +1,19 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { ArrowLeft, BookOpenCheck, FolderKanban, GraduationCap, UserRoundCheck } from "lucide-react";
-import type { CurriculumDetail } from "@scp/contracts";
+import {
+  userHasPermission,
+  type CurriculumDetail,
+  type CurriculumStage,
+  type CurriculumStageLearner,
+} from "@scp/contracts";
 import { Badge, Panel } from "@scp/ui";
+import { ActionMenu } from "../../../components/common/action-menu.js";
+import { EditSheet, type EditSheetField } from "../../../components/common/edit-sheet.js";
 import { RecordTabs } from "../../../components/common/record-tabs.js";
-import { apiGet } from "../../../lib/api.js";
+import { apiGet, apiPatch } from "../../../lib/api.js";
 import { useAuth } from "../../auth/auth-context.js";
+import { useWorkspaceDataState, useWorkspaceSummary } from "../../workspace/workspace-data.js";
 
 const tabs = [
   { id: "stages", label: "Stages" },
@@ -21,12 +29,63 @@ function statusTone(status: string) {
   return "neutral" as const;
 }
 
+const deliveryStatusOptions = [
+  { label: "Planned", value: "planned" },
+  { label: "Active", value: "active" },
+  { label: "At risk", value: "at_risk" },
+  { label: "Completed", value: "completed" },
+];
+
+const learnerStatusOptions = [
+  { label: "Not started", value: "not_started" },
+  { label: "In progress", value: "in_progress" },
+  { label: "Completed", value: "completed" },
+];
+
+type LearnerWithStage = CurriculumStageLearner & {
+  stageTitle: string;
+};
+
+function assignmentValues(curriculum: CurriculumDetail) {
+  return {
+    completedSessions: curriculum.completedSessions,
+    nextTopic: curriculum.nextTopic,
+    ownerEmployeeId: curriculum.ownerEmployeeId,
+    plannedSessions: curriculum.plannedSessions,
+    status: curriculum.status,
+  };
+}
+
+function learnerValues(learner: CurriculumStageLearner) {
+  return {
+    evidenceNote: learner.evidenceNote,
+    projectId: learner.projectId,
+    status: learner.status,
+  };
+}
+
+function stageValues(stage: CurriculumStage) {
+  return {
+    completedSessions: stage.completedSessions,
+    nextTopic: stage.nextTopic,
+    plannedSessions: stage.plannedSessions,
+    status: stage.status,
+    title: stage.title,
+  };
+}
+
 export function CurriculumDetailView() {
   const { curriculumId } = useParams();
   const { session } = useAuth();
+  const { refresh } = useWorkspaceDataState();
+  const { employees, projects: projectRows } = useWorkspaceSummary();
   const [activeTab, setActiveTab] = useState("stages");
   const [curriculum, setCurriculum] = useState<CurriculumDetail | null>(null);
+  const [editingAssignment, setEditingAssignment] = useState(false);
+  const [editingLearner, setEditingLearner] = useState<LearnerWithStage | null>(null);
+  const [editingStage, setEditingStage] = useState<CurriculumStage | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const canManage = session ? userHasPermission(session.user, "curriculum:manage") : false;
 
   useEffect(() => {
     if (!curriculumId) {
@@ -51,10 +110,123 @@ export function CurriculumDetailView() {
     return <div className="loading-state">Loading curriculum detail</div>;
   }
 
-  const learners = curriculum.stages.flatMap((stage) =>
+  const currentCurriculum = curriculum;
+  const learners = currentCurriculum.stages.flatMap((stage) =>
     stage.learners.map((learner) => ({ ...learner, stageTitle: stage.title })),
   );
-  const projects = learners.filter((learner) => learner.projectId && learner.projectTitle);
+  const assignmentFields: EditSheetField[] = [
+    {
+      label: "Owner",
+      name: "ownerEmployeeId",
+      options: employees
+        .filter((employee) => employee.hubId === currentCurriculum.hubId)
+        .map((employee) => ({ label: `${employee.name} · ${employee.designation}`, value: employee.id })),
+      type: "select",
+    },
+    {
+      label: "Status",
+      name: "status",
+      options: deliveryStatusOptions,
+      required: true,
+      type: "select",
+    },
+    { label: "Planned sessions", min: 0, name: "plannedSessions", required: true, type: "number" },
+    {
+      label: "Completed sessions",
+      max: currentCurriculum.plannedSessions,
+      min: 0,
+      name: "completedSessions",
+      required: true,
+      type: "number",
+    },
+    { label: "Next topic", maxLength: 240, name: "nextTopic", required: true, type: "textarea" },
+  ];
+  const learnerFields: EditSheetField[] = [
+    {
+      label: "Status",
+      name: "status",
+      options: learnerStatusOptions,
+      required: true,
+      type: "select",
+    },
+    {
+      label: "Linked project",
+      name: "projectId",
+      options: projectRows
+        .filter((project) => project.studentId === editingLearner?.studentId)
+        .map((project) => ({ label: project.title, value: project.id })),
+      type: "select",
+    },
+    { label: "Evidence note", maxLength: 500, name: "evidenceNote", type: "textarea" },
+  ];
+  const linkedProjects = learners.filter((learner) => learner.projectId && learner.projectTitle);
+  const stageFields: EditSheetField[] = [
+    { label: "Stage title", maxLength: 160, name: "title", required: true },
+    {
+      label: "Status",
+      name: "status",
+      options: deliveryStatusOptions,
+      required: true,
+      type: "select",
+    },
+    { label: "Planned sessions", min: 0, name: "plannedSessions", required: true, type: "number" },
+    {
+      label: "Completed sessions",
+      max: editingStage?.plannedSessions,
+      min: 0,
+      name: "completedSessions",
+      required: true,
+      type: "number",
+    },
+    { label: "Next topic", maxLength: 240, name: "nextTopic", required: true, type: "textarea" },
+  ];
+
+  async function saveAssignment(values: Record<string, string | number | null | undefined>) {
+    const payload = await apiPatch<{ curriculum: CurriculumDetail }>(
+      `/api/curriculum/${currentCurriculum.id}`,
+      {
+        ...values,
+        ownerEmployeeId: values.ownerEmployeeId ?? null,
+      },
+      session?.token,
+    );
+    setCurriculum(payload.curriculum);
+    setEditingAssignment(false);
+    await refresh();
+  }
+
+  async function saveLearner(values: Record<string, string | number | null | undefined>) {
+    if (!editingLearner) {
+      return;
+    }
+
+    const payload = await apiPatch<{ curriculum: CurriculumDetail }>(
+      `/api/curriculum/learners/${editingLearner.id}`,
+      {
+        ...values,
+        projectId: values.projectId ?? null,
+      },
+      session?.token,
+    );
+    setCurriculum(payload.curriculum);
+    setEditingLearner(null);
+    await refresh();
+  }
+
+  async function saveStage(values: Record<string, string | number | null | undefined>) {
+    if (!editingStage) {
+      return;
+    }
+
+    const payload = await apiPatch<{ curriculum: CurriculumDetail }>(
+      `/api/curriculum/stages/${editingStage.id}`,
+      values,
+      session?.token,
+    );
+    setCurriculum(payload.curriculum);
+    setEditingStage(null);
+    await refresh();
+  }
 
   return (
     <div className="workspace-scroll">
@@ -73,7 +245,14 @@ export function CurriculumDetailView() {
               {curriculum.moduleCode} · {curriculum.hubName} · {curriculum.gradeBand}
             </p>
           </div>
-          <Badge tone={statusTone(curriculum.status)}>{curriculum.status.replace("_", " ")}</Badge>
+          <div className="record-title-actions">
+            <Badge tone={statusTone(curriculum.status)}>{curriculum.status.replace("_", " ")}</Badge>
+            <ActionMenu
+              canEdit={canManage}
+              editLabel="Edit delivery"
+              onEdit={() => setEditingAssignment(true)}
+            />
+          </div>
         </div>
         <div className="metric-strip">
           <div>
@@ -108,7 +287,16 @@ export function CurriculumDetailView() {
               className="span-12 curriculum-stage-panel"
               key={stage.id}
               title={`${stage.sequence}. ${stage.title}`}
-              action={<Badge tone={statusTone(stage.status)}>{stage.status.replace("_", " ")}</Badge>}
+              action={
+                <div className="record-title-actions">
+                  <Badge tone={statusTone(stage.status)}>{stage.status.replace("_", " ")}</Badge>
+                  <ActionMenu
+                    canEdit={canManage}
+                    editLabel="Edit stage"
+                    onEdit={() => setEditingStage(stage)}
+                  />
+                </div>
+              }
             >
               <div className="stage-summary">
                 <div>
@@ -148,6 +336,7 @@ export function CurriculumDetailView() {
                   <th>Project</th>
                   <th>Status</th>
                   <th>Evidence</th>
+                  {canManage && <th>Actions</th>}
                 </tr>
               </thead>
               <tbody>
@@ -169,6 +358,15 @@ export function CurriculumDetailView() {
                       <Badge tone={statusTone(learner.status)}>{learner.status.replace("_", " ")}</Badge>
                     </td>
                     <td data-label="Evidence">{learner.evidenceNote || "Pending"}</td>
+                    {canManage && (
+                      <td data-label="Actions">
+                        <ActionMenu
+                          canEdit
+                          editLabel="Update evidence"
+                          onEdit={() => setEditingLearner(learner)}
+                        />
+                      </td>
+                    )}
                   </tr>
                 ))}
               </tbody>
@@ -180,7 +378,7 @@ export function CurriculumDetailView() {
       {activeTab === "projects" && (
         <Panel title="Linked projects" className="span-12">
           <div className="compact-list">
-            {projects.map((project) => (
+            {linkedProjects.map((project) => (
               <Link className="compact-row linked-row" key={`${project.id}-${project.projectId}`} to={`/workspace/projects/${project.projectId}`}>
                 <FolderKanban size={15} />
                 <div>
@@ -189,7 +387,7 @@ export function CurriculumDetailView() {
                 </div>
               </Link>
             ))}
-            {projects.length === 0 && <p className="empty-table-cell">No projects are mapped to this curriculum yet.</p>}
+            {linkedProjects.length === 0 && <p className="empty-table-cell">No projects are mapped to this curriculum yet.</p>}
           </div>
         </Panel>
       )}
@@ -225,6 +423,36 @@ export function CurriculumDetailView() {
             </div>
           </Panel>
         </section>
+      )}
+      {editingAssignment && (
+        <EditSheet
+          description="Update delivery owner, status, session progress and the next teaching topic."
+          fields={assignmentFields}
+          initialValues={assignmentValues(curriculum)}
+          onClose={() => setEditingAssignment(false)}
+          onSubmit={saveAssignment}
+          title={`Edit ${curriculum.moduleCode} delivery`}
+        />
+      )}
+      {editingLearner && (
+        <EditSheet
+          description={`${editingLearner.studentName} · ${editingLearner.stageTitle}`}
+          fields={learnerFields}
+          initialValues={learnerValues(editingLearner)}
+          onClose={() => setEditingLearner(null)}
+          onSubmit={saveLearner}
+          title="Update learner evidence"
+        />
+      )}
+      {editingStage && (
+        <EditSheet
+          description="Update stage progress, delivery status and next topic."
+          fields={stageFields}
+          initialValues={stageValues(editingStage)}
+          onClose={() => setEditingStage(null)}
+          onSubmit={saveStage}
+          title={`Edit ${editingStage.title}`}
+        />
       )}
     </div>
   );

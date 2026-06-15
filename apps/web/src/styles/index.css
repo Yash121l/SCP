@@ -769,12 +769,12 @@ h2 {
   box-shadow: -28px 0 80px rgba(0, 0, 0, 0.34);
   display: grid;
   grid-template-rows: auto minmax(0, 1fr);
-  max-width: min(720px, 100vw);
+  max-width: min(680px, 100vw);
   pointer-events: auto;
   position: absolute;
   right: 0;
   top: 0;
-  width: min(600px, 100vw);
+  width: min(560px, 100vw);
 }
 
 .record-sheet header {
@@ -783,7 +783,7 @@ h2 {
   display: flex;
   gap: 16px;
   justify-content: space-between;
-  padding: 20px 24px 16px;
+  padding: 18px 22px 14px;
 }
 
 .record-sheet h2,
@@ -812,16 +812,17 @@ h2 {
   align-content: start;
   align-items: start;
   display: grid;
-  gap: 16px;
+  gap: 12px;
+  grid-auto-rows: minmax(64px, auto);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   overflow: auto;
-  padding: 22px 24px 18px;
+  padding: 18px 22px 16px;
 }
 
 .sheet-fields label {
   align-content: start;
   display: grid;
-  gap: 7px;
+  gap: 6px;
   min-height: 0;
 }
 
@@ -834,6 +835,7 @@ h2 {
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0;
+  line-height: 1.15;
   text-transform: uppercase;
 }
 
@@ -843,8 +845,8 @@ h2 {
   border: 1px solid var(--border-soft);
   border-radius: 8px;
   color: var(--text);
-  height: 40px;
-  padding: 9px 10px;
+  height: 38px;
+  padding: 8px 10px;
   width: 100%;
 }
 
@@ -853,7 +855,7 @@ h2 {
   border: 1px solid var(--border-soft);
   border-radius: 8px;
   color: var(--text);
-  min-height: 92px;
+  min-height: 84px;
   padding: 10px;
   line-height: 1.5;
   resize: vertical;
@@ -873,7 +875,7 @@ h2 {
   display: flex;
   gap: 10px;
   justify-content: flex-end;
-  padding: 14px 24px;
+  padding: 12px 22px;
 }
 
 .panel-title {
