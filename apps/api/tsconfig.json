@@ -1,7 +1,13 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": "../..",
     "noEmit": true,
+    "paths": {
+      "@scp/contracts": ["packages/contracts/src/index.ts"],
+      "@scp/database": ["packages/database/src/index.ts"],
+      "@scp/server/*": ["apps/server/src/*"]
+    },
     "types": ["node"]
   },
   "include": ["api/**/*.ts"]
