@@ -8,6 +8,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@scp/contracts": "workspace:*",
+    "@scp/database": "workspace:*",
     "@scp/server": "workspace:*"
   },
   "devDependencies": {

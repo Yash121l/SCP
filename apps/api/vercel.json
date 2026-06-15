@@ -2,16 +2,16 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "version": 2,
   "installCommand": "cd ../.. && pnpm install --frozen-lockfile",
-  "buildCommand": "cd ../.. && pnpm --filter @scp/api build",
+  "buildCommand": "cd ../.. && pnpm --filter @scp/contracts build && pnpm --filter @scp/database build && pnpm --filter @scp/server build && pnpm --filter @scp/api build",
   "functions": {
-    "api/index.ts": {
+    "index.ts": {
       "maxDuration": 30
     }
   },
   "rewrites": [
     {
       "source": "/(.*)",
-      "destination": "/api/index.ts"
+      "destination": "/index.ts"
     }
   ]
 }

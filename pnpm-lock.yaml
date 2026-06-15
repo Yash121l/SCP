@@ -20,6 +20,12 @@ importers:
 
   apps/api:
     dependencies:
+      '@scp/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@scp/database':
+        specifier: workspace:*
+        version: link:../../packages/database
       '@scp/server':
         specifier: workspace:*
         version: link:../server
