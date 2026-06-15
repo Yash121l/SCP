@@ -1,8 +1,0 @@
-node_modules
-dist
-.turbo
-.env
-.env.local
-npm-debug.log*
-coverage
-*.tsbuildinfo
