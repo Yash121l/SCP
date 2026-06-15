@@ -30,8 +30,8 @@ services:
     ports:
       - "127.0.0.1:4000:4000"
     command: >
-      sh -c "pnpm --filter @scp/database db:migrate &&
-             pnpm --filter @scp/database db:seed &&
+      sh -c "node packages/database/dist/migrate.js &&
+             node packages/database/dist/seed.js &&
              node apps/server/dist/main.js"
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
