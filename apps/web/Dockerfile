@@ -13,7 +13,9 @@ ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
 COPY apps/web apps/web
 COPY packages/contracts packages/contracts
 COPY packages/ui packages/ui
-RUN pnpm --filter @scp/web build
+RUN pnpm --filter @scp/contracts build && \
+    pnpm --filter @scp/ui build && \
+    pnpm --filter @scp/web build
 
 FROM nginx:1.27-alpine AS runner
 COPY --from=build /app/apps/web/dist /usr/share/nginx/html

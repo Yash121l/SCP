@@ -11,7 +11,9 @@ FROM deps AS build
 COPY apps/server apps/server
 COPY packages/contracts packages/contracts
 COPY packages/database packages/database
-RUN pnpm --filter @scp/server build
+RUN pnpm --filter @scp/contracts build && \
+    pnpm --filter @scp/database build && \
+    pnpm --filter @scp/server build
 
 FROM node:22-alpine AS runner
 WORKDIR /app
@@ -28,4 +30,3 @@ COPY --from=build /app/packages/database/migrations packages/database/migrations
 RUN pnpm install --prod --frozen-lockfile
 EXPOSE 4000
 CMD ["node", "apps/server/dist/main.js"]
-
