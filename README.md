@@ -44,7 +44,9 @@ The web app is configured for Cloudflare Pages via `apps/web/wrangler.jsonc`.
 
 ```bash
 pnpm build --filter @scp/web
-npx wrangler pages deploy apps/web/dist --project-name scp-programme-portal
+cd apps/web && npx wrangler pages deploy dist --project-name scp-programme-portal
 ```
+
+Deploy from `apps/web` so `apps/web/functions/` is uploaded too. It holds the `/ingest` Pages Function that proxies PostHog analytics.
 
 Deployment currently requires a valid Cloudflare session or `CLOUDFLARE_ACCOUNT_ID` plus an API token with Pages permissions.
