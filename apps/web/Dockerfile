@@ -10,6 +10,9 @@ RUN pnpm install --frozen-lockfile
 FROM deps AS build
 ARG VITE_API_BASE_URL=http://localhost:4000
 ENV VITE_API_BASE_URL=$VITE_API_BASE_URL
+# nginx here only serves static files, so PostHog is called directly instead of via /ingest.
+ARG VITE_POSTHOG_API_HOST=https://us.i.posthog.com
+ENV VITE_POSTHOG_API_HOST=$VITE_POSTHOG_API_HOST
 COPY apps/web apps/web
 COPY packages/contracts packages/contracts
 COPY packages/ui packages/ui

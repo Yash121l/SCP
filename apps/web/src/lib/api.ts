@@ -1,4 +1,5 @@
 import type { DashboardSummary, LoginResponse } from "@scp/contracts";
+import { trackMutation } from "./analytics.js";
 
 const apiBaseUrl = import.meta.env.VITE_API_BASE_URL ?? "";
 
@@ -60,7 +61,9 @@ export async function apiPost<T>(path: string, payload: unknown, token?: string)
     method: "POST",
   });
 
-  return parseResponse<T>(response);
+  const result = await parseResponse<T>(response);
+  trackMutation("POST", path, payload);
+  return result;
 }
 
 export async function apiPatch<T>(path: string, payload: unknown, token?: string): Promise<T> {
@@ -74,7 +77,9 @@ export async function apiPatch<T>(path: string, payload: unknown, token?: string
     method: "PATCH",
   });
 
-  return parseResponse<T>(response);
+  const result = await parseResponse<T>(response);
+  trackMutation("PATCH", path, payload);
+  return result;
 }
 
 export async function apiDelete<T>(path: string, token?: string): Promise<T> {
@@ -86,5 +91,7 @@ export async function apiDelete<T>(path: string, token?: string): Promise<T> {
     method: "DELETE",
   });
 
-  return parseResponse<T>(response);
+  const result = await parseResponse<T>(response);
+  trackMutation("DELETE", path);
+  return result;
 }
